@@ -3,6 +3,8 @@ package fhnw.ws6c.theapp
 import com.hivemq.client.mqtt.datatypes.MqttQos
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client
 import com.hivemq.client.mqtt.mqtt5.message.publish.Mqtt5Publish
+import fhnw.ws6c.theapp.model.Message
+import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 import java.util.*
 
@@ -21,15 +23,16 @@ import java.util.*
  *
  */
 class MqttConnector (mqttBroker: String,
-                     val qos: MqttQos = MqttQos.EXACTLY_ONCE){
+                     private val qos: MqttQos = MqttQos.EXACTLY_ONCE){
 
     private val client = Mqtt5Client.builder()
         .serverHost(mqttBroker)
         .identifier(UUID.randomUUID().toString())
         .buildAsync()
-    
+
     fun connectAndSubscribe(topic:              String,
-                            onNewMessage:       (String) -> Unit = {},
+                            onNewMessage:       (JSONObject) -> Unit,
+                            onError:            (Exception, String) -> Unit = {e, _ -> e.printStackTrace()},
                             onConnectionFailed: () -> Unit = {}) {
         client.connectWith()
             .cleanStart(true)
@@ -39,40 +42,48 @@ class MqttConnector (mqttBroker: String,
                 if (throwable != null) {
                     onConnectionFailed()
                 } else { //erst wenn die Connection aufgebaut ist, kann subscribed werden
-                    subscribe(topic, onNewMessage)
+                    subscribe(topic, onNewMessage, onError)
                 }
             }
     }
 
     fun subscribe(topic:        String,
-                  onNewMessage: (String) -> Unit){
+                  onNewMessage: (JSONObject) -> Unit,
+                  onError:      (Exception, String) -> Unit = { e, _ -> e.printStackTrace() }){
         client.subscribeWith()
             .topicFilter(topic)
             .qos(qos)
             .noLocal(true)
-            .callback { onNewMessage(it.payloadAsString()) }
+            .callback {
+                try {
+                    onNewMessage(it.payloadAsJSONObject())
+                }
+                catch (e: Exception){
+                    onError(e, it.payloadAsString())
+                }
+            }
             .send()
     }
 
-    fun publish(topic:       String,
-                message:     String,
+    fun publish(topic: String,
+                message: Message,
                 onPublished: () -> Unit = {},
                 onError:     () -> Unit = {}) {
         client.publishWith()
             .topic(topic)
             .payload(message.asPayload())
             .qos(qos)
-            .retain(false)  //Message soll nicht auf dem Broker gespeichert werden
-            .messageExpiryInterval(120)
+            .retain(false)
+            .messageExpiryInterval(60)
             .send()
-            .whenComplete {_, throwable ->
+            .whenComplete{_, throwable ->
                 if(throwable != null){
                     onError()
                 }
                 else {
                     onPublished()
                 }
-             }
+            }
     }
 
     fun disconnect() {
@@ -84,4 +95,6 @@ class MqttConnector (mqttBroker: String,
 
 // praktische Extension Functions
 private fun String.asPayload() : ByteArray = toByteArray(StandardCharsets.UTF_8)
+private fun Mqtt5Publish.payloadAsJSONObject() : JSONObject = JSONObject(payloadAsString())
 private fun Mqtt5Publish.payloadAsString() : String = String(payloadAsBytes, StandardCharsets.UTF_8)
+private fun Message.asPayload() : ByteArray = asJsonString().asPayload()
