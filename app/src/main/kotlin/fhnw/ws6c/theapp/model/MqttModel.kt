@@ -9,13 +9,12 @@ import fhnw.ws6c.theapp.MqttConnector
 object MqttModel {
     val title      = "Food Buddy"
     val mqttBroker = "broker.hivemq.com"
-    val mainTopic  = "fhnw/emoba/flutterapp"
-    val me         = "Geissen Peter"
+    val mainTopic  = "fhnw/emoba/foodbuddy"
+    val me         = "Valeria"
 
-    val allFlaps = mutableStateListOf<Message>()
+    val allMessages = mutableStateListOf<Message>()
 
     var notificationMessage by mutableStateOf("")
-    var flapsPublished      by mutableStateOf(0)
     var restaurantName      by mutableStateOf("Lorem ipsum")
     var description         by mutableStateOf("Hello")
 
@@ -24,7 +23,7 @@ object MqttModel {
     fun connectAndSubscribe(){
         mqttConnector.connectAndSubscribe(
             topic        = mainTopic,
-            onNewMessage = { allFlaps.add(Message(it))
+            onNewMessage = { allMessages.add(Message(it))
 
             },
             onError      = {_, p ->
@@ -35,12 +34,11 @@ object MqttModel {
     }
 
     fun publish(){
+        val message = Message(me, restaurantName, description)
         mqttConnector.publish(
             topic       = mainTopic,
-            message     = Message(organizor  = me,
-                restaurantName = restaurantName,
-                description = description),
-            onPublished = { flapsPublished++ })
+            message     = message,
+            onPublished = { allMessages.add(message) })
     }
 
 }

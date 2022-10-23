@@ -62,33 +62,33 @@ private fun NotificationHost(state: SnackbarHostState) {
 private fun Body(model: MqttModel) {
     with(model) {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-            val ( allFlapsPanel, message, publishButton) = createRefs()
+            val ( allFlapsPanel, restName, description, publishButton) = createRefs()
 
-            /*Info(mqttBroker, Modifier.constrainAs(brokerInfo) {
-                top.linkTo(parent.top, 10.dp)
-                start.linkTo(parent.start, 10.dp)
-            })
 
-            Info(mainTopic, Modifier.constrainAs(topicInfo) {
-                top.linkTo(brokerInfo.bottom, 10.dp)
-                start.linkTo(parent.start, 10.dp)
-            })*/
-
-            AllFlapsPanel(allFlaps, Modifier.constrainAs(allFlapsPanel) {
+            AllFlapsPanel(allMessages, Modifier.constrainAs(allFlapsPanel) {
                 width  = Dimension.fillToConstraints
                 height = Dimension.fillToConstraints
                 top.linkTo(parent.top, 10.dp)
                 start.linkTo(parent.start, 10.dp)
                 end.linkTo(parent.end, 10.dp)
-                bottom.linkTo(message.top, 15.dp)
+                bottom.linkTo(restName.top, 15.dp)
             })
 
-            NewMessage(model, Modifier.constrainAs(message){
+            RestaurantInput(model, Modifier.constrainAs(restName){
+                width = Dimension.fillToConstraints
+                start.linkTo(parent.start, 10.dp)
+                end.linkTo(parent.end, 10.dp)
+                bottom.linkTo(description.top, 15.dp)
+            })
+
+            DescriptionInput(model, Modifier.constrainAs(description){
                 width = Dimension.fillToConstraints
                 start.linkTo(parent.start, 10.dp)
                 end.linkTo(parent.end, 10.dp)
                 bottom.linkTo(publishButton.top, 15.dp)
             })
+
+
 
             PublishButton(model, Modifier.constrainAs(publishButton) {
                 width = Dimension.fillToConstraints
@@ -99,6 +99,9 @@ private fun Body(model: MqttModel) {
         }
     }
 }
+
+
+
 
 @Composable
 private fun AllFlapsPanel(flaps: List<Message>, modifier: Modifier){
@@ -129,23 +132,12 @@ private fun AllFlaps(flaps : List<Message>){
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-private fun SingleFlap(flap: Message){
-    with(flap){
-        ListItem(text  = { Text(restaurantName ) },
-                overlineText = { Text(organizor) }
-        )
-        Divider()
-    }
-}
-
 @Composable
 fun PostCard(message: Message) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Column {
-            Text(text = message.organizor, fontSize = 10.sp, color = Color.Gray)
-            Text(message.restaurantName)
+            Text(text = message.organizor, fontSize = 15.sp, color = Color.Gray)
+            Text(message.restaurantName, fontSize = 20.sp, color = Color(55,107,0))
             Text(message.description)
 
         }
@@ -161,25 +153,33 @@ private fun PublishButton(model: MqttModel, modifier: Modifier){
         shape    = CircleShape,
         modifier = modifier
     ) {
-        Text("Publish (${model.flapsPublished})")
+        Text("Publish")
     }
 }
 
-@Composable
-private fun Info(text: String, modifier: Modifier){
-    Text(text     = text,
-        style    = MaterialTheme.typography.h6,
-        modifier = modifier
-    )
-}
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun NewMessage(model: MqttModel, modifier: Modifier){
+private fun RestaurantInput(model: MqttModel, modifier: Modifier){
     with(model){
         val keyboard = LocalSoftwareKeyboardController.current
         OutlinedTextField(value           = restaurantName,
             onValueChange   = {restaurantName = it},
+            modifier        = modifier,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+        )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun DescriptionInput(model: MqttModel, modifier: Modifier){
+    with(model){
+        val keyboard = LocalSoftwareKeyboardController.current
+        OutlinedTextField(value           = description,
+            onValueChange   = { description = it},
             modifier        = modifier,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })

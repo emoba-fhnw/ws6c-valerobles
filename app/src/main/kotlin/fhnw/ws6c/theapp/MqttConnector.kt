@@ -74,7 +74,7 @@ class MqttConnector (mqttBroker: String,
             .payload(message.asPayload())
             .qos(qos)
             .retain(false)
-            .messageExpiryInterval(60)
+            .messageExpiryInterval(60) // 86400 = 24h TODO: Change to stay until day of event
             .send()
             .whenComplete{_, throwable ->
                 if(throwable != null){
