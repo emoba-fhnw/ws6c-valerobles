@@ -65,7 +65,7 @@ private fun Body(model: MqttModel) {
             val ( allFlapsPanel, restName, description, publishButton) = createRefs()
 
 
-            AllFlapsPanel(allMessages, Modifier.constrainAs(allFlapsPanel) {
+            AllMessagesPanel(allPosts, Modifier.constrainAs(allFlapsPanel) {
                 width  = Dimension.fillToConstraints
                 height = Dimension.fillToConstraints
                 top.linkTo(parent.top, 10.dp)
@@ -104,31 +104,31 @@ private fun Body(model: MqttModel) {
 
 
 @Composable
-private fun AllFlapsPanel(flaps: List<Message>, modifier: Modifier){
+private fun AllMessagesPanel(messages: List<Message>, modifier: Modifier){
     Box(modifier.border(width = 1.dp,
         brush = SolidColor(Color.Gray),
         shape = RectangleShape
     )){
-        if(flaps.isEmpty()){
+        if(messages.isEmpty()){
             Text(text     = "No posts yet",
                 style    = MaterialTheme.typography.h4,
                 modifier = Modifier.align(Alignment.Center)
             )
         } else {
-            AllFlaps(flaps)
+            AllMessages(messages)
         }
     }
 }
 
 @Composable
-private fun AllFlaps(flaps : List<Message>){
+private fun AllMessages(messages : List<Message>){
     val scrollState = rememberLazyListState()
     LazyColumn(state = scrollState){
-        items(flaps){ PostCard(it) }
+        items(messages){ PostCard(it) }
     }
 
-    LaunchedEffect(flaps.size){
-        scrollState.animateScrollToItem(flaps.size)
+    LaunchedEffect(messages.size){
+        scrollState.animateScrollToItem(messages.size)
     }
 }
 
@@ -153,7 +153,7 @@ private fun PublishButton(model: MqttModel, modifier: Modifier){
         shape    = CircleShape,
         modifier = modifier
     ) {
-        Text("Publish")
+        Text("Post")
     }
 }
 

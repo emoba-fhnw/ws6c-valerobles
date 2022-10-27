@@ -9,10 +9,10 @@ import fhnw.ws6c.theapp.MqttConnector
 object MqttModel {
     val title      = "Food Buddy"
     val mqttBroker = "broker.hivemq.com"
-    val mainTopic  = "fhnw/emoba/foodbuddy"
+    val mainTopic  = "fhnw/foodbuddy"
     val me         = "Valeria"
 
-    val allMessages = mutableStateListOf<Message>()
+    val allPosts = mutableStateListOf<Message>()
 
     var notificationMessage by mutableStateOf("")
     var restaurantName      by mutableStateOf("Lorem ipsum")
@@ -23,7 +23,7 @@ object MqttModel {
     fun connectAndSubscribe(){
         mqttConnector.connectAndSubscribe(
             topic        = mainTopic,
-            onNewMessage = { allMessages.add(Message(it))
+            onNewMessage = { allPosts.add(Message(it))
 
             },
             onError      = {_, p ->
@@ -38,7 +38,7 @@ object MqttModel {
         mqttConnector.publish(
             topic       = mainTopic,
             message     = message,
-            onPublished = { allMessages.add(message) })
+            onPublished = { allPosts.add(message) })
     }
 
 }
