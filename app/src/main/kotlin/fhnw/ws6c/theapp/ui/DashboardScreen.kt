@@ -1,6 +1,7 @@
 package fhnw.ws6c.theapp.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -139,19 +140,52 @@ private fun AllMessages(posts : List<Post>){
 @Composable
 fun PostCard(post: Post) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Column {
+        Column(Modifier.padding(10.dp)) {
             Image(
                 bitmap = post.messageImage, contentDescription = "",
                 Modifier
                     .fillMaxWidth()
                     .size(120.dp)
-                    .padding(5.dp)
-                    .clip(RoundedCornerShape(20.dp)),
+                    .padding(0.dp)
+                    .clip(RoundedCornerShape(25.dp, 25.dp)),
                 contentScale = ContentScale.Crop
             )
-            Text(text = post.organizor, fontSize = 15.sp, color = Color.Gray)
-            Text(post.restaurantName, fontSize = 20.sp, color = Color(55,107,0))
-            Text(post.description)
+            Row(Modifier
+                .clip(RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp))
+                .background(color = Color(237, 237, 237))
+            ) {
+                Text(
+                    text = post.restaurantName,
+                    fontSize = 20.sp,
+                    color = Color.Gray,
+                    modifier = Modifier.padding(5.dp)
+                )
+                Spacer(Modifier.weight(0.5f))
+                Text(
+                    text = post.date,
+                    fontSize = 10.sp,
+                    color = Color(55,107,0),
+                    modifier = Modifier.padding(5.dp)
+                )
+                Text(
+                    text = "-",
+                    fontSize = 10.sp,
+                    color = Color(55,107,0),
+                    modifier = Modifier.padding(5.dp)
+                )
+                Text(
+                    text = post.time,
+                    fontSize = 10.sp,
+                    color = Color(55,107,0),
+                    modifier = Modifier.padding(5.dp)
+                )
+                Text(
+                    text = post.peopleNumber.toString(),
+                    fontSize = 10.sp,
+                    color = Color(55,107,0),
+                    modifier = Modifier.padding(5.dp)
+                )
+            }
         }
     }
     Divider()
