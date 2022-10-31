@@ -17,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.SolidColor
@@ -27,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import fhnw.ws6c.theapp.data.Message
+import fhnw.ws6c.theapp.data.Post
 import fhnw.ws6c.theapp.model.MqttModel
 
 
@@ -108,43 +107,43 @@ private fun Body(model: MqttModel) {
 
 
 @Composable
-private fun AllMessagesPanel(messages: List<Message>, modifier: Modifier){
+private fun AllMessagesPanel(posts: List<Post>, modifier: Modifier){
     Box(modifier.border(width = 1.dp,
         brush = SolidColor(Color.Gray),
         shape = RectangleShape
     )){
-        if(messages.isEmpty()){
+        if(posts.isEmpty()){
             Text(text     = "No posts yet",
                 style    = MaterialTheme.typography.h4,
                 modifier = Modifier.align(Alignment.Center)
             )
         } else {
-            AllMessages(messages)
+            AllMessages(posts)
         }
     }
 }
 
 @Composable
-private fun AllMessages(messages : List<Message>){
+private fun AllMessages(posts : List<Post>){
     val scrollState = rememberLazyListState()
     LazyColumn(state = scrollState){
-        items(messages){ PostCard(it) }
+        items(posts){ PostCard(it) }
     }
 
-    LaunchedEffect(messages.size){
-        scrollState.animateScrollToItem(messages.size)
+    LaunchedEffect(posts.size){
+        scrollState.animateScrollToItem(posts.size)
     }
 }
 
 @Composable
-fun PostCard(message: Message) {
+fun PostCard(post: Post) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Column {
-            Text(text = message.organizor, fontSize = 15.sp, color = Color.Gray)
-            Text(message.restaurantName, fontSize = 20.sp, color = Color(55,107,0))
-            Text(message.description)
+            Text(text = post.organizor, fontSize = 15.sp, color = Color.Gray)
+            Text(post.restaurantName, fontSize = 20.sp, color = Color(55,107,0))
+            Text(post.description)
             Image(
-                bitmap = message.messageImage, contentDescription = "",
+                bitmap = post.messageImage, contentDescription = "",
                 Modifier
                     .size(200.dp)
                     .padding(5.dp)

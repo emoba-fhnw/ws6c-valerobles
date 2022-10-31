@@ -13,7 +13,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
-data class Message(
+data class Post(
     val organizor: String,
     val restaurantName: String,
     val description: String,

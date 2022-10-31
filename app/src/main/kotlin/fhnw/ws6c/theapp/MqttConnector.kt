@@ -3,7 +3,7 @@ package fhnw.ws6c.theapp
 import com.hivemq.client.mqtt.datatypes.MqttQos
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client
 import com.hivemq.client.mqtt.mqtt5.message.publish.Mqtt5Publish
-import fhnw.ws6c.theapp.data.Message
+import fhnw.ws6c.theapp.data.Post
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -67,12 +67,12 @@ class MqttConnector (mqttBroker: String,
     }
 
     fun publish(topic: String,
-                message: Message,
+                post: Post,
                 onPublished: () -> Unit = {},
                 onError:     () -> Unit = {}) {
         client.publishWith()
             .topic(topic)
-            .payload(message.asPayload())
+            .payload(post.asPayload())
             .qos(qos)
             .retain(false)
             .messageExpiryInterval(60) // 86400 = 24h TODO: Change to stay until day of event
@@ -98,4 +98,4 @@ class MqttConnector (mqttBroker: String,
 private fun String.asPayload() : ByteArray = toByteArray(StandardCharsets.UTF_8)
 private fun Mqtt5Publish.payloadAsJSONObject() : JSONObject = JSONObject(payloadAsString())
 private fun Mqtt5Publish.payloadAsString() : String = String(payloadAsBytes, StandardCharsets.UTF_8)
-private fun Message.asPayload() : ByteArray = asJsonString().asPayload()
+private fun Post.asPayload() : ByteArray = asJsonString().asPayload()

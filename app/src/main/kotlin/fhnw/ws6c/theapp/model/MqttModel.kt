@@ -5,13 +5,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import fhnw.emoba.thatsapp.data.Image
-import fhnw.emoba.thatsapp.data.gofileio.GoFileIOConnector
 import fhnw.ws6c.theapp.MqttConnector
-import fhnw.ws6c.theapp.data.Message
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import fhnw.ws6c.theapp.data.Post
 
 object MqttModel {
     val title      = "Food Buddy"
@@ -19,7 +14,7 @@ object MqttModel {
     val mainTopic  = "fhnw/foodbuddy"
     val me         = "Valeria"
 
-    val allPosts = mutableStateListOf<Message>()
+    val allPosts = mutableStateListOf<Post>()
 
     var notificationMessage by mutableStateOf("")
     var restaurantName      by mutableStateOf("Lorem ipsum")
@@ -36,7 +31,7 @@ object MqttModel {
         mqttConnector.connectAndSubscribe(
             topic        = mainTopic,
             onNewMessage = {
-                allPosts.add(Message(it))
+                allPosts.add(Post(it))
 
             },
             onError      = {_, p ->
@@ -47,13 +42,13 @@ object MqttModel {
     }
 
     fun publish(){
-        val message = Message(me, restaurantName, description, Image(url= image), people, date, time)
+        val post = Post(me, restaurantName, description, Image(url= image), people, date, time)
         mqttConnector.publish(
             topic       = mainTopic,
-            message     = message,
+            post     = post,
             onPublished = {
-                message.downloadImageFromText()
-                allPosts.add(message)
+                post.downloadImageFromText()
+                allPosts.add(post)
             })
     }
 
