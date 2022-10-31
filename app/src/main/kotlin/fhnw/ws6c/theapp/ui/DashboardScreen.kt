@@ -110,10 +110,7 @@ private fun Body(model: FoodBuddyModel) {
 
 @Composable
 private fun AllMessagesPanel(posts: List<Post>, modifier: Modifier){
-    Box(modifier.border(width = 1.dp,
-        brush = SolidColor(Color.Gray),
-        shape = RectangleShape
-    )){
+    Box(){
         if(posts.isEmpty()){
             Text(text     = "No posts yet",
                 style    = MaterialTheme.typography.h4,
