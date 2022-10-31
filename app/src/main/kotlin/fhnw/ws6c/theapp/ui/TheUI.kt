@@ -1,11 +1,13 @@
 package fhnw.ws6c.theapp.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -14,6 +16,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.SolidColor
@@ -23,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import fhnw.ws6c.theapp.model.Message
+import fhnw.ws6c.theapp.data.Message
 import fhnw.ws6c.theapp.model.MqttModel
 
 
@@ -139,6 +143,13 @@ fun PostCard(message: Message) {
             Text(text = message.organizor, fontSize = 15.sp, color = Color.Gray)
             Text(message.restaurantName, fontSize = 20.sp, color = Color(55,107,0))
             Text(message.description)
+            Image(
+                bitmap = message.messageImage, contentDescription = "",
+                Modifier
+                    .size(100.dp)
+                    .padding(5.dp)
+                    .clip(RoundedCornerShape(20.dp))
+            )
 
         }
     }

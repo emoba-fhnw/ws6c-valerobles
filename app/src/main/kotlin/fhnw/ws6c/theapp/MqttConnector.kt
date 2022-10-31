@@ -3,7 +3,7 @@ package fhnw.ws6c.theapp
 import com.hivemq.client.mqtt.datatypes.MqttQos
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client
 import com.hivemq.client.mqtt.mqtt5.message.publish.Mqtt5Publish
-import fhnw.ws6c.theapp.model.Message
+import fhnw.ws6c.theapp.data.Message
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -56,6 +56,7 @@ class MqttConnector (mqttBroker: String,
             .noLocal(true)
             .callback {
                 try {
+                    print(it.payloadAsJSONObject())
                     onNewMessage(it.payloadAsJSONObject())
                 }
                 catch (e: Exception){
