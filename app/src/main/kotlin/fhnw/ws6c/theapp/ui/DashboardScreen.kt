@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -139,17 +140,18 @@ private fun AllMessages(posts : List<Post>){
 fun PostCard(post: Post) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Column {
-            Text(text = post.organizor, fontSize = 15.sp, color = Color.Gray)
-            Text(post.restaurantName, fontSize = 20.sp, color = Color(55,107,0))
-            Text(post.description)
             Image(
                 bitmap = post.messageImage, contentDescription = "",
                 Modifier
-                    .size(200.dp)
+                    .fillMaxWidth()
+                    .size(120.dp)
                     .padding(5.dp)
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(RoundedCornerShape(20.dp)),
+                contentScale = ContentScale.Crop
             )
-
+            Text(text = post.organizor, fontSize = 15.sp, color = Color.Gray)
+            Text(post.restaurantName, fontSize = 20.sp, color = Color(55,107,0))
+            Text(post.description)
         }
     }
     Divider()
