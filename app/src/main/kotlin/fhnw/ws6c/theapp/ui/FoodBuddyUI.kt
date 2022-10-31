@@ -15,7 +15,7 @@ fun MqttUI(model: FoodBuddyModel) {
                 DashboardScreen(model = model)
             }
             Screen.LOGINSCREEN -> {
-
+                LoginScreen(model = model)
             }
             Screen.NOTIFICATIONS -> {
 
