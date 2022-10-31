@@ -146,7 +146,7 @@ fun PostCard(message: Message) {
             Image(
                 bitmap = message.messageImage, contentDescription = "",
                 Modifier
-                    .size(100.dp)
+                    .size(200.dp)
                     .padding(5.dp)
                     .clip(RoundedCornerShape(20.dp))
             )

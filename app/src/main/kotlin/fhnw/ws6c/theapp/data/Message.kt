@@ -17,13 +17,19 @@ data class Message(
     val organizor: String,
     val restaurantName: String,
     val description: String,
-    val image: Image) {
+    val image: Image,
+    val peopleNumber: Int,
+    val date: String,
+    val time: String) {
 
     constructor(json : JSONObject):
             this(json.getString("organizor"),
                 json.getString("restaurantName"),
                 json.getString("description"),
-                Image(url = json.getString("image"))) {
+                Image(url = json.getString("image")),
+                json.getInt("peopleNumber"),
+                json.getString("date"),
+                json.getString("time")) {
                 downloadImageFromText()
             }
 
@@ -53,7 +59,10 @@ data class Message(
             {"organizor":  "$organizor", 
              "restaurantName": "$restaurantName",
              "description": "$description",
-             "image": "${image.url}"
+             "image": "${image.url}",
+             "peopleNumber": "$peopleNumber",
+             "date": "$date",
+             "time": "$time"
             }
             """.trimIndent()
     }

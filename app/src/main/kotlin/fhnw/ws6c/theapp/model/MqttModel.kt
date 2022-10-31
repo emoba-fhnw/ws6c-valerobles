@@ -24,7 +24,10 @@ object MqttModel {
     var notificationMessage by mutableStateOf("")
     var restaurantName      by mutableStateOf("Lorem ipsum")
     var description         by mutableStateOf("Hello")
-    var image               by mutableStateOf("e77c4f7c-391b-44f3-894f-5ab366fa8d19")
+    var image               by mutableStateOf("gcDyCD")
+    var people              by mutableStateOf(0)
+    var date                by mutableStateOf("10.11.2023")
+    var time                by mutableStateOf("18:00")
 
     private val mqttConnector by lazy { MqttConnector(mqttBroker) }
 
@@ -33,7 +36,6 @@ object MqttModel {
         mqttConnector.connectAndSubscribe(
             topic        = mainTopic,
             onNewMessage = {
-                print(it)
                 allPosts.add(Message(it))
 
             },
@@ -45,11 +47,14 @@ object MqttModel {
     }
 
     fun publish(){
-        val message = Message(me, restaurantName, description, Image(url= image))
+        val message = Message(me, restaurantName, description, Image(url= image), people, date, time)
         mqttConnector.publish(
             topic       = mainTopic,
             message     = message,
-            onPublished = { allPosts.add(message) })
+            onPublished = {
+                message.downloadImageFromText()
+                allPosts.add(message)
+            })
     }
 
 
