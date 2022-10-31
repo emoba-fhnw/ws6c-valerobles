@@ -8,7 +8,7 @@ import fhnw.emoba.thatsapp.data.Image
 import fhnw.ws6c.theapp.MqttConnector
 import fhnw.ws6c.theapp.data.Post
 
-object MqttModel {
+object FoodBuddyModel {
     val title      = "Food Buddy"
     val mqttBroker = "broker.hivemq.com"
     val mainTopic  = "fhnw/foodbuddy"
@@ -25,6 +25,9 @@ object MqttModel {
     var time                by mutableStateOf("18:00")
 
     private val mqttConnector by lazy { MqttConnector(mqttBroker) }
+
+    var currentScreen by mutableStateOf(Screen.DASHBOARD)
+
 
 
     fun connectAndSubscribe(){

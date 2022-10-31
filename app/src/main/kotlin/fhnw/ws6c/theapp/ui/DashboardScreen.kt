@@ -27,12 +27,12 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import fhnw.ws6c.theapp.data.Post
-import fhnw.ws6c.theapp.model.MqttModel
-
-
+import fhnw.ws6c.theapp.model.FoodBuddyModel
 
 @Composable
-fun MqttUI(model: MqttModel) {
+fun DashboardScreen(model: FoodBuddyModel) {
+
+
     val scaffoldState = rememberScaffoldState()
     MaterialTheme(colors = lightColors(primary = Color(40,80,0))) {
         Scaffold(scaffoldState = scaffoldState,
@@ -45,7 +45,7 @@ fun MqttUI(model: MqttModel) {
 }
 
 @Composable
-private fun Bar(model: MqttModel) {
+private fun Bar(model: FoodBuddyModel) {
     with(model){
         TopAppBar(title = { Text(title) })
     }
@@ -62,7 +62,7 @@ private fun NotificationHost(state: SnackbarHostState) {
 }
 
 @Composable
-private fun Body(model: MqttModel) {
+private fun Body(model: FoodBuddyModel) {
     with(model) {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val ( allFlapsPanel, restName, description, publishButton) = createRefs()
@@ -158,7 +158,7 @@ fun PostCard(post: Post) {
 
 
 @Composable
-private fun PublishButton(model: MqttModel, modifier: Modifier){
+private fun PublishButton(model: FoodBuddyModel, modifier: Modifier){
     Button(onClick  = { model.publish() },
         shape    = CircleShape,
         modifier = modifier
@@ -171,7 +171,7 @@ private fun PublishButton(model: MqttModel, modifier: Modifier){
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun RestaurantInput(model: MqttModel, modifier: Modifier){
+private fun RestaurantInput(model: FoodBuddyModel, modifier: Modifier){
     with(model){
         val keyboard = LocalSoftwareKeyboardController.current
         OutlinedTextField(value           = restaurantName,
@@ -185,7 +185,7 @@ private fun RestaurantInput(model: MqttModel, modifier: Modifier){
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun DescriptionInput(model: MqttModel, modifier: Modifier){
+private fun DescriptionInput(model: FoodBuddyModel, modifier: Modifier){
     with(model){
         val keyboard = LocalSoftwareKeyboardController.current
         OutlinedTextField(value           = description,
@@ -198,7 +198,7 @@ private fun DescriptionInput(model: MqttModel, modifier: Modifier){
 }
 
 @Composable
-private fun Notification(model: MqttModel, scaffoldState: ScaffoldState) {
+private fun Notification(model: FoodBuddyModel, scaffoldState: ScaffoldState) {
     with(model){
         if (notificationMessage.isNotBlank()) {
             LaunchedEffect(scaffoldState.snackbarHostState){
@@ -208,4 +208,6 @@ private fun Notification(model: MqttModel, scaffoldState: ScaffoldState) {
             }
         }
     }
+
+
 }
