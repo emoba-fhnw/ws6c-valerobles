@@ -1,5 +1,6 @@
 package fhnw.ws6c.theapp.data
 
+import Profile
 import android.graphics.Bitmap
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 data class Post(
-    val organizor: String,
+    val organizor: Profile,
     val restaurantName: String,
     val description: String,
     val image: Image,
@@ -22,8 +23,11 @@ data class Post(
     val date: String,
     val time: String) {
 
-    constructor(json : JSONObject):
-            this(json.getString("organizor"),
+    constructor(json : JSONObject): this(
+                Profile(json.getJSONObject("organizor").getString("uuid"),
+                    json.getJSONObject("organizor").getString("name"),
+                    json.getJSONObject("organizor").getInt("age"),
+                    Image(url=json.getJSONObject("organizor").getString("image"))),
                 json.getString("restaurantName"),
                 json.getString("description"),
                 Image(url = json.getString("image")),
@@ -56,7 +60,11 @@ data class Post(
 
     fun asJsonString(): String {
         return """
-            {"organizor":  "$organizor", 
+            {"organizor":  {  "uuid":  "${organizor.uuid}",
+                              "name":  "${organizor.name}",
+                              "age":  "${organizor.age}",
+                              "image":  "${organizor.image.url}", 
+                            }, 
              "restaurantName": "$restaurantName",
              "description": "$description",
              "image": "${image.url}",

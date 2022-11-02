@@ -1,33 +1,59 @@
 package fhnw.ws6c.theapp.model
 
+import Profile
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.activity.ComponentActivity
+import androidx.annotation.DrawableRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import fhnw.emoba.thatsapp.data.Image
+import fhnw.emoba.thatsapp.data.gofileio.GoFileIOConnector
 import fhnw.ws6c.theapp.MqttConnector
 import fhnw.ws6c.theapp.data.Post
+import fhnw.ws6c.theapp.data.connectors.CameraAppConnector
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import java.util.*
 
-object FoodBuddyModel {
+class FoodBuddyModel(private val context: ComponentActivity,
+                     private val cameraAppConnector: CameraAppConnector) {
     val title      = "Food Buddy"
     val mqttBroker = "broker.hivemq.com"
     val mainTopic  = "fhnw/foodbuddy"
-    val me         = "Valeria"
+    val me         = Profile(
+        UUID.randomUUID().toString(),
+        "Valeria",
+        23,
+        Image("PnnNqF")
+    )
 
     val allPosts = mutableStateListOf<Post>()
 
     var notificationMessage by mutableStateOf("")
     var restaurantName      by mutableStateOf("Lorem ipsum")
     var description         by mutableStateOf("Hello")
-    var image               by mutableStateOf("gcDyCD")
+    var postImage               by mutableStateOf("gcDyCD")
     var people              by mutableStateOf(0)
     var date                by mutableStateOf("10.11.2023")
     var time                by mutableStateOf("18:00")
 
     private val mqttConnector by lazy { MqttConnector(mqttBroker) }
+    private val goFile: GoFileIOConnector = GoFileIOConnector()
+    private val modelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
-    var currentScreen by mutableStateOf(Screen.DASHBOARD)
 
+    var currentScreen by mutableStateOf(Screen.LOGINSCREEN)
+
+    var isLoading by mutableStateOf(false)
+
+    var photoToUpload by mutableStateOf("")
 
 
     fun connectAndSubscribe(){
@@ -45,7 +71,7 @@ object FoodBuddyModel {
     }
 
     fun publish(){
-        val post = Post(me, restaurantName, description, Image(url= image), people, date, time)
+        val post = Post(me, restaurantName, description, Image(url= postImage), people, date, time)
         mqttConnector.publish(
             topic       = mainTopic,
             post     = post,
@@ -54,6 +80,31 @@ object FoodBuddyModel {
                 allPosts.add(post)
             })
     }
+
+    fun takePhoto() {
+
+        cameraAppConnector.getBitmap(onSuccess  = { uploadImage(it) },
+            onCanceled = { notificationMessage = "Kein neues Bild" })
+
+
+    }
+
+    fun uploadImage(imageTaken: Bitmap) {
+        isLoading = true
+        modelScope.launch {
+            goFile.uploadBitmapToGoFileIO(imageTaken, onSuccess = {photoToUpload = it })
+            isLoading = false
+            // TODO: do something with photoToUpload
+        }
+    }
+
+
+    fun loadImageFromFile(@DrawableRes id: Int) : ImageBitmap {
+        return BitmapFactory.decodeResource(context.resources, id).asImageBitmap()
+    }
+
+
+
 
 
 }
