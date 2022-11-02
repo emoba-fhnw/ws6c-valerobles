@@ -14,7 +14,7 @@ import org.json.JSONObject
 data class Profile(val uuid: String,
                    val name: String,
                    val age: Int,
-                   val image: Image) {
+                   var image: Image) {
 
     val DEFAULT_ICON: Bitmap = Bitmap.createBitmap(
         120,

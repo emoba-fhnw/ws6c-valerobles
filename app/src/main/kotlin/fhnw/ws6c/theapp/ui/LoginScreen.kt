@@ -49,14 +49,26 @@ fun LoginBody(model: FoodBuddyModel) {
             )
             
             // TODO: IMAGE
-            Image(bitmap = loadImageFromFile(R.drawable.blanc_profile), contentDescription = "",
-            Modifier
-                .size(200.dp)
-                .padding(10.dp)
-                .clip(RoundedCornerShape(5.dp)))
+            if(fotoWasTaken) {
+                Image(bitmap = me.profileImage, contentDescription = "",
+                    Modifier
+                        .size(200.dp)
+                        .padding(10.dp)
+                        .clip(RoundedCornerShape(5.dp)))
+
+            } else {
+                Image(
+                    bitmap = loadImageFromFile(R.drawable.blanc_profile), contentDescription = "",
+                    Modifier
+                        .size(200.dp)
+                        .padding(10.dp)
+                        .clip(RoundedCornerShape(5.dp))
+                )
+
+            }
             // TODO IMAGE UPLOAD BUTTON
             Button(onClick = {
-                //takeProfilePicture
+                takeProfilePhotoAndUpdate()
             }) {
                 Text(text = "Upload Picture")
             }

@@ -55,6 +55,8 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
     var photoToUpload by mutableStateOf("")
 
+    var fotoWasTaken by mutableStateOf(false)
+
 
     fun connectAndSubscribe(){
         mqttConnector.connectAndSubscribe(
@@ -101,6 +103,35 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
     fun loadImageFromFile(@DrawableRes id: Int) : ImageBitmap {
         return BitmapFactory.decodeResource(context.resources, id).asImageBitmap()
+    }
+
+    fun takeProfilePhotoAndUpdate() {
+
+        cameraAppConnector.getBitmap(onSuccess  = { uploadProfileImage(it) },
+            onCanceled = { notificationMessage = "Kein neues Bild" })
+
+
+    }
+
+    fun uploadProfileImage(image:Bitmap) {
+        isLoading = true
+        fotoWasTaken = true
+        modelScope.launch {
+            goFile.uploadBitmapToGoFileIO(image,onSuccess =  { me.image.url=it })
+            downloadImg()
+            isLoading = false
+
+        }
+    }
+
+    fun downloadImg(){
+        modelScope.launch {
+            goFile.downloadBitmapFromGoFileIO(me.image.url,{ loadMyPic(it) })
+        }
+    }
+
+    private fun loadMyPic(image: Bitmap){
+        me.profileImage = image.asImageBitmap()
     }
 
 
