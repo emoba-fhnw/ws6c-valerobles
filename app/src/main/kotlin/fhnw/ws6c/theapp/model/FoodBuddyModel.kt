@@ -14,9 +14,10 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import fhnw.emoba.thatsapp.data.Image
 import fhnw.emoba.thatsapp.data.gofileio.GoFileIOConnector
-import fhnw.ws6c.theapp.MqttConnector
+import fhnw.ws6c.R
 import fhnw.ws6c.theapp.data.Post
 import fhnw.ws6c.theapp.data.connectors.CameraAppConnector
+import fhnw.ws6c.theapp.data.connectors.MqttConnector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -28,13 +29,11 @@ class FoodBuddyModel(private val context: ComponentActivity,
                      private val cameraAppConnector: CameraAppConnector) {
     val title      = "Food Buddy"
     val mqttBroker = "broker.hivemq.com"
-    val mainTopic  = "fhnw/foodbuddy"
-    val me         = Profile(
-        UUID.randomUUID().toString(),
-        "Valeria",
-        23,
-        Image("PnnNqF")
-    )
+    val mainTopic  = "fhnw/foodbuddy/"
+    val profileTopic = "profiles"
+    val postsTopic = "posts/"
+
+
 
     val allPosts = mutableStateListOf<Post>()
 
@@ -65,8 +64,16 @@ class FoodBuddyModel(private val context: ComponentActivity,
     var dateOfBirth by mutableStateOf("")
     var gender by mutableStateOf("")
     var age by mutableStateOf(0)
+    var profileImageTakenURL by mutableStateOf("")
+    var profileImageTakenBitmap by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
 
-
+    val me         = Profile(
+        UUID.randomUUID().toString(),
+        name,
+        age,
+        gender,
+        Image(profileImageTakenURL)
+    )
 
     fun connectAndSubscribe(){
         mqttConnector.connectAndSubscribe(
@@ -127,7 +134,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
         isLoading = true
         fotoWasTaken = true
         modelScope.launch {
-            goFile.uploadBitmapToGoFileIO(image,onSuccess =  { me.image.url=it })
+            goFile.uploadBitmapToGoFileIO(image,onSuccess =  { profileImageTakenURL=it })
             downloadImg()
             isLoading = false
 
@@ -136,20 +143,37 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
     fun downloadImg(){
         modelScope.launch {
-            goFile.downloadBitmapFromGoFileIO(me.image.url,{ loadMyPic(it) })
+            goFile.downloadBitmapFromGoFileIO(profileImageTakenURL,{ loadMyPic(it) })
         }
     }
 
     private fun loadMyPic(image: Bitmap){
-        me.profileImage = image.asImageBitmap()
+        profileImageTakenBitmap = image.asImageBitmap()
     }
 
     fun getAge(date: String) {
-        val simpledateformat = SimpleDateFormat("dd.MM.yyyy")
-        val dob = simpledateformat.parse(date)
-        val currentDate = simpledateformat.parse(Date().toString())
-        val diff: Long = dob.getTime() - currentDate.getTime()
-        age = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS).toInt()
+        if (date != "") {
+            val simpledateformat = SimpleDateFormat("dd.MM.yyyy")
+            val dob = simpledateformat.parse(date)
+            val temp = simpledateformat.format(Date())
+            val currentDate = simpledateformat.parse(temp)
+            val diff: Long = currentDate.time - dob.time
+            println(dob)
+            println(currentDate)
+            println(diff)
+            me.age = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS).toInt()/365
+        }
+
+    }
+
+    fun publishMyProfile() {
+        mqttConnector.publishProfile(
+            topic = mainTopic+profileTopic,
+            message= me.asJson(),
+            onPublished = {println(me.asJson())
+                //me.downloadProfilePicture()
+                println(me.asJson())})
+        fotoWasTaken=false
     }
 
 

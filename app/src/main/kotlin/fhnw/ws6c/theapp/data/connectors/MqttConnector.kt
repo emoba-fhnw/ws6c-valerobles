@@ -1,4 +1,4 @@
-package fhnw.ws6c.theapp
+package fhnw.ws6c.theapp.data.connectors
 
 import com.hivemq.client.mqtt.datatypes.MqttQos
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client
@@ -78,6 +78,28 @@ class MqttConnector (mqttBroker: String,
             .messageExpiryInterval(60) // 86400 = 24h TODO: Change to stay until day of event
             .send()
             .whenComplete{_, throwable ->
+                if(throwable != null){
+                    onError()
+                }
+                else {
+                    onPublished()
+                }
+            }
+    }
+
+    fun publishProfile(
+        topic:       String,
+        message: String,
+        onPublished: () -> Unit = {},
+        onError:     () -> Unit = {}) {
+        client.publishWith()
+            .topic(topic)
+            .payload(message.asPayload())
+            .qos(qos)
+            .retain(false)  //Message soll nicht auf dem Broker gespeichert werden
+            .messageExpiryInterval(60) //TODO
+            .send()
+            .whenComplete {_, throwable ->
                 if(throwable != null){
                     onError()
                 }

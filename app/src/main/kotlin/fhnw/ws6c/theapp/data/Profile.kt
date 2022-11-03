@@ -12,8 +12,9 @@ import kotlinx.coroutines.launch
 import org.json.JSONObject
 
 data class Profile(val uuid: String,
-                   val name: String,
-                   val age: Int,
+                   var name: String,
+                   var age: Int,
+                   var gender: String,
                    var image: Image) {
 
     val DEFAULT_ICON: Bitmap = Bitmap.createBitmap(
@@ -30,6 +31,7 @@ data class Profile(val uuid: String,
         uuid = jsonObject.getString("uuid"),
         name = jsonObject.getString("name"),
         age = jsonObject.getInt("age"),
+        gender = jsonObject.getString("gender"),
         image = Image(url=jsonObject.getString("image"))) {
         downloadProfilePicture()
     }
@@ -42,6 +44,21 @@ data class Profile(val uuid: String,
     fun loadPic(image: Bitmap){
         this.profileImage = image.asImageBitmap()
     }
+
+    fun asJson(): String{
+        return """
+        {
+        "uuid": "$uuid",
+        "name": "$name",
+        "age": "$age",
+        "gender": "$gender",
+        "image": "${image.url}"
+     
+        }
+        """.trimIndent()
+    }
+
+
 
 
 }
