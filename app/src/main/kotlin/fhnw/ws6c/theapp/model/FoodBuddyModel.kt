@@ -3,6 +3,7 @@ package fhnw.ws6c.theapp.model
 import Profile
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.icu.text.SimpleDateFormat
 import androidx.activity.ComponentActivity
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.getValue
@@ -21,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class FoodBuddyModel(private val context: ComponentActivity,
                      private val cameraAppConnector: CameraAppConnector) {
@@ -56,6 +58,14 @@ class FoodBuddyModel(private val context: ComponentActivity,
     var photoToUpload by mutableStateOf("")
 
     var fotoWasTaken by mutableStateOf(false)
+
+
+    // Login Screen
+    var name by mutableStateOf("")
+    var dateOfBirth by mutableStateOf("")
+    var gender by mutableStateOf("")
+    var age by mutableStateOf(0)
+
 
 
     fun connectAndSubscribe(){
@@ -134,6 +144,13 @@ class FoodBuddyModel(private val context: ComponentActivity,
         me.profileImage = image.asImageBitmap()
     }
 
+    fun getAge(date: String) {
+        val simpledateformat = SimpleDateFormat("dd.MM.yyyy")
+        val dob = simpledateformat.parse(date)
+        val currentDate = simpledateformat.parse(Date().toString())
+        val diff: Long = dob.getTime() - currentDate.getTime()
+        age = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS).toInt()
+    }
 
 
 
