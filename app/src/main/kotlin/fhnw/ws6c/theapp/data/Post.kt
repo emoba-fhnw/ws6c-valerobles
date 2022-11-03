@@ -13,8 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.util.UUID
 
 data class Post(
+    val uuid: String,
     val organizor: Profile,
     val restaurantName: String,
     val description: String,
@@ -24,6 +26,7 @@ data class Post(
     val time: String) {
 
     constructor(json : JSONObject): this(
+                json.getString("uuid"),
                 Profile(json.getJSONObject("organizor").getString("uuid"),
                     json.getJSONObject("organizor").getString("name"),
                     json.getJSONObject("organizor").getInt("age"),
@@ -37,6 +40,17 @@ data class Post(
                 json.getString("time")) {
                 downloadImageFromText()
             }
+
+    constructor(p: Post): this(
+        uuid = p.uuid,
+        organizor = p.organizor,
+        restaurantName = p.restaurantName,
+        description = p.description,
+        image = p.image,
+        peopleNumber = p.peopleNumber,
+        date = p.date,
+        time = p.time
+    )
 
 
     val DEFAULT_ICON: Bitmap = Bitmap.createBitmap(
@@ -61,7 +75,9 @@ data class Post(
 
     fun asJsonString(): String {
         return """
-            {"organizor":  {  "uuid":  "${organizor.uuid}",
+            {
+            "uuid":     "$uuid",
+            "organizor":  {  "uuid":  "${organizor.uuid}",
                               "name":  "${organizor.name}",
                               "age":  "${organizor.age}",
                               "age":  "${organizor.gender}",

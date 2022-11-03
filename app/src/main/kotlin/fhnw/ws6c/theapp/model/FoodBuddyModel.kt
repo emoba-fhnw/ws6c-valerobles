@@ -37,13 +37,19 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
     val allPosts = mutableStateListOf<Post>()
 
+    val myCreatedPosts = mutableStateListOf<Post>()
+
+    val mySubscribedPosts = mutableStateListOf<Post>()
+    val mySubscribedPostsUUID = mutableStateListOf<String>()
+
     var notificationMessage by mutableStateOf("")
     var restaurantName      by mutableStateOf("Lorem ipsum")
     var description         by mutableStateOf("Hello")
-    var postImage               by mutableStateOf("gcDyCD")
+    var postImage           by mutableStateOf("gcDyCD")
     var people              by mutableStateOf(0)
     var date                by mutableStateOf("10.11.2023")
     var time                by mutableStateOf("18:00")
+    var uuidPost            by mutableStateOf(UUID.randomUUID().toString())
 
     private val mqttConnector by lazy { MqttConnector(mqttBroker) }
     private val goFile: GoFileIOConnector = GoFileIOConnector()
@@ -51,6 +57,8 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
 
     var currentScreen by mutableStateOf(Screen.LOGINSCREEN)
+    var currentTab by mutableStateOf(Tab.MYEVENTS)
+
 
     var isLoading by mutableStateOf(false)
 
@@ -64,7 +72,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
     var dateOfBirth by mutableStateOf("")
     var gender by mutableStateOf("")
     var age by mutableStateOf(0)
-    var profileImageTakenURL by mutableStateOf("")
+    var profileImageTakenURL by mutableStateOf("a9R00e")
     var profileImageTakenBitmap by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
 
     val me         = Profile(
@@ -79,7 +87,12 @@ class FoodBuddyModel(private val context: ComponentActivity,
         mqttConnector.connectAndSubscribe(
             topic        = mainTopic,
             onNewMessage = {
-                allPosts.add(Post(it))
+                val p  = Post(it)
+                allPosts.add(p)
+                if (p.organizor.uuid == me.uuid)
+                    myCreatedPosts.add(p)
+                if(mySubscribedPostsUUID.contains(p.uuid))
+                    mySubscribedPosts.add(p)
 
             },
             onError      = {_, p ->
@@ -90,7 +103,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
     }
 
     fun publish(){
-        val post = Post(me, restaurantName, description, Image(url= postImage), people, date, time)
+        val post = Post(uuidPost,me, restaurantName, description, Image(url= postImage), people, date, time)
         mqttConnector.publish(
             topic       = mainTopic,
             post     = post,

@@ -20,6 +20,9 @@ fun MqttUI(model: FoodBuddyModel) {
             Screen.NOTIFICATIONS -> {
 
             }
+            Screen.TABSCREEN -> {
+                TabsScreen(model = model)
+            }
 
 
         }

@@ -1,5 +1,6 @@
 package fhnw.ws6c.theapp.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -82,13 +83,14 @@ fun LoginBody(model: FoodBuddyModel) {
             }) {
                 Text(text = "Upload Picture")
             }
+            Spacer(modifier = Modifier.height(50.dp))
             //  NAME     // AGE
             Row() {
                 LabelAndPlaceHolderName(model, "First Name", "Your name")
                 Spacer(modifier = Modifier.width(30.dp))
                 LabelAndPlaceHolderAge(model, "Date Of Birth", "dd.mm.yyyy")
             }
-
+            Spacer(modifier = Modifier.height(50.dp))
             //  GENDER DROPDOWN
             DropDownMenuGender(model)
 
@@ -96,10 +98,10 @@ fun LoginBody(model: FoodBuddyModel) {
             Spacer(modifier = Modifier.height(150.dp))
 
 
-            // TODO SAVE Profile Button and go to dashboard
-            // TODO check if everything has been filled out
+            //  SAVE Profile Button and go to dashboard
+
             Button(onClick = {
-                // TODO Create Profile 
+                //  check if everything has been filled out
                 checkValidityAndChangeScreen(model)
 
                 
@@ -150,13 +152,18 @@ fun LabelAndPlaceHolderAge(model: FoodBuddyModel, label : String, placeholder: S
 @Composable
 fun DropDownMenuGender(model: FoodBuddyModel){
 
-    Box {
-        TextButton(onClick = { expanded = true}) {
-            Row {
-                Text(text = "$selectedItem")
-                Icon(Icons.Default.ArrowDropDown, contentDescription = "")
+    Box(modifier = Modifier.width(150.dp)) {
+        Column {
+            Text(text = "Select your gender")
+            TextButton(onClick = { expanded = true}, border = BorderStroke(1.dp, Color.Gray), modifier = Modifier.width(100.dp)) {
+                Row {
+                    Text(text = "$selectedItem")
+                    Icon(Icons.Default.ArrowDropDown, contentDescription = "")
+                }
             }
-        } 
+        }
+
+
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
            genderList.forEach{
                DropdownMenuItem(onClick = { 
