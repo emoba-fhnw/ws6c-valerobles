@@ -39,6 +39,7 @@ data class Post(
                 json.getString("date"),
                 json.getString("time")) {
                 downloadImageFromText()
+
             }
 
     constructor(p: Post): this(
@@ -51,6 +52,8 @@ data class Post(
         date = p.date,
         time = p.time
     )
+
+
 
 
     val DEFAULT_ICON: Bitmap = Bitmap.createBitmap(
@@ -68,6 +71,7 @@ data class Post(
         modelScope.launch {
             goFile.downloadBitmapFromGoFileIO(image.url,{ loadPic(it) })
         }
+        organizor.downloadProfilePicture()
     }
     private fun loadPic(image: Bitmap){
         this.messageImage = image.asImageBitmap()

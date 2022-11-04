@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 import fhnw.ws6c.theapp.model.Screen
 import fhnw.ws6c.theapp.model.Tab
+import fhnw.ws6c.theapp.ui.tabs.MyRequestsScreen
 
 
 @Composable
@@ -21,6 +22,13 @@ fun TabsScreen(model: FoodBuddyModel) {
             topBar = { Bar(model) },
             content = { Body(model) },
         )
+    }
+
+    if(model.showBottomSheetInfo){
+        BottomSheetInfo(model = model)
+    }
+    if(model.showBottomSheetCreatePost){
+        BottomSheetCreate(model = model)
     }
 }
 
@@ -63,7 +71,7 @@ private fun Body(model: FoodBuddyModel){
 
                     }
                     Tab.MYREQUESTS -> {
-                       // MyRequestsScreen(model = model)
+                       MyRequestsScreen(model = model)
 
                     }
                 }

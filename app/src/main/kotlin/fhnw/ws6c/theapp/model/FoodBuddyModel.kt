@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit
 
 class FoodBuddyModel(private val context: ComponentActivity,
                      private val cameraAppConnector: CameraAppConnector) {
+
     val title      = "Food Buddy"
     val mqttBroker = "broker.hivemq.com"
     val mainTopic  = "fhnw/foodbuddy/"
@@ -40,7 +41,10 @@ class FoodBuddyModel(private val context: ComponentActivity,
     val myCreatedPosts = mutableStateListOf<Post>()
 
     val mySubscribedPosts = mutableStateListOf<Post>()
-    val mySubscribedPostsUUID = mutableStateListOf<String>()
+    val mySubscribedPostsUUID = mutableStateListOf<String>() // keep in case the posts should be edited
+
+
+
 
     var notificationMessage by mutableStateOf("")
     var restaurantName      by mutableStateOf("Lorem ipsum")
@@ -49,7 +53,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
     var people              by mutableStateOf(0)
     var date                by mutableStateOf("10.11.2023")
     var time                by mutableStateOf("18:00")
-    var uuidPost            by mutableStateOf(UUID.randomUUID().toString())
+    var uuidPost            by mutableStateOf("")
 
     private val mqttConnector by lazy { MqttConnector(mqttBroker) }
     private val goFile: GoFileIOConnector = GoFileIOConnector()
@@ -58,6 +62,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
     var currentScreen by mutableStateOf(Screen.LOGINSCREEN)
     var currentTab by mutableStateOf(Tab.MYEVENTS)
+    var currentPost: Post? by mutableStateOf(null)
 
 
     var isLoading by mutableStateOf(false)
@@ -67,7 +72,9 @@ class FoodBuddyModel(private val context: ComponentActivity,
     var fotoWasTaken by mutableStateOf(false)
 
 
-    // Login Screen
+
+
+    // Profile Screen
     var name by mutableStateOf("")
     var dateOfBirth by mutableStateOf("")
     var gender by mutableStateOf("")
@@ -83,9 +90,19 @@ class FoodBuddyModel(private val context: ComponentActivity,
         Image(profileImageTakenURL)
     )
 
+
+    var showBottomSheetInfo by mutableStateOf(false)
+    var showBottomSheetCreatePost by mutableStateOf(false)
+    var showBottomSheet by mutableStateOf(false)
+
+   // val subscribedProfilesToPostsMap = mutableMapOf("12234" to me)
+
+    val subscribedProfilesToPostsMap = mutableListOf<Pair<String,Profile>>()
+
     fun connectAndSubscribe(){
+
         mqttConnector.connectAndSubscribe(
-            topic        = mainTopic,
+            topic        = "$mainTopic$postsTopic+",
             onNewMessage = {
                 val p  = Post(it)
                 allPosts.add(p)
@@ -100,19 +117,25 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
             }
         )
+
+
     }
 
     fun publishMyPost(){
+        uuidPost = UUID.randomUUID().toString()
         val post = Post(uuidPost,me, restaurantName, description, Image(url= postImage), people, date, time)
         mqttConnector.publish(
-            topic       = mainTopic,
+            topic       = mainTopic+postsTopic,
             post     = post,
             onPublished = {
                 post.downloadImageFromText()
                 allPosts.add(post)
                 myCreatedPosts.add(post)
             })
+        subscribeToGetRegistration(uuidPost)
     }
+
+
 
     fun takePhoto() {
 
@@ -188,6 +211,34 @@ class FoodBuddyModel(private val context: ComponentActivity,
                 //me.downloadProfilePicture()
                 println(me.asJson())})
         fotoWasTaken=false
+    }
+
+    fun publishMyProfileToPost(uuid : String){
+        mqttConnector.publishProfile(
+            topic = "$mainTopic$postsTopic$uuid/",
+            message= me.asJson(),
+            onPublished = {println(me.asJson())
+                //me.downloadProfilePicture()
+                println(me.asJson())})
+    }
+
+    private fun subscribeToGetRegistration(uuidPostToSubscribe: String){
+        println("$mainTopic$postsTopic$uuidPostToSubscribe/")
+        mqttConnector.subscribe(
+            topic = "$mainTopic$postsTopic$uuidPostToSubscribe/",
+            onNewMessage = {
+                val p = Profile(it)
+                subscribedProfilesToPostsMap.add((uuidPostToSubscribe to p))
+                //subscribedProfilesToPostsMap[uuidPostToSubscribe] = p
+                println("Incoming profile"+ p)
+                println(subscribedProfilesToPostsMap)
+
+            }
+
+        )
+
+
+
     }
 
 

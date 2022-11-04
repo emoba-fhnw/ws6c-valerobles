@@ -2,6 +2,7 @@ package fhnw.ws6c.theapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,12 +13,13 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -25,11 +27,14 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import fhnw.ws6c.theapp.data.Post
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 import fhnw.ws6c.theapp.model.Screen
+
+
 
 @Composable
 fun DashboardScreen(model: FoodBuddyModel) {
@@ -40,7 +45,9 @@ fun DashboardScreen(model: FoodBuddyModel) {
         Scaffold(scaffoldState = scaffoldState,
             topBar        = { Bar(model) },
             snackbarHost  = { NotificationHost(it) },
-            content       = { Body(model) }
+            content       = { Body(model) },
+            floatingActionButton = { CreatePostFAB(model) },
+            floatingActionButtonPosition = FabPosition.Center
         )
     }
     Notification(model, scaffoldState)
@@ -69,43 +76,17 @@ private fun NotificationHost(state: SnackbarHostState) {
 }
 
 @Composable
-private fun Body(model: FoodBuddyModel) {
-    with(model) {
-        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-            val ( allFlapsPanel, restName, description, publishButton) = createRefs()
+private fun Body(model: FoodBuddyModel){
+    with(model){
+        Column() {
+            AllMessagesPanel(posts = allPosts, model = model)
+        }
 
-
-            AllMessagesPanel(allPosts, Modifier.constrainAs(allFlapsPanel) {
-                width  = Dimension.fillToConstraints
-                height = Dimension.fillToConstraints
-                top.linkTo(parent.top, 10.dp)
-                start.linkTo(parent.start, 10.dp)
-                end.linkTo(parent.end, 10.dp)
-                bottom.linkTo(restName.top, 15.dp)
-            })
-
-            RestaurantInput(model, Modifier.constrainAs(restName){
-                width = Dimension.fillToConstraints
-                start.linkTo(parent.start, 10.dp)
-                end.linkTo(parent.end, 10.dp)
-                bottom.linkTo(description.top, 15.dp)
-            })
-
-            DescriptionInput(model, Modifier.constrainAs(description){
-                width = Dimension.fillToConstraints
-                start.linkTo(parent.start, 10.dp)
-                end.linkTo(parent.end, 10.dp)
-                bottom.linkTo(publishButton.top, 15.dp)
-            })
-
-
-
-            PublishButton(model, Modifier.constrainAs(publishButton) {
-                width = Dimension.fillToConstraints
-                start.linkTo(parent.start, 10.dp)
-                end.linkTo(parent.end, 10.dp)
-                bottom.linkTo(parent.bottom, 15.dp)
-            })
+        if(showBottomSheetInfo){
+            BottomSheetInfo(model = model)
+        }
+        if(showBottomSheetCreatePost){
+            BottomSheetCreate(model = model)
         }
     }
 }
@@ -113,25 +94,29 @@ private fun Body(model: FoodBuddyModel) {
 
 
 
+
+
 @Composable
-fun AllMessagesPanel(posts: List<Post>, modifier: Modifier){
+fun AllMessagesPanel(posts: List<Post>, model: FoodBuddyModel){
     Box(){
         if(posts.isEmpty()){
             Text(text     = "No posts yet",
                 style    = MaterialTheme.typography.h4,
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxSize()
             )
         } else {
-            AllMessages(posts)
+            AllMessages(posts,model)
         }
     }
 }
 
 @Composable
-private fun AllMessages(posts : List<Post>){
+private fun AllMessages(posts : List<Post>,model: FoodBuddyModel){
     val scrollState = rememberLazyListState()
     LazyColumn(state = scrollState){
-        items(posts){ PostCard(it) }
+        items(posts){ PostCard(it, model) }
     }
 
     LaunchedEffect(posts.size){
@@ -140,9 +125,14 @@ private fun AllMessages(posts : List<Post>){
 }
 
 @Composable
-fun PostCard(post: Post) {
+fun PostCard(post: Post, model: FoodBuddyModel) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Column(Modifier.padding(10.dp)) {
+        Column(
+            Modifier
+                .padding(10.dp)
+                .clickable {
+                    model.currentPost = post
+                    model.showBottomSheetInfo = true }) {
             Image(
                 bitmap = post.messageImage, contentDescription = "",
                 Modifier
@@ -191,16 +181,16 @@ fun PostCard(post: Post) {
             }
         }
     }
-    Divider()
+
 }
 
 
 
 @Composable
-private fun PublishButton(model: FoodBuddyModel, modifier: Modifier){
-    Button(onClick  = { model.publishMyPost() },
+private fun PublishButton(model: FoodBuddyModel){
+    Button(onClick  = { model.publishMyPost()
+                      model.showBottomSheetCreatePost = false},
         shape    = CircleShape,
-        modifier = modifier
     ) {
         Text("Post")
     }
@@ -210,12 +200,11 @@ private fun PublishButton(model: FoodBuddyModel, modifier: Modifier){
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun RestaurantInput(model: FoodBuddyModel, modifier: Modifier){
+private fun RestaurantInput(model: FoodBuddyModel){
     with(model){
         val keyboard = LocalSoftwareKeyboardController.current
         OutlinedTextField(value           = restaurantName,
             onValueChange   = {restaurantName = it},
-            modifier        = modifier,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
         )
@@ -224,12 +213,11 @@ private fun RestaurantInput(model: FoodBuddyModel, modifier: Modifier){
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun DescriptionInput(model: FoodBuddyModel, modifier: Modifier){
+private fun DescriptionInput(model: FoodBuddyModel){
     with(model){
         val keyboard = LocalSoftwareKeyboardController.current
         OutlinedTextField(value           = description,
             onValueChange   = { description = it},
-            modifier        = modifier,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
         )
@@ -250,3 +238,51 @@ private fun Notification(model: FoodBuddyModel, scaffoldState: ScaffoldState) {
 
 
 }
+
+
+
+@Composable
+fun BottomSheetCreate(model: FoodBuddyModel) {
+
+    Column(Modifier.zIndex(1f)) {
+
+        Box(modifier = Modifier
+            .fillMaxHeight(0.3f)
+            .fillMaxWidth()
+            .background(Color.Gray.copy(0.5f))
+            .blur(50.dp)
+            .clickable { model.showBottomSheetCreatePost = false }){
+
+        }
+        Box(modifier = Modifier
+            .fillMaxHeight(1f)
+            .fillMaxWidth()
+            .background(Color.White)
+        ){
+
+            Column() {
+
+                Text(text = "THIS IS WHERE YOU CREATE A POST")
+                RestaurantInput(model = model)
+                DescriptionInput(model = model)
+                PublishButton(model = model)
+
+            }
+
+        }
+
+    }
+
+
+}
+
+
+@Composable
+fun CreatePostFAB(model: FoodBuddyModel) {
+    FloatingActionButton(backgroundColor = Color(245,245,245),onClick = {
+        model.showBottomSheetCreatePost = true })
+    { Icon(Icons.Filled.Add, "Create") }
+
+
+}
+
