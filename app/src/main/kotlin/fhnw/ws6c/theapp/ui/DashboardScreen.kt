@@ -2,7 +2,6 @@ package fhnw.ws6c.theapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,6 +11,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -19,8 +20,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -30,6 +29,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import fhnw.ws6c.theapp.data.Post
 import fhnw.ws6c.theapp.model.FoodBuddyModel
+import fhnw.ws6c.theapp.model.Screen
 
 @Composable
 fun DashboardScreen(model: FoodBuddyModel) {
@@ -49,7 +49,12 @@ fun DashboardScreen(model: FoodBuddyModel) {
 @Composable
 private fun Bar(model: FoodBuddyModel) {
     with(model){
-        TopAppBar(title = { Text(title) })
+        TopAppBar{
+            Text(text = title)
+            IconButton(
+                onClick = { model.currentScreen = Screen.TABSCREEN }) {
+                Icon(Icons.Filled.Notifications, "") }
+        }
     }
 }
 
@@ -109,7 +114,7 @@ private fun Body(model: FoodBuddyModel) {
 
 
 @Composable
-private fun AllMessagesPanel(posts: List<Post>, modifier: Modifier){
+fun AllMessagesPanel(posts: List<Post>, modifier: Modifier){
     Box(){
         if(posts.isEmpty()){
             Text(text     = "No posts yet",
@@ -147,9 +152,10 @@ fun PostCard(post: Post) {
                     .clip(RoundedCornerShape(25.dp, 25.dp)),
                 contentScale = ContentScale.Crop
             )
-            Row(Modifier
-                .clip(RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp))
-                .background(color = Color(237, 237, 237))
+            Row(
+                Modifier
+                    .clip(RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp))
+                    .background(color = Color(237, 237, 237))
             ) {
                 Text(
                     text = post.restaurantName,
@@ -192,7 +198,7 @@ fun PostCard(post: Post) {
 
 @Composable
 private fun PublishButton(model: FoodBuddyModel, modifier: Modifier){
-    Button(onClick  = { model.publish() },
+    Button(onClick  = { model.publishMyPost() },
         shape    = CircleShape,
         modifier = modifier
     ) {

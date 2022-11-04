@@ -102,7 +102,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
         )
     }
 
-    fun publish(){
+    fun publishMyPost(){
         val post = Post(uuidPost,me, restaurantName, description, Image(url= postImage), people, date, time)
         mqttConnector.publish(
             topic       = mainTopic,
@@ -110,6 +110,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
             onPublished = {
                 post.downloadImageFromText()
                 allPosts.add(post)
+                myCreatedPosts.add(post)
             })
     }
 
