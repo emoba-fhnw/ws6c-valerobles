@@ -251,19 +251,6 @@ private fun RestaurantInput(model: FoodBuddyModel){
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun RestaurantInput(model: FoodBuddyModel){
-    with(model){
-        val keyboard = LocalSoftwareKeyboardController.current
-        OutlinedTextField(value           = restaurantName,
-            onValueChange   = {restaurantName = it},
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
-        )
-    }
-}
-
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
 private fun CityInput(model: FoodBuddyModel){
     with(model){
         val keyboard = LocalSoftwareKeyboardController.current
