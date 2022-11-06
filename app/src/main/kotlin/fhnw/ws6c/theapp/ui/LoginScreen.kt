@@ -91,7 +91,8 @@ fun LoginBody(model: FoodBuddyModel) {
                     top = 4.dp,
                     end = 30.dp,
                     bottom = 4.dp,
-                )
+                ),
+                shape = RoundedCornerShape(30)
                 ) {
                 Text(text = "Upload")
             }
@@ -104,22 +105,32 @@ fun LoginBody(model: FoodBuddyModel) {
             }
             Spacer(modifier = Modifier.height(50.dp))
             //  GENDER DROPDOWN
-            DropDownMenuGender(model)
+            Row(modifier = Modifier.align(Alignment.Start).padding(start = 40.dp)) {
+                DropDownMenuGender(model)
+                Spacer(Modifier.weight(0.5f))
+            }
 
 
-            Spacer(modifier = Modifier.height(150.dp))
+
+            Spacer(modifier = Modifier.height(50.dp))
 
 
             //  SAVE Profile Button and go to dashboard
 
-            Button(onClick = {
-                //  check if everything has been filled out
-                checkValidityAndChangeScreen(model)
-
-                
-            }) {
+            Button(
+                onClick = { checkValidityAndChangeScreen(model) },
+                colors = buttonColors(backgroundColor = Color(55, 107, 0), contentColor = Color.White),
+                contentPadding = PaddingValues(
+                    start = 30.dp,
+                    top = 4.dp,
+                    end = 30.dp,
+                    bottom = 4.dp,
+                ),
+                shape = RoundedCornerShape(30)
+            ) {
                 Text(text = "Join other Food Buddies")
             }
+            Spacer(modifier = Modifier.height(50.dp))
 
 
         }
@@ -137,8 +148,13 @@ fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, placeholder: 
                 style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
 
             )
+            Spacer(modifier = Modifier.height(10.dp))
             TextField(
-                modifier = Modifier.width(140.dp),
+                textStyle = TextStyle(fontSize = 15.sp),
+                modifier = Modifier
+                    .width(140.dp)
+                    .height(50.dp)
+                    .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
                 value = tempName,
                 onValueChange = {
@@ -149,7 +165,10 @@ fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, placeholder: 
                     focusedIndicatorColor =  Color.Transparent, //hide the indicator
                     unfocusedIndicatorColor = Color.Transparent),
                 //label = { Text(text = label) },
-                placeholder = { Text(text = placeholder) },
+                placeholder = { Text(
+                    text = placeholder,
+                    style = TextStyle(fontSize = 15.sp)
+                ) },
             )
         }
     }
@@ -157,15 +176,20 @@ fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, placeholder: 
 
 @Composable
 fun LabelAndPlaceHolderAge(model: FoodBuddyModel, label : String, placeholder: String) {
-
     with(model) {
-        Column(Modifier.padding(end = 25.dp)) {
+        Column(Modifier.padding(start = 25.dp)) {
             Text(
                 text = "$label*",
                 style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
+
             )
+            Spacer(modifier = Modifier.height(10.dp))
             TextField(
-                modifier = Modifier.width(140.dp),
+                textStyle = TextStyle(fontSize = 15.sp),
+                modifier = Modifier
+                    .width(140.dp)
+                    .height(50.dp)
+                    .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
                 value = tempDate,
                 onValueChange = {
@@ -176,7 +200,10 @@ fun LabelAndPlaceHolderAge(model: FoodBuddyModel, label : String, placeholder: S
                     focusedIndicatorColor =  Color.Transparent, //hide the indicator
                     unfocusedIndicatorColor = Color.Transparent),
                 //label = { Text(text = label) },
-                placeholder = { Text(text = placeholder) },
+                placeholder = { Text(
+                    text = placeholder,
+                    style = TextStyle(fontSize = 15.sp)
+                ) },
             )
         }
     }
@@ -189,15 +216,26 @@ fun DropDownMenuGender(model: FoodBuddyModel){
 
         Box(modifier = Modifier.width(150.dp)) {
             Column() {
-                Text(text = "Select your gender")
+                Text(
+                    text = "Gender*",
+                    style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
+                )
+                Spacer(modifier = Modifier.height(10.dp))
                 TextButton(
                     onClick = { expanded = true },
                     border = BorderStroke(1.dp, Color.Gray),
                     modifier = Modifier.width(100.dp)
                 ) {
                     Row {
-                        Text(text = "$selectedItem")
-                        Icon(Icons.Default.ArrowDropDown, contentDescription = "")
+                        Text(
+                            text = "$selectedItem",
+                            style = TextStyle(fontSize = 15.sp, color = Color(55, 107, 0))
+                        )
+                        Icon(
+                            Icons.Default.ArrowDropDown,
+                            contentDescription = "",
+                            tint = Color(55, 107, 0)
+                        )
                     }
                 }
             }
