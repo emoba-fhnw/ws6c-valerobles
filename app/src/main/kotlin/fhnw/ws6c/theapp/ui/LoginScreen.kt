@@ -142,7 +142,7 @@ fun LoginBody(model: FoodBuddyModel) {
 @Composable
 fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, placeholder: String) {
     with(model) {
-        Column(Modifier.padding(start = 25.dp)) {
+        Column() {
             Text(
                 text = "$label*",
                 style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
@@ -177,7 +177,7 @@ fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, placeholder: 
 @Composable
 fun LabelAndPlaceHolderAge(model: FoodBuddyModel, label : String, placeholder: String) {
     with(model) {
-        Column(Modifier.padding(start = 25.dp)) {
+        Column() {
             Text(
                 text = "$label*",
                 style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
@@ -223,8 +223,9 @@ fun DropDownMenuGender(model: FoodBuddyModel){
                 Spacer(modifier = Modifier.height(10.dp))
                 TextButton(
                     onClick = { expanded = true },
-                    border = BorderStroke(1.dp, Color.Gray),
-                    modifier = Modifier.width(100.dp)
+                    modifier = Modifier.width(100.dp),
+                    colors = buttonColors(backgroundColor = Color(237, 237, 237), contentColor = Color.White),
+                    shape = RoundedCornerShape(30)
                 ) {
                     Row {
                         Text(
