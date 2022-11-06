@@ -1,7 +1,6 @@
 package fhnw.ws6c.theapp.ui
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -59,7 +58,7 @@ fun LoginBody(model: FoodBuddyModel) {
             )
             
             //  IMAGE
-            if(fotoWasTaken) {
+            if(photoWasTaken) {
                 Image(bitmap = profileImageTakenBitmap, contentDescription = "",
                     Modifier
                         .size(width = 180.dp, height = 180.dp)

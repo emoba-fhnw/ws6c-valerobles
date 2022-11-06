@@ -13,29 +13,32 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-import java.util.UUID
 
 data class Post(
     val uuid: String,
-    val organizor: Profile,
+    val organizer: Profile,
     val restaurantName: String,
+    val city: String,
     val description: String,
     val image: Image,
     val peopleNumber: Int,
+    val maxPeopleNumber: Int,
     val date: String,
     val time: String) {
 
     constructor(json : JSONObject): this(
                 json.getString("uuid"),
-                Profile(json.getJSONObject("organizor").getString("uuid"),
-                    json.getJSONObject("organizor").getString("name"),
-                    json.getJSONObject("organizor").getInt("age"),
-                    json.getJSONObject("organizor").getString("gender"),
-                    Image(url=json.getJSONObject("organizor").getString("image"))),
+                Profile(json.getJSONObject("organizer").getString("uuid"),
+                    json.getJSONObject("organizer").getString("name"),
+                    json.getJSONObject("organizer").getInt("age"),
+                    json.getJSONObject("organizer").getString("gender"),
+                    Image(url=json.getJSONObject("organizer").getString("image"))),
                 json.getString("restaurantName"),
+                json.getString("city"),
                 json.getString("description"),
                 Image(url = json.getString("image")),
                 json.getInt("peopleNumber"),
+                json.getInt("maxPeopleNumber"),
                 json.getString("date"),
                 json.getString("time")) {
                 downloadImageFromText()
@@ -44,11 +47,13 @@ data class Post(
 
     constructor(p: Post): this(
         uuid = p.uuid,
-        organizor = p.organizor,
+        organizer = p.organizer,
         restaurantName = p.restaurantName,
+        city = p.city,
         description = p.description,
         image = p.image,
         peopleNumber = p.peopleNumber,
+        maxPeopleNumber = p.maxPeopleNumber,
         date = p.date,
         time = p.time
     )
@@ -71,7 +76,7 @@ data class Post(
         modelScope.launch {
             goFile.downloadBitmapFromGoFileIO(image.url,{ loadPic(it) })
         }
-        organizor.downloadProfilePicture()
+        organizer.downloadProfilePicture()
     }
     private fun loadPic(image: Bitmap){
         this.messageImage = image.asImageBitmap()
@@ -81,16 +86,18 @@ data class Post(
         return """
             {
             "uuid":     "$uuid",
-            "organizor":  {  "uuid":  "${organizor.uuid}",
-                              "name":  "${organizor.name}",
-                              "age":  "${organizor.age}",
-                              "age":  "${organizor.gender}",
-                              "image":  "${organizor.image.url}", 
+            "organizer":  {  "uuid":  "${organizer.uuid}",
+                              "name":  "${organizer.name}",
+                              "age":  "${organizer.age}",
+                              "age":  "${organizer.gender}",
+                              "image":  "${organizer.image.url}", 
                             }, 
              "restaurantName": "$restaurantName",
+             "city": "$city",
              "description": "$description",
              "image": "${image.url}",
              "peopleNumber": "$peopleNumber",
+             "maxPeopleNumber": "$maxPeopleNumber",
              "date": "$date",
              "time": "$time"
             }

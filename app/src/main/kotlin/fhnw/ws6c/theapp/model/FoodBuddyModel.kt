@@ -48,9 +48,11 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
     var notificationMessage by mutableStateOf("")
     var restaurantName      by mutableStateOf("Lorem ipsum")
+    var city                by mutableStateOf("Testcity")
     var description         by mutableStateOf("Hello")
     var postImage           by mutableStateOf("gcDyCD")
     var people              by mutableStateOf(0)
+    var maxPeople           by mutableStateOf(5)
     var date                by mutableStateOf("10.11.2023")
     var time                by mutableStateOf("18:00")
     var uuidPost            by mutableStateOf("")
@@ -69,7 +71,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
     var photoToUpload by mutableStateOf("")
 
-    var fotoWasTaken by mutableStateOf(false)
+    var photoWasTaken by mutableStateOf(false)
 
 
 
@@ -106,7 +108,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
             onNewMessage = {
                 val p  = Post(it)
                 allPosts.add(p)
-                if (p.organizor.uuid == me.uuid)
+                if (p.organizer.uuid == me.uuid)
                     myCreatedPosts.add(p)
                 if(mySubscribedPostsUUID.contains(p.uuid))
                     mySubscribedPosts.add(p)
@@ -123,7 +125,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
     fun publishMyPost(){
         uuidPost = UUID.randomUUID().toString()
-        val post = Post(uuidPost,me, restaurantName, description, Image(url= postImage), people, date, time)
+        val post = Post(uuidPost,me, restaurantName, city, description, Image(url= postImage), people, maxPeople, date, time)
         mqttConnector.publish(
             topic       = mainTopic+postsTopic,
             post     = post,
@@ -169,7 +171,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
     fun uploadProfileImage(image:Bitmap) {
         isLoading = true
-        fotoWasTaken = true
+        photoWasTaken = true
         modelScope.launch {
             goFile.uploadBitmapToGoFileIO(image,onSuccess =  { profileImageTakenURL=it })
             downloadImg()
@@ -210,7 +212,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
             onPublished = {println(me.asJson())
                 //me.downloadProfilePicture()
                 println(me.asJson())})
-        fotoWasTaken=false
+        photoWasTaken=false
     }
 
     fun publishMyProfileToPost(uuid : String){
