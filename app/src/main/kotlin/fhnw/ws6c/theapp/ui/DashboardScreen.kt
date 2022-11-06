@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -247,6 +248,87 @@ private fun RestaurantInput(model: FoodBuddyModel){
         )
     }
 }
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun RestaurantInput(model: FoodBuddyModel){
+    with(model){
+        val keyboard = LocalSoftwareKeyboardController.current
+        OutlinedTextField(value           = restaurantName,
+            onValueChange   = {restaurantName = it},
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+        )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun CityInput(model: FoodBuddyModel){
+    with(model){
+        val keyboard = LocalSoftwareKeyboardController.current
+        OutlinedTextField(value           = city,
+            onValueChange   = {city = it},
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+        )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun DateInput(model: FoodBuddyModel){
+    with(model){
+        val keyboard = LocalSoftwareKeyboardController.current
+        OutlinedTextField(value           = date,
+            onValueChange   = {date = it},
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+        )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun TimeInput(model: FoodBuddyModel){
+    with(model){
+        val keyboard = LocalSoftwareKeyboardController.current
+        OutlinedTextField(value           = time,
+            onValueChange   = {time = it},
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+        )
+    }
+}
+
+/*@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun PeopleInput(model: FoodBuddyModel){
+    with(model){
+        val keyboard = LocalSoftwareKeyboardController.current
+        OutlinedTextField(value           = people,
+            onValueChange   = {people = it},
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Number
+            ),
+            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+        )
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun MaxPeopleInput(model: FoodBuddyModel){
+    with(model){
+        val keyboard = LocalSoftwareKeyboardController.current
+        OutlinedTextField(value           = maxPeople,
+            onValueChange   = {maxPeople = it},
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+        )
+    }
+}*/
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
