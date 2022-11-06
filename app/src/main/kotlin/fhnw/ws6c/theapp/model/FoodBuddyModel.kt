@@ -53,7 +53,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
     var postImage           by mutableStateOf("gcDyCD")
     var people              by mutableStateOf(0)
     var maxPeople           by mutableStateOf(5)
-    var date                by mutableStateOf("10.11.2023")
+    var date                by mutableStateOf("10.11.23")
     var time                by mutableStateOf("18:00")
     var uuidPost            by mutableStateOf("")
 

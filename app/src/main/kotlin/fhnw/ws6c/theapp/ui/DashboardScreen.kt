@@ -12,9 +12,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -131,7 +129,8 @@ fun PostCard(post: Post, model: FoodBuddyModel) {
                 .padding(10.dp)
                 .clickable {
                     model.currentPost = post
-                    model.showBottomSheetInfo = true }) {
+                    model.showBottomSheetInfo = true })
+        {
             Image(
                 bitmap = post.messageImage, contentDescription = "",
                 Modifier
@@ -142,40 +141,79 @@ fun PostCard(post: Post, model: FoodBuddyModel) {
                 contentScale = ContentScale.Crop
             )
             Row(
-                Modifier
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
                     .clip(RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp))
                     .background(color = Color(237, 237, 237))
-            ) {
+                    .padding(start = 10.dp)
+                    .height(50.dp))
+            {
                 Text(
                     text = post.restaurantName,
                     fontSize = 20.sp,
                     color = Color.Gray,
-                    modifier = Modifier.padding(5.dp)
+                    modifier = Modifier.padding(start = 15.dp)
                 )
                 Spacer(Modifier.weight(0.5f))
+                Icon(
+                    Icons.Default.LocationOn,
+                    contentDescription = "",
+                    tint = Color(55, 107, 0),
+                    modifier = Modifier.size(10.dp).padding(end = 2.dp)
+                )
+                Text(
+                    text = post.city,
+                    fontSize = 10.sp,
+                    color = Color(55,107,0),
+                    modifier = Modifier.padding(end = 10.dp)
+                )
+                Icon(
+                    Icons.Default.Schedule,
+                    contentDescription = "",
+                    tint = Color(55, 107, 0),
+                    modifier = Modifier.size(10.dp).padding(end = 2.dp)
+                )
                 Text(
                     text = post.date,
                     fontSize = 10.sp,
                     color = Color(55,107,0),
-                    modifier = Modifier.padding(5.dp)
+                    modifier = Modifier.padding(end = 2.dp)
                 )
                 Text(
-                    text = "-",
+                    text = "|",
                     fontSize = 10.sp,
                     color = Color(55,107,0),
-                    modifier = Modifier.padding(5.dp)
+                    modifier = Modifier.padding(end = 2.dp)
                 )
                 Text(
                     text = post.time,
                     fontSize = 10.sp,
                     color = Color(55,107,0),
-                    modifier = Modifier.padding(5.dp)
+                    modifier = Modifier.padding(end = 10.dp)
+                )
+                Icon(
+                    Icons.Default.Groups,
+                    contentDescription = "",
+                    tint = Color(55, 107, 0),
+                    modifier = Modifier.size(10.dp).padding(end = 2.dp)
                 )
                 Text(
                     text = post.peopleNumber.toString(),
                     fontSize = 10.sp,
                     color = Color(55,107,0),
-                    modifier = Modifier.padding(5.dp)
+                    modifier = Modifier.padding(end = 0.dp)
+                )
+                Text(
+                    text = "/",
+                    fontSize = 10.sp,
+                    color = Color(55,107,0),
+                    modifier = Modifier.padding(end = 0.dp)
+                )
+                Text(
+                    text = post.maxPeopleNumber.toString(),
+                    fontSize = 10.sp,
+                    color = Color(55,107,0),
+                    modifier = Modifier.padding(end = 15.dp)
                 )
             }
         }
