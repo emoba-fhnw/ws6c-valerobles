@@ -13,6 +13,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -36,7 +37,6 @@ import fhnw.ws6c.theapp.model.Screen
 @Composable
 fun DashboardScreen(model: FoodBuddyModel) {
 
-
     val scaffoldState = rememberScaffoldState()
     MaterialTheme(colors = lightColors(primary = Color(40,80,0))) {
         Scaffold(scaffoldState = scaffoldState,
@@ -54,7 +54,14 @@ fun DashboardScreen(model: FoodBuddyModel) {
 private fun Bar(model: FoodBuddyModel) {
     with(model){
         TopAppBar{
-            Text(text = title)
+            Text(
+                text = title,
+                fontSize = 30.sp,
+            )
+            Spacer(Modifier.weight(0.5f))
+            IconButton(
+                onClick = { /* TODO: Switch Dark/Light Mode*/ }) {
+                Icon(Icons.Filled.DarkMode, "") }
             IconButton(
                 onClick = { model.currentScreen = Screen.TABSCREEN }) {
                 Icon(Icons.Filled.Notifications, "") }
@@ -87,11 +94,6 @@ private fun Body(model: FoodBuddyModel){
         }
     }
 }
-
-
-
-
-
 
 @Composable
 fun AllMessagesPanel(posts: List<Post>, model: FoodBuddyModel){

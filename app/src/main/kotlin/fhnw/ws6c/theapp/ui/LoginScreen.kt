@@ -1,5 +1,6 @@
 package fhnw.ws6c.theapp.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -31,6 +32,7 @@ var tempDate by mutableStateOf("")
 var tempName by mutableStateOf("")
 var tempGender by mutableStateOf("")
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(model: FoodBuddyModel) {
     MaterialTheme() {
