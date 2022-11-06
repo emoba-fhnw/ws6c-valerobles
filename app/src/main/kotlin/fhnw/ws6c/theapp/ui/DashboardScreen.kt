@@ -1,8 +1,7 @@
 package fhnw.ws6c.theapp.ui
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import android.annotation.SuppressLint
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,14 +27,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import fhnw.ws6c.theapp.data.Post
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 import fhnw.ws6c.theapp.model.Screen
 
 
-
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DashboardScreen(model: FoodBuddyModel) {
 
@@ -98,7 +95,7 @@ private fun Body(model: FoodBuddyModel){
 
 @Composable
 fun AllMessagesPanel(posts: List<Post>, model: FoodBuddyModel){
-    Box(){
+    Box(Modifier.border(BorderStroke(0.dp, Color.Transparent))){
         if(posts.isEmpty()){
             Text(text     = "No posts yet",
                 style    = MaterialTheme.typography.h4,
