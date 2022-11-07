@@ -88,16 +88,16 @@ data class Post(
             "uuid":     "$uuid",
             "organizer":  {  "uuid":  "${organizer.uuid}",
                               "name":  "${organizer.name}",
-                              "age":  "${organizer.age}",
-                              "age":  "${organizer.gender}",
-                              "image":  "${organizer.image.url}", 
+                              "age":  ${organizer.age},
+                              "gender":  "${organizer.gender}",
+                              "image":  "${organizer.image.url}" 
                             }, 
              "restaurantName": "$restaurantName",
-             "city": "$address",
+             "address": "$address",
              "description": "$description",
              "image": "${image.url}",
-             "peopleNumber": "$peopleNumber",
-             "maxPeopleNumber": "$maxPeopleNumber",
+             "peopleNumber": $peopleNumber,
+             "maxPeopleNumber": $maxPeopleNumber,
              "date": "$date",
              "time": "$time"
             }

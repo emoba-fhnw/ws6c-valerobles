@@ -99,7 +99,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
    // val subscribedProfilesToPostsMap = mutableMapOf("12234" to me)
 
-    val subscribedProfilesToPostsMap = mutableListOf<Pair<String,Profile>>()
+    val subscribedProfilesToPostsMap = mutableStateListOf<Pair<String,Profile>>()
 
     fun connectAndSubscribe(){
 
@@ -107,15 +107,18 @@ class FoodBuddyModel(private val context: ComponentActivity,
             topic        = "$mainTopic$postsTopic+",
             onNewMessage = {
                 val p  = Post(it)
+                println("$mainTopic$postsTopic+")
+                println("incoming post: "+ p)
+
                 allPosts.add(p)
-                if (p.organizer.uuid == me.uuid)
-                    myCreatedPosts.add(p)
+                //if (p.organizer.uuid == me.uuid)
+                //    myCreatedPosts.add(p)
                 if(mySubscribedPostsUUID.contains(p.uuid))
                     mySubscribedPosts.add(p)
 
             },
-            onError      = {_, p ->
-                notificationMessage = p
+            onError      = {m, p ->
+                notificationMessage = m.toString()
 
             }
         )
@@ -133,6 +136,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
                 post.downloadImageFromText()
                 allPosts.add(post)
                 myCreatedPosts.add(post)
+                println(post.asJsonString())
             })
         subscribeToGetRegistration(uuidPost)
     }
