@@ -44,17 +44,20 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                     Text(currentPost!!.peopleNumber.toString())
                     Image(currentPost!!.messageImage, contentDescription = "")
 
-                    Button(onClick = {
-                        mySubscribedPosts.add(currentPost!!)
-                        mySubscribedPostsUUID.add(currentPost!!.uuid)
-                        showBottomSheetInfo = false
-                        publishMyProfileToPost(currentPost!!.uuid)
-                    }) {
-                        if((!mySubscribedPostsUUID.contains(currentPost!!.uuid)) and (currentPost!!.organizer.uuid != me.uuid))
-                        Text(text = "I want to join")
+
+                    if((!mySubscribedPostsUUID.contains(currentPost!!.uuid)) and (currentPost!!.organizer.uuid != me.uuid)) {
+                        Button(onClick = {
+                            mySubscribedPosts.add(currentPost!!)
+                            mySubscribedPostsUUID.add(currentPost!!.uuid)
+                            showBottomSheetInfo = false
+                            publishMyProfileToPost(currentPost!!.uuid)
+                        } ) {
+                            Text(text = "I want to join")
+                        }
 
                     }
 
+                    }
 
 
                 }
@@ -64,7 +67,7 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
         }
     }
 
-}
+
 
 
 
