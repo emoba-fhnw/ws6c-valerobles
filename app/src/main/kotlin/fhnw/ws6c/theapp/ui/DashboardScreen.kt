@@ -1,9 +1,13 @@
 package fhnw.ws6c.theapp.ui
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.graphics.ImageDecoder
+import android.icu.util.Calendar
 import android.os.Build
 import android.provider.MediaStore
+import android.widget.DatePicker
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
@@ -27,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -38,6 +43,7 @@ import androidx.compose.ui.zIndex
 import fhnw.ws6c.theapp.data.Post
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 import fhnw.ws6c.theapp.model.Screen
+import java.util.*
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -362,33 +368,77 @@ fun DateInput(model: FoodBuddyModel) {
                     .padding(end = 2.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
-            val keyboard = LocalSoftwareKeyboardController.current
-            TextField(
-                textStyle = TextStyle(fontSize = 15.sp),
-                modifier = Modifier
-                    .width(130.dp)
-                    .height(50.dp)
-                    .padding(all = 0.dp),
-                shape = RoundedCornerShape(15.dp),
-                value = date,
-                onValueChange = {
-                    date = it
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color(237, 237, 237),
-                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
-                    unfocusedIndicatorColor = Color.Transparent),
-                //label = { Text(text = label) },
-                placeholder = { Text(
-                    text = "dd.mm.yyyy",
-                    style = TextStyle(fontSize = 15.sp)
-                ) },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+            Text(text = date)
+
+            val context = LocalContext.current
+            val year: Int
+            val month: Int
+            val day: Int
+
+            val calendar = Calendar.getInstance()
+            year = calendar.get(Calendar.YEAR)
+            month = calendar.get(Calendar.MONTH)
+            day = calendar.get(Calendar.DAY_OF_MONTH)
+            calendar.time = Date()
+
+
+            val datePickerDialog = DatePickerDialog(
+                context,
+                { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+                    date = "$dayOfMonth.$month.$year"
+                }, year, month, day
             )
+
+            OutlinedButton(onClick = { datePickerDialog.show() }) {
+                Text(text = "Pick Date")
+            }
         }
     }
 }
+
+
+
+
+
+
+
+
+//            val keyboard = LocalSoftwareKeyboardController.current
+//            TextField(
+//                textStyle = TextStyle(fontSize = 15.sp),
+//                modifier = Modifier
+//                    .width(130.dp)
+//                    .height(50.dp)
+//                    .padding(all = 0.dp),
+//                shape = RoundedCornerShape(15.dp),
+//                value = date,
+//                onValueChange = {
+//                    date = it
+//                },
+//                colors = TextFieldDefaults.textFieldColors(
+//                    backgroundColor = Color(237, 237, 237),
+//                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
+//                    unfocusedIndicatorColor = Color.Transparent),
+//                //label = { Text(text = label) },
+//                placeholder = { Text(
+//                    text = "dd.mm.yyyy",
+//                    style = TextStyle(fontSize = 15.sp)
+//                ) },
+//                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+//                keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+//            )
+//        }
+//    }
+
+
+
+
+
+
+
+
+
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -404,30 +454,28 @@ fun TimeInput(model: FoodBuddyModel) {
                     .padding(end = 2.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
-            val keyboard = LocalSoftwareKeyboardController.current
-            TextField(
-                textStyle = TextStyle(fontSize = 15.sp),
-                modifier = Modifier
-                    .width(90.dp)
-                    .height(50.dp)
-                    .padding(all = 0.dp),
-                shape = RoundedCornerShape(15.dp),
-                value = time,
-                onValueChange = {
-                    time = it
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color(237, 237, 237),
-                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
-                    unfocusedIndicatorColor = Color.Transparent),
-                //label = { Text(text = label) },
-                placeholder = { Text(
-                    text = "hh:mm",
-                    style = TextStyle(fontSize = 15.sp)
-                ) },
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+            Text(text = time)
+
+            val mContext = LocalContext.current
+
+            // Declaring and initializing a calendar
+            val mCalendar = Calendar.getInstance()
+            val mHour = mCalendar[Calendar.HOUR_OF_DAY]
+            val mMinute = mCalendar[Calendar.MINUTE]
+
+
+            // Creating a TimePicker dialod
+            val mTimePickerDialog = TimePickerDialog(
+                mContext,
+                {_, mHour : Int, mMinute: Int ->
+                    time = "$mHour:$mMinute"
+                }, mHour, mMinute, false
             )
+            OutlinedButton(onClick = { mTimePickerDialog.show() }) {
+                Text(text = "Pick Time")
+            }
+
+
         }
     }
 }
