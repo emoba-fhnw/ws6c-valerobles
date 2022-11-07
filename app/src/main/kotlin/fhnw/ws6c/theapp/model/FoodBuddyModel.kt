@@ -48,11 +48,11 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
     var notificationMessage by mutableStateOf("")
     var restaurantName      by mutableStateOf("Lorem ipsum")
-    var city                by mutableStateOf("Testcity")
+    var address                by mutableStateOf("Testcity")
     var description         by mutableStateOf("Hello")
     var postImage           by mutableStateOf("gcDyCD")
-    var people              by mutableStateOf(0)
-    var maxPeople           by mutableStateOf(5)
+    var people              by mutableStateOf("0")
+    var maxPeople           by mutableStateOf("5")
     var date                by mutableStateOf("10.11.23")
     var time                by mutableStateOf("18:00")
     var uuidPost            by mutableStateOf("")
@@ -125,7 +125,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
 
     fun publishMyPost(){
         uuidPost = UUID.randomUUID().toString()
-        val post = Post(uuidPost,me, restaurantName, city, description, Image(url= postImage), people, maxPeople, date, time)
+        val post = Post(uuidPost,me, restaurantName, address, description, Image(url= postImage), people.toInt(), maxPeople.toInt(), date, time)
         mqttConnector.publish(
             topic       = mainTopic+postsTopic,
             post     = post,

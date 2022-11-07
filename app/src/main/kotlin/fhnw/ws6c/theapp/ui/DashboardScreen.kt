@@ -131,7 +131,8 @@ fun PostCard(post: Post, model: FoodBuddyModel) {
                 .padding(10.dp)
                 .clickable {
                     model.currentPost = post
-                    model.showBottomSheetInfo = true })
+                    model.showBottomSheetInfo = true
+                })
         {
             Image(
                 bitmap = post.messageImage, contentDescription = "",
@@ -161,10 +162,12 @@ fun PostCard(post: Post, model: FoodBuddyModel) {
                     Icons.Default.LocationOn,
                     contentDescription = "",
                     tint = Color(55, 107, 0),
-                    modifier = Modifier.size(10.dp).padding(end = 2.dp)
+                    modifier = Modifier
+                        .size(10.dp)
+                        .padding(end = 2.dp)
                 )
                 Text(
-                    text = post.city,
+                    text = post.address,
                     fontSize = 10.sp,
                     color = Color(55,107,0),
                     modifier = Modifier.padding(end = 10.dp)
@@ -173,7 +176,9 @@ fun PostCard(post: Post, model: FoodBuddyModel) {
                     Icons.Default.Schedule,
                     contentDescription = "",
                     tint = Color(55, 107, 0),
-                    modifier = Modifier.size(10.dp).padding(end = 2.dp)
+                    modifier = Modifier
+                        .size(10.dp)
+                        .padding(end = 2.dp)
                 )
                 Text(
                     text = post.date,
@@ -197,7 +202,9 @@ fun PostCard(post: Post, model: FoodBuddyModel) {
                     Icons.Default.Groups,
                     contentDescription = "",
                     tint = Color(55, 107, 0),
-                    modifier = Modifier.size(10.dp).padding(end = 2.dp)
+                    modifier = Modifier
+                        .size(10.dp)
+                        .padding(end = 2.dp)
                 )
                 Text(
                     text = post.peopleNumber.toString(),
@@ -223,15 +230,26 @@ fun PostCard(post: Post, model: FoodBuddyModel) {
 
 }
 
-
-
 @Composable
-private fun PublishButton(model: FoodBuddyModel){
-    Button(onClick  = { model.publishMyPost()
-                      model.showBottomSheetCreatePost = false},
-        shape    = CircleShape,
+private fun PublishButton(model: FoodBuddyModel) {
+    Button(
+        onClick = {
+            model.publishMyPost()
+            model.showBottomSheetCreatePost = false
+                  },
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color(55, 107, 0),
+            contentColor = Color.White
+        ),
+        contentPadding = PaddingValues(
+            start = 30.dp,
+            top = 4.dp,
+            end = 30.dp,
+            bottom = 4.dp,
+        ),
+        shape = RoundedCornerShape(30)
     ) {
-        Text("Post")
+        Text(text = "Create")
     }
 }
 
@@ -241,7 +259,7 @@ fun RestaurantInput(model: FoodBuddyModel) {
     with(model) {
         Column() {
             Text(
-                text = "Restaurant Name*",
+                text = "Restaurant Name",
                 style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
 
             )
@@ -250,7 +268,7 @@ fun RestaurantInput(model: FoodBuddyModel) {
             TextField(
                 textStyle = TextStyle(fontSize = 15.sp),
                 modifier = Modifier
-                    .width(310.dp)
+                    .width(340.dp)
                     .height(50.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
@@ -276,11 +294,11 @@ fun RestaurantInput(model: FoodBuddyModel) {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CityInput(model: FoodBuddyModel) {
+fun AddressInput(model: FoodBuddyModel) {
     with(model) {
         Column() {
             Text(
-                text = "City*",
+                text = "Address",
                 style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
 
             )
@@ -289,13 +307,13 @@ fun CityInput(model: FoodBuddyModel) {
             TextField(
                 textStyle = TextStyle(fontSize = 15.sp),
                 modifier = Modifier
-                    .width(310.dp)
+                    .width(340.dp)
                     .height(50.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
-                value = city,
+                value = address,
                 onValueChange = {
-                    city = it
+                    address = it
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color(237, 237, 237),
@@ -303,7 +321,7 @@ fun CityInput(model: FoodBuddyModel) {
                     unfocusedIndicatorColor = Color.Transparent),
                 //label = { Text(text = label) },
                 placeholder = { Text(
-                    text = "City Name",
+                    text = "Address",
                     style = TextStyle(fontSize = 15.sp)
                 ) },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -318,17 +336,20 @@ fun CityInput(model: FoodBuddyModel) {
 fun DateInput(model: FoodBuddyModel) {
     with(model) {
         Column() {
-            Text(
-                text = "Date*",
-                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
-
+            Icon(
+                Icons.Default.CalendarMonth,
+                contentDescription = "",
+                tint = Color(55, 107, 0),
+                modifier = Modifier
+                    .size(25.dp)
+                    .padding(end = 2.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
             val keyboard = LocalSoftwareKeyboardController.current
             TextField(
                 textStyle = TextStyle(fontSize = 15.sp),
                 modifier = Modifier
-                    .width(140.dp)
+                    .width(130.dp)
                     .height(50.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
@@ -357,17 +378,20 @@ fun DateInput(model: FoodBuddyModel) {
 fun TimeInput(model: FoodBuddyModel) {
     with(model) {
         Column() {
-            Text(
-                text = "Time*",
-                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
-
+            Icon(
+                Icons.Default.Schedule,
+                contentDescription = "",
+                tint = Color(55, 107, 0),
+                modifier = Modifier
+                    .size(25.dp)
+                    .padding(end = 2.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
             val keyboard = LocalSoftwareKeyboardController.current
             TextField(
                 textStyle = TextStyle(fontSize = 15.sp),
                 modifier = Modifier
-                    .width(140.dp)
+                    .width(90.dp)
                     .height(50.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
@@ -391,22 +415,25 @@ fun TimeInput(model: FoodBuddyModel) {
     }
 }
 
-/*@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MaxPeopleInput(model: FoodBuddyModel) {
     with(model) {
         Column() {
-            Text(
-                text = "Maximal Persons*",
-                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
-
+            Icon(
+                Icons.Default.Groups,
+                contentDescription = "",
+                tint = Color(55, 107, 0),
+                modifier = Modifier
+                    .size(25.dp)
+                    .padding(end = 2.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
             val keyboard = LocalSoftwareKeyboardController.current
             TextField(
                 textStyle = TextStyle(fontSize = 15.sp),
                 modifier = Modifier
-                    .width(140.dp)
+                    .width(60.dp)
                     .height(50.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
@@ -428,7 +455,7 @@ fun MaxPeopleInput(model: FoodBuddyModel) {
             )
         }
     }
-}*/
+}
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -436,7 +463,7 @@ fun DescriptionInput(model: FoodBuddyModel) {
     with(model) {
         Column() {
             Text(
-                text = "Description*",
+                text = "Description",
                 style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
 
             )
@@ -447,7 +474,7 @@ fun DescriptionInput(model: FoodBuddyModel) {
                 singleLine = false,
                 textStyle = TextStyle(fontSize = 15.sp),
                 modifier = Modifier
-                    .width(310.dp)
+                    .width(340.dp)
                     .height(100.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
@@ -519,12 +546,14 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
                 Spacer(modifier = Modifier.height(10.dp))
                 RestaurantInput(model = model)
                 Spacer(modifier = Modifier.height(10.dp))
-                CityInput(model = model)
+                AddressInput(model = model)
                 Spacer(modifier = Modifier.height(10.dp))
                 Row() {
                     DateInput(model = model)
                     Spacer(modifier = Modifier.width(30.dp))
                     TimeInput(model = model)
+                    Spacer(modifier = Modifier.width(30.dp))
+                    MaxPeopleInput(model = model)
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 DescriptionInput(model = model)
