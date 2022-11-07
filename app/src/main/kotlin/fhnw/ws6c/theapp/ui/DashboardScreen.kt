@@ -570,12 +570,27 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
 }
 
 
-@Composable
+/*@Composable
 fun CreatePostFAB(model: FoodBuddyModel) {
     FloatingActionButton(backgroundColor = Color(245,245,245),onClick = {
         model.showBottomSheetCreatePost = true })
     { Icon(Icons.Filled.Add, "Create") }
+}*/
 
-
+@Composable
+fun CreatePostFAB(model: FoodBuddyModel) {
+    Button(
+        onClick = { model.showBottomSheetCreatePost = true },
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color(55, 107, 0),
+            contentColor = Color.White
+        ),
+        contentPadding = PaddingValues(5.dp),
+        shape = RoundedCornerShape(30)
+    )
+    {
+        Icon(Icons.Filled.Add,
+            contentDescription = "Create",
+            modifier = Modifier.size(50.dp))
+    }
 }
-
