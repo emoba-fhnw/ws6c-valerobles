@@ -1,8 +1,6 @@
 package fhnw.ws6c.theapp.ui
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -35,36 +33,47 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                 modifier = Modifier
                     .fillMaxHeight(1f)
                     .fillMaxWidth()
-                    .background(Color.Transparent)
+                    .background(Color.White)
                     .clip(RoundedCornerShape(25.dp, 25.dp))
             ) {
-
-                Column(Modifier.clip(RoundedCornerShape(25.dp, 25.dp))
-                    .background(Color.White)) {
-                    Image(
-                        currentPost!!.messageImage, contentDescription = "",
+                with(currentPost!!){
+                    Column(
                         Modifier
-                            .fillMaxWidth()
-                            .size(160.dp)
-                            .padding(0.dp)
-                            .clip(RoundedCornerShape(25.dp, 25.dp)),
-                        contentScale = ContentScale.Crop
-                    )
-                    Text(text = "THIS IS WHERE THE CURRENT CLICKED POST DETAILS SHOW")
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Text(currentPost!!.restaurantName)
-                    Text(currentPost!!.description)
-                    Text(currentPost!!.date)
-                    Text(currentPost!!.peopleNumber.toString())
+                            .clip(RoundedCornerShape(25.dp, 25.dp))
+                            .background(Color.White)
+                            .verticalScroll(rememberScrollState())) {
+                        Image(
+                            messageImage, contentDescription = "",
+                            Modifier
+                                .fillMaxWidth()
+                                .size(160.dp)
+                                .padding(0.dp)
+                                .clip(RoundedCornerShape(25.dp, 25.dp)),
+                            contentScale = ContentScale.Crop
+                        )
+                        Text(text = "THIS IS WHERE THE CURRENT CLICKED POST DETAILS SHOW")
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Text(restaurantName)
+                        Text(description)
+                        Text(date)
+                        Text(peopleNumber.toString())
 
-                    if((!mySubscribedPostsUUID.contains(currentPost!!.uuid)) and (currentPost!!.organizer.uuid != me.uuid)) {
-                        Button(onClick = {
-                            mySubscribedPosts.add(currentPost!!)
-                            mySubscribedPostsUUID.add(currentPost!!.uuid)
-                            showBottomSheetInfo = false
-                            publishMyProfileToPost(currentPost!!.uuid)
-                        } ) {
-                            Text(text = "I want to join")
+                        Text(organizer.name)
+                        Image(bitmap = organizer.profileImage, contentDescription = "", modifier = Modifier.size(50.dp))
+
+
+
+                        if(organizer.uuid != me.uuid) {
+                            Button(onClick = {
+                                mySubscribedPosts.add(currentPost!!)
+                                mySubscribedPostsUUID.add(currentPost!!.uuid)
+                                showBottomSheetInfo = false
+                                publishMyProfileToPost(currentPost!!.uuid)
+                            } ) {
+                                Text(text = "I want to join")
+                            }
+
+
                         }
 
                     }
