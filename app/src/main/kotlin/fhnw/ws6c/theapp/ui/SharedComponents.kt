@@ -11,16 +11,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 
 
 @Composable
 fun BottomSheetInfo(model: FoodBuddyModel) {
     with(model) {
-        Column() {
+        Column(Modifier.zIndex(1f)) {
 
             Box(modifier = Modifier
-                .fillMaxHeight(0.3f)
+                .fillMaxHeight(0.2f)
                 .fillMaxWidth()
                 .background(Color.Gray.copy(0.5f))
                 .blur(50.dp)
