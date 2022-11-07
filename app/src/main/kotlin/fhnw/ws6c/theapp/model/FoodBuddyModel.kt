@@ -96,11 +96,8 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     var showBottomSheetInfo by mutableStateOf(false)
     var showBottomSheetCreatePost by mutableStateOf(false)
-    var showBottomSheet by mutableStateOf(false)
 
-   // val subscribedProfilesToPostsMap = mutableMapOf("12234" to me)
 
-    val subscribedProfilesToPostsMap = mutableStateListOf<Pair<String,Profile>>()
 
     fun connectAndSubscribe(){
 
@@ -244,10 +241,15 @@ class FoodBuddyModel( val context: ComponentActivity,
             topic = "$mainTopic$postsTopic$uuidPostToSubscribe/",
             onNewMessage = {
                 val p = Profile(it)
-                subscribedProfilesToPostsMap.add((uuidPostToSubscribe to p))
-                //subscribedProfilesToPostsMap[uuidPostToSubscribe] = p
+                val temp = myCreatedPosts.find {post -> post.uuid ==uuidPostToSubscribe }?.profilesWantingToJoin
+                if (temp != null) {
+                    if(!temp.contains(p)){
+                        myCreatedPosts.find {post -> post.uuid ==uuidPostToSubscribe }?.profilesWantingToJoin?.add(p)
+                    }
+                }
+                //myCreatedPosts.find {post -> post.uuid ==uuidPostToSubscribe }?.profilesWantingToJoin?.add(p)
                 println("Incoming profile"+ p)
-                println(subscribedProfilesToPostsMap)
+
 
             }
 

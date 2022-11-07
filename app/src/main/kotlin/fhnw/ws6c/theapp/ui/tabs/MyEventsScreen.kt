@@ -83,13 +83,8 @@ private fun AllMessages(posts : List<Post>, model: FoodBuddyModel){
 @Composable
 private fun ProfilesList(post: Post,model: FoodBuddyModel){
 
-    // var profiles by mutableStateListOf<Pair<String,Profile>>()
-    //model.subscribedProfilesToPostsMap.
-    //profiles = model.subscribedProfilesToPostsMap.filter { (u,p) -> u == post.uuid }.map { (uu,pr) -> pr }.toCollection()
-    var profiles = model.subscribedProfilesToPostsMap.filter { (u,p) -> u == post.uuid }.map {it.second}
-
     Column() {
-        profiles.forEach {
+        post.profilesWantingToJoin.forEach {
             Profiles(it)
         }
     }

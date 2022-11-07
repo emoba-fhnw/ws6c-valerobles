@@ -3,6 +3,7 @@ package fhnw.ws6c.theapp.data
 import Profile
 import android.graphics.Bitmap
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.asImageBitmap
@@ -71,6 +72,8 @@ data class Post(
     private val goFile: GoFileIOConnector = GoFileIOConnector()
 
     var messageImage by mutableStateOf(DEFAULT_ICON.asImageBitmap())
+
+    var profilesWantingToJoin = mutableStateListOf<Profile>()
 
     fun downloadImageFromText(){
         modelScope.launch {

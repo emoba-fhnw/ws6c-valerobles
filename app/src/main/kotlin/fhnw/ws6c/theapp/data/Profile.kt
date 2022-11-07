@@ -27,6 +27,7 @@ data class Profile(val uuid: String,
     private val modelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val goFile: GoFileIOConnector = GoFileIOConnector()
 
+
     constructor(jsonObject: JSONObject) : this(
         uuid = jsonObject.getString("uuid"),
         name = jsonObject.getString("name"),
