@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class FoodBuddyModel(private val context: ComponentActivity,
+class FoodBuddyModel( val context: ComponentActivity,
                      private val cameraAppConnector: CameraAppConnector) {
 
     val title      = "Food Buddy"
@@ -51,6 +51,7 @@ class FoodBuddyModel(private val context: ComponentActivity,
     var address                by mutableStateOf("Address")
     var description         by mutableStateOf("Hello")
     var postImage           by mutableStateOf("gcDyCD")
+    var postImageBitmap     by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
     var people              by mutableStateOf("0")
     var maxPeople           by mutableStateOf("5")
     var date                by mutableStateOf("10.11.23")
@@ -188,6 +189,15 @@ class FoodBuddyModel(private val context: ComponentActivity,
         modelScope.launch {
             goFile.downloadBitmapFromGoFileIO(profileImageTakenURL,{ loadMyPic(it) })
         }
+    }
+
+    fun getEventImageBitMapURL(image: Bitmap) {
+
+        isLoading = true
+        modelScope.launch {
+            goFile.uploadBitmapToGoFileIO(image, onSuccess = { postImage = it })
+        }
+
     }
 
     private fun loadMyPic(image: Bitmap){

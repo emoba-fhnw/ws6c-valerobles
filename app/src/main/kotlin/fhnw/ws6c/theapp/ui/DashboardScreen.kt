@@ -1,6 +1,11 @@
 package fhnw.ws6c.theapp.ui
 
 import android.annotation.SuppressLint
+import android.graphics.ImageDecoder
+import android.os.Build
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
@@ -524,10 +530,55 @@ private fun Notification(model: FoodBuddyModel, scaffoldState: ScaffoldState) {
 
 }
 
+@Composable
+fun EventImageUpload(model: FoodBuddyModel){
+
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+            var uri = it
+            uri.let {
+                if (uri != null) {
+                    if (Build.VERSION.SDK_INT < 28) {
+                        model.postImageBitmap = MediaStore.Images.Media.getBitmap(
+                            model.context.contentResolver,
+                            uri
+                        ).asImageBitmap()
+                        model.getEventImageBitMapURL(MediaStore.Images.Media.getBitmap(
+                            model.context.contentResolver,
+                            uri))
+                    } else {
+                        val source = ImageDecoder.createSource(model.context.contentResolver, uri!!)
+                        model.postImageBitmap = ImageDecoder.decodeBitmap(source).asImageBitmap()
+                        model.getEventImageBitMapURL(ImageDecoder.decodeBitmap(source))
+                    }
+                }
+            }
+        }
+
+    Column() {
+        Text("Event picture")
+        Image(bitmap = model.postImageBitmap, contentDescription = "", Modifier.size(200.dp))
+        Button(onClick = { launcher.launch("image/*") },modifier = Modifier
+            .wrapContentSize()
+            .padding(10.dp)
+        ) {
+            Text(text = "Pick Image From Gallery")
+        }
+    }
+
+
+
+
+}
+
 
 
 @Composable
 fun BottomSheetCreate(model: FoodBuddyModel) {
+
+
+
+
 
     Column(Modifier.zIndex(1f)) {
 
@@ -545,8 +596,10 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
             .background(Color.White)
         ){
 
-            Column(Modifier
-                .fillMaxSize(),
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
                 Arrangement.Center,
                 Alignment.CenterHorizontally)
             {
@@ -568,6 +621,8 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 DescriptionInput(model = model)
+                Spacer(modifier = Modifier.height(10.dp))
+                EventImageUpload(model= model)
                 Spacer(modifier = Modifier.height(10.dp))
                 PublishButton(model = model)
 
