@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -234,99 +235,237 @@ private fun PublishButton(model: FoodBuddyModel){
     }
 }
 
-
-
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun RestaurantInput(model: FoodBuddyModel){
-    with(model){
-        val keyboard = LocalSoftwareKeyboardController.current
-        OutlinedTextField(value           = restaurantName,
-            onValueChange   = {restaurantName = it},
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
-        )
+fun RestaurantInput(model: FoodBuddyModel) {
+    with(model) {
+        Column() {
+            Text(
+                text = "Restaurant Name*",
+                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
+
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            val keyboard = LocalSoftwareKeyboardController.current
+            TextField(
+                textStyle = TextStyle(fontSize = 15.sp),
+                modifier = Modifier
+                    .width(140.dp)
+                    .height(50.dp)
+                    .padding(all = 0.dp),
+                shape = RoundedCornerShape(15.dp),
+                value = restaurantName,
+                onValueChange = {
+                    restaurantName = it
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color(237, 237, 237),
+                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
+                    unfocusedIndicatorColor = Color.Transparent),
+                //label = { Text(text = label) },
+                placeholder = { Text(
+                    text = "Your Event Location",
+                    style = TextStyle(fontSize = 15.sp)
+                ) },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+            )
+        }
     }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun CityInput(model: FoodBuddyModel){
-    with(model){
-        val keyboard = LocalSoftwareKeyboardController.current
-        OutlinedTextField(value           = city,
-            onValueChange   = {city = it},
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
-        )
+fun CityInput(model: FoodBuddyModel) {
+    with(model) {
+        Column() {
+            Text(
+                text = "City*",
+                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
+
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            val keyboard = LocalSoftwareKeyboardController.current
+            TextField(
+                textStyle = TextStyle(fontSize = 15.sp),
+                modifier = Modifier
+                    .width(140.dp)
+                    .height(50.dp)
+                    .padding(all = 0.dp),
+                shape = RoundedCornerShape(15.dp),
+                value = city,
+                onValueChange = {
+                    city = it
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color(237, 237, 237),
+                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
+                    unfocusedIndicatorColor = Color.Transparent),
+                //label = { Text(text = label) },
+                placeholder = { Text(
+                    text = "City Name",
+                    style = TextStyle(fontSize = 15.sp)
+                ) },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+            )
+        }
     }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun DateInput(model: FoodBuddyModel){
-    with(model){
-        val keyboard = LocalSoftwareKeyboardController.current
-        OutlinedTextField(value           = date,
-            onValueChange   = {date = it},
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
-        )
+fun DateInput(model: FoodBuddyModel) {
+    with(model) {
+        Column() {
+            Text(
+                text = "Date*",
+                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
+
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            val keyboard = LocalSoftwareKeyboardController.current
+            TextField(
+                textStyle = TextStyle(fontSize = 15.sp),
+                modifier = Modifier
+                    .width(140.dp)
+                    .height(50.dp)
+                    .padding(all = 0.dp),
+                shape = RoundedCornerShape(15.dp),
+                value = date,
+                onValueChange = {
+                    date = it
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color(237, 237, 237),
+                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
+                    unfocusedIndicatorColor = Color.Transparent),
+                //label = { Text(text = label) },
+                placeholder = { Text(
+                    text = "dd.mm.yyyy",
+                    style = TextStyle(fontSize = 15.sp)
+                ) },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+            )
+        }
     }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun TimeInput(model: FoodBuddyModel){
-    with(model){
-        val keyboard = LocalSoftwareKeyboardController.current
-        OutlinedTextField(value           = time,
-            onValueChange   = {time = it},
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
-        )
+fun TimeInput(model: FoodBuddyModel) {
+    with(model) {
+        Column() {
+            Text(
+                text = "Time*",
+                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
+
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            val keyboard = LocalSoftwareKeyboardController.current
+            TextField(
+                textStyle = TextStyle(fontSize = 15.sp),
+                modifier = Modifier
+                    .width(140.dp)
+                    .height(50.dp)
+                    .padding(all = 0.dp),
+                shape = RoundedCornerShape(15.dp),
+                value = time,
+                onValueChange = {
+                    time = it
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color(237, 237, 237),
+                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
+                    unfocusedIndicatorColor = Color.Transparent),
+                //label = { Text(text = label) },
+                placeholder = { Text(
+                    text = "hh:mm",
+                    style = TextStyle(fontSize = 15.sp)
+                ) },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+            )
+        }
     }
 }
 
 /*@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun PeopleInput(model: FoodBuddyModel){
-    with(model){
-        val keyboard = LocalSoftwareKeyboardController.current
-        OutlinedTextField(value           = people,
-            onValueChange   = {people = it},
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done,
-                keyboardType = KeyboardType.Number
-            ),
-            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
-        )
-    }
-}
+fun MaxPeopleInput(model: FoodBuddyModel) {
+    with(model) {
+        Column() {
+            Text(
+                text = "Maximal Persons*",
+                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
 
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-private fun MaxPeopleInput(model: FoodBuddyModel){
-    with(model){
-        val keyboard = LocalSoftwareKeyboardController.current
-        OutlinedTextField(value           = maxPeople,
-            onValueChange   = {maxPeople = it},
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
-        )
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            val keyboard = LocalSoftwareKeyboardController.current
+            TextField(
+                textStyle = TextStyle(fontSize = 15.sp),
+                modifier = Modifier
+                    .width(140.dp)
+                    .height(50.dp)
+                    .padding(all = 0.dp),
+                shape = RoundedCornerShape(15.dp),
+                value = maxPeople,
+                onValueChange = {
+                    maxPeople = it
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color(237, 237, 237),
+                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
+                    unfocusedIndicatorColor = Color.Transparent),
+                //label = { Text(text = label) },
+                placeholder = { Text(
+                    text = "0",
+                    style = TextStyle(fontSize = 15.sp)
+                ) },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+            )
+        }
     }
 }*/
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun DescriptionInput(model: FoodBuddyModel){
-    with(model){
-        val keyboard = LocalSoftwareKeyboardController.current
-        OutlinedTextField(value           = description,
-            onValueChange   = { description = it},
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
-        )
+fun DescriptionInput(model: FoodBuddyModel) {
+    with(model) {
+        Column() {
+            Text(
+                text = "Description*",
+                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
+
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            val keyboard = LocalSoftwareKeyboardController.current
+            TextField(
+                textStyle = TextStyle(fontSize = 15.sp),
+                modifier = Modifier
+                    .width(140.dp)
+                    .height(50.dp)
+                    .padding(all = 0.dp),
+                shape = RoundedCornerShape(15.dp),
+                value = description,
+                onValueChange = {
+                    description = it
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color(237, 237, 237),
+                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
+                    unfocusedIndicatorColor = Color.Transparent),
+                //label = { Text(text = label) },
+                placeholder = { Text(
+                    text = "Describe your Event",
+                    style = TextStyle(fontSize = 15.sp)
+                ) },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+            )
+        }
     }
 }
 
