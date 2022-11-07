@@ -521,7 +521,7 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
     Column(Modifier.zIndex(1f)) {
 
         Box(modifier = Modifier
-            .fillMaxHeight(0.3f)
+            .fillMaxHeight(0.2f)
             .fillMaxWidth()
             .background(Color.Gray.copy(0.5f))
             .blur(50.dp)
