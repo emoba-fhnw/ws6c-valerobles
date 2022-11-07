@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -155,7 +156,12 @@ fun PostCard(post: Post, model: FoodBuddyModel) {
                     text = post.restaurantName,
                     fontSize = 20.sp,
                     color = Color.Gray,
-                    modifier = Modifier.padding(start = 15.dp)
+                    modifier = Modifier
+                        .padding(start = 15.dp)
+                        .width(150.dp)
+                    ,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(Modifier.weight(0.5f))
                 Icon(
@@ -170,7 +176,12 @@ fun PostCard(post: Post, model: FoodBuddyModel) {
                     text = post.address,
                     fontSize = 10.sp,
                     color = Color(55,107,0),
-                    modifier = Modifier.padding(end = 10.dp)
+                    modifier = Modifier
+                        .padding(end = 10.dp)
+                        .width(50.dp)
+                    ,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Icon(
                     Icons.Default.Schedule,
