@@ -250,7 +250,7 @@ fun RestaurantInput(model: FoodBuddyModel) {
             TextField(
                 textStyle = TextStyle(fontSize = 15.sp),
                 modifier = Modifier
-                    .width(140.dp)
+                    .width(310.dp)
                     .height(50.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
@@ -289,7 +289,7 @@ fun CityInput(model: FoodBuddyModel) {
             TextField(
                 textStyle = TextStyle(fontSize = 15.sp),
                 modifier = Modifier
-                    .width(140.dp)
+                    .width(310.dp)
                     .height(50.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
@@ -443,10 +443,12 @@ fun DescriptionInput(model: FoodBuddyModel) {
             Spacer(modifier = Modifier.height(10.dp))
             val keyboard = LocalSoftwareKeyboardController.current
             TextField(
+                maxLines = 5,
+                singleLine = false,
                 textStyle = TextStyle(fontSize = 15.sp),
                 modifier = Modifier
-                    .width(140.dp)
-                    .height(50.dp)
+                    .width(310.dp)
+                    .height(100.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
                 value = description,
@@ -505,11 +507,28 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
             .background(Color.White)
         ){
 
-            Column() {
-
-                Text(text = "THIS IS WHERE YOU CREATE A POST")
+            Column(Modifier
+                .fillMaxSize(),
+                Arrangement.Center,
+                Alignment.CenterHorizontally)
+            {
+                Text(
+                    text = "Create Event",
+                    fontSize = 30.sp
+                )
+                Spacer(modifier = Modifier.height(10.dp))
                 RestaurantInput(model = model)
+                Spacer(modifier = Modifier.height(10.dp))
+                CityInput(model = model)
+                Spacer(modifier = Modifier.height(10.dp))
+                Row() {
+                    DateInput(model = model)
+                    Spacer(modifier = Modifier.width(30.dp))
+                    TimeInput(model = model)
+                }
+                Spacer(modifier = Modifier.height(10.dp))
                 DescriptionInput(model = model)
+                Spacer(modifier = Modifier.height(10.dp))
                 PublishButton(model = model)
 
             }
