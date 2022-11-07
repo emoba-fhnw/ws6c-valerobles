@@ -83,6 +83,7 @@ private fun AllMessages(posts : List<Post>, model: FoodBuddyModel){
 @Composable
 private fun ProfilesList(post: Post,model: FoodBuddyModel){
 
+    // var profiles by mutableStateListOf<Pair<String,Profile>>()
     //model.subscribedProfilesToPostsMap.
     //profiles = model.subscribedProfilesToPostsMap.filter { (u,p) -> u == post.uuid }.map { (uu,pr) -> pr }.toCollection()
     var profiles = model.subscribedProfilesToPostsMap.filter { (u,p) -> u == post.uuid }.map {it.second}
@@ -98,9 +99,15 @@ private fun ProfilesList(post: Post,model: FoodBuddyModel){
 
 @Composable
 private fun Profiles(profile: Profile){
-    Row {
-        Image(bitmap = profile.profileImage, contentDescription = "", modifier = Modifier.size(30.dp))
+    Row (modifier = Modifier.padding(bottom = 10.dp)){
+        Image(bitmap = profile.profileImage, contentDescription = "", modifier = Modifier.size(50.dp).padding(end = 5.dp))
         Text(profile.name)
+        Button(onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(backgroundColor =Color.Green)) {
+            Text(text = "Accept")
+        }
+        Button(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(backgroundColor =Color.Red)) {
+            Text(text = "Decline")
+        }
     }
 }
 
