@@ -75,6 +75,11 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
 
 
                         }
+                        
+                        if (mySubscribedPosts.contains(currentPost))
+                            Text(text = "You have already subscribed to this event")
+                        if(acceptedPosts.contains(currentPost))
+                            Text(text = "You have been accepted to join this event")
 
                     }
 

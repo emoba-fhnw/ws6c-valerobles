@@ -31,7 +31,8 @@ data class Profile(val uuid: String,
     private val modelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val goFile: GoFileIOConnector = GoFileIOConnector()
 
-    var postStatus = mutableStateListOf<PostStatus>()
+    var acceptedStatus = mutableStateListOf<PostStatus>()
+    var declinedStatus = mutableStateListOf<PostStatus>()
 
     constructor(jsonObject: JSONObject) : this(
         uuid = jsonObject.getString("uuid"),

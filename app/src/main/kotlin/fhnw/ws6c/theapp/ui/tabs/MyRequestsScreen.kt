@@ -43,7 +43,7 @@ private fun MyRequestsBody(model: FoodBuddyModel) {
 fun MyRequests(model: FoodBuddyModel){
     Box(){
         if(model.mySubscribedPosts.isEmpty()){
-            Text(text     = "Not subsriptions yet",
+            Text(text     = "No subsriptions yet",
                 style    = MaterialTheme.typography.h4,
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -62,7 +62,7 @@ fun MyRequests(model: FoodBuddyModel){
 @Composable
 private fun AcceptedBody(posts : List<Post>, model: FoodBuddyModel){
     val scrollState = rememberLazyListState()
-    Text(text = "You were accepted to these events")
+    Text(text = "Accepted")
     LazyColumn(state = scrollState){
         items(posts){
             PostCard(it, model)
@@ -76,10 +76,10 @@ private fun AcceptedBody(posts : List<Post>, model: FoodBuddyModel){
 @Composable
 private fun DeclinedBody(posts : List<Post>, model: FoodBuddyModel){
     val scrollState = rememberLazyListState()
-    Text(text = "You were declined to these events")
+    Text(text = "Declined")
     LazyColumn(state = scrollState){
         items(posts){
-            PostCard(it, model,false)
+            PostCard(it, model,false) // if declined, person cannot read the details of event
         }
     }
     LaunchedEffect(posts.size){

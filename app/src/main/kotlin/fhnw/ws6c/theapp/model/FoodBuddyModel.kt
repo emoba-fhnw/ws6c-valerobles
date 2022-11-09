@@ -65,7 +65,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     private val modelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
 
-    var currentScreen by mutableStateOf(Screen.LOGINSCREEN)
+    var currentScreen by mutableStateOf(Screen.DASHBOARD)
     var currentTab by mutableStateOf(Tab.MYEVENTS)
     var currentPost: Post? by mutableStateOf(null)
 
@@ -80,15 +80,16 @@ class FoodBuddyModel( val context: ComponentActivity,
 
 
     // Profile Screen
-    var name by mutableStateOf("")
-    var dateOfBirth by mutableStateOf("")
-    var gender by mutableStateOf("")
-    var age by mutableStateOf(0)
+    var name by mutableStateOf("Mona")
+    var dateOfBirth by mutableStateOf("21.06.1998")
+    var gender by mutableStateOf("Female")
+    var age by mutableStateOf(24)
     var profileImageTakenURL by mutableStateOf("a9R00e")
     var profileImageTakenBitmap by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
 
     val me         = Profile(
-        UUID.randomUUID().toString(),
+        //UUID.randomUUID().toString(),
+        "a49f78c0-8a84-4e08-a9e9-0389f4d703ed",
         name,
         age,
         gender,
@@ -99,7 +100,8 @@ class FoodBuddyModel( val context: ComponentActivity,
     var showBottomSheetInfo by mutableStateOf(false)
     var showBottomSheetCreatePost by mutableStateOf(false)
 
-
+    var acceptedPosts = mutableStateListOf<Post>()
+    var declinedPosts = mutableStateListOf<Post>()
 
     fun connectAndSubscribe(){
 
@@ -111,8 +113,6 @@ class FoodBuddyModel( val context: ComponentActivity,
                 println("incoming post: "+ p)
 
                 allPosts.add(p)
-                //if (p.organizer.uuid == me.uuid)
-                //    myCreatedPosts.add(p)
                 if(mySubscribedPostsUUID.contains(p.uuid))
                     mySubscribedPosts.add(p)
 
@@ -265,9 +265,15 @@ class FoodBuddyModel( val context: ComponentActivity,
         mqttConnector.subscribe(
             topic = mainTopic+postsTopic+uuidPostToSubscribe+"/"+me.uuid+"/",
             onNewMessage = {
-            me.postStatus.add(PostStatus(it))
-            getAcceptedPost()
-            getDeclinedPosts()
+            val ps = PostStatus(it)
+            //me.postStatus.add(ps)
+            if (ps.status == Status.ACCEPTED)
+                me.acceptedStatus.add(ps)
+                getAcceptedPost()
+            if (ps.status == Status.DECLINED)
+                me.declinedStatus.add(ps)
+                getDeclinedPosts()
+
             }
         )
     }
@@ -296,13 +302,11 @@ class FoodBuddyModel( val context: ComponentActivity,
         publishPostUpdate(uuidPerson,ps)
     }
 
-    var acceptedPosts = mutableStateListOf<Post>()
-    var declinedPosts = mutableStateListOf<Post>()
+
 
     fun getAcceptedPost(){
-        var acceptedPS = me.postStatus.filter { p -> p.status == Status.ACCEPTED }
 
-        acceptedPS.forEach { ap ->
+        me.declinedStatus.forEach { ap ->
             mySubscribedPosts.forEach { p ->
                 if (p.uuid == ap.postUUID)
                 acceptedPosts.add(p)
@@ -313,12 +317,15 @@ class FoodBuddyModel( val context: ComponentActivity,
     }
 
     fun getDeclinedPosts(){
-        var declinedPS = me.postStatus.filter { p -> p.status == Status.DECLINED }
 
-        declinedPS.forEach { ap ->
+        me.declinedStatus.forEach { ap ->
             mySubscribedPosts.forEach { p ->
-                if (p.uuid == ap.postUUID)
+                if (p.uuid == ap.postUUID){
                     declinedPosts.add(p)
+                    allPosts.remove(p)
+                }
+
+
 
             }
         }
