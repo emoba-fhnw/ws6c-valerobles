@@ -16,6 +16,8 @@ import fhnw.emoba.thatsapp.data.Image
 import fhnw.emoba.thatsapp.data.gofileio.GoFileIOConnector
 import fhnw.ws6c.R
 import fhnw.ws6c.theapp.data.Post
+import fhnw.ws6c.theapp.data.PostStatus
+import fhnw.ws6c.theapp.data.Status
 import fhnw.ws6c.theapp.data.connectors.CameraAppConnector
 import fhnw.ws6c.theapp.data.connectors.MqttConnector
 import kotlinx.coroutines.CoroutineScope
@@ -127,7 +129,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     fun publishMyPost(){
         uuidPost = UUID.randomUUID().toString()
         val post = Post(uuidPost,me, restaurantName, address, description, Image(url= postImage), people.toInt(), maxPeople.toInt(), date, time)
-        mqttConnector.publish(
+        mqttConnector.publishPost(
             topic       = mainTopic+postsTopic,
             post     = post,
             onPublished = {
@@ -136,7 +138,7 @@ class FoodBuddyModel( val context: ComponentActivity,
                 myCreatedPosts.add(post)
                 println(post.asJsonString())
             })
-        subscribeToGetRegistration(uuidPost)
+        subscribeToGetRegistrations(uuidPost)
     }
 
 
@@ -231,11 +233,11 @@ class FoodBuddyModel( val context: ComponentActivity,
             topic = "$mainTopic$postsTopic$uuid/",
             message= me.asJson(),
             onPublished = {println(me.asJson())
-                //me.downloadProfilePicture()
                 println(me.asJson())})
+        subscribeToGetUpdate(uuid)
     }
 
-    private fun subscribeToGetRegistration(uuidPostToSubscribe: String){
+    private fun subscribeToGetRegistrations(uuidPostToSubscribe: String){
         println("$mainTopic$postsTopic$uuidPostToSubscribe/")
         mqttConnector.subscribe(
             topic = "$mainTopic$postsTopic$uuidPostToSubscribe/",
@@ -257,6 +259,69 @@ class FoodBuddyModel( val context: ComponentActivity,
 
 
 
+    }
+
+    private fun subscribeToGetUpdate(uuidPostToSubscribe: String){
+        mqttConnector.subscribe(
+            topic = mainTopic+postsTopic+uuidPostToSubscribe+"/"+me.uuid+"/",
+            onNewMessage = {
+            me.postStatus.add(PostStatus(it))
+            getAcceptedPost()
+            getDeclinedPosts()
+            }
+        )
+    }
+
+    private fun publishPostUpdate(uuidPerson : String, postStatus: PostStatus){
+        mqttConnector.publishUpdate(
+            topic = "$mainTopic$postsTopic$uuidPost/$uuidPerson",
+            update = postStatus,
+            onPublished = {
+
+                val prof = myCreatedPosts.find {post -> post.uuid ==uuidPost }?.profilesWantingToJoin?.find { profile -> profile.uuid == uuidPerson }
+                myCreatedPosts.find {post -> post.uuid ==uuidPost }?.profilesWantingToJoin?.remove(prof)
+            }
+
+        )
+    }
+
+    fun acceptPerson(uuidPerson: String,uuidPost: String) {
+        val ps = PostStatus(Status.ACCEPTED,uuidPost)
+        publishPostUpdate(uuidPerson,ps)
+        myCreatedPosts.find { p -> p.uuid ==uuidPost }?.addPerson()
+
+    }
+    fun declinePerson(uuidPerson: String,uuidPost: String) {
+        val ps = PostStatus(Status.DECLINED,uuidPost)
+        publishPostUpdate(uuidPerson,ps)
+    }
+
+    var acceptedPosts = mutableStateListOf<Post>()
+    var declinedPosts = mutableStateListOf<Post>()
+
+    fun getAcceptedPost(){
+        var acceptedPS = me.postStatus.filter { p -> p.status == Status.ACCEPTED }
+
+        acceptedPS.forEach { ap ->
+            mySubscribedPosts.forEach { p ->
+                if (p.uuid == ap.postUUID)
+                acceptedPosts.add(p)
+
+            }
+        }
+
+    }
+
+    fun getDeclinedPosts(){
+        var declinedPS = me.postStatus.filter { p -> p.status == Status.DECLINED }
+
+        declinedPS.forEach { ap ->
+            mySubscribedPosts.forEach { p ->
+                if (p.uuid == ap.postUUID)
+                    declinedPosts.add(p)
+
+            }
+        }
     }
 
 

@@ -85,7 +85,7 @@ private fun ProfilesList(post: Post,model: FoodBuddyModel){
 
     Column() {
         post.profilesWantingToJoin.forEach {
-            Profiles(it)
+            Profiles(it,model,post)
         }
     }
 
@@ -93,14 +93,14 @@ private fun ProfilesList(post: Post,model: FoodBuddyModel){
 
 
 @Composable
-private fun Profiles(profile: Profile){
+private fun Profiles(profile: Profile,model: FoodBuddyModel,post: Post){
     Row (modifier = Modifier.padding(bottom = 10.dp)){
         Image(bitmap = profile.profileImage, contentDescription = "", modifier = Modifier.size(50.dp).padding(end = 5.dp))
         Text(profile.name)
-        Button(onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(backgroundColor =Color.Green)) {
+        Button(onClick = { model.acceptPerson(profile.uuid,post.uuid) }, colors = ButtonDefaults.buttonColors(backgroundColor =Color.Green)) {
             Text(text = "Accept")
         }
-        Button(onClick = { /*TODO*/ },colors = ButtonDefaults.buttonColors(backgroundColor =Color.Red)) {
+        Button(onClick = { model.declinePerson(profile.uuid,post.uuid) },colors = ButtonDefaults.buttonColors(backgroundColor =Color.Red)) {
             Text(text = "Decline")
         }
     }

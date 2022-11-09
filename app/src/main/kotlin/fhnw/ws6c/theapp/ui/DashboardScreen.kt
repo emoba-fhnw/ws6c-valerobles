@@ -137,14 +137,17 @@ private fun AllMessages(posts : List<Post>,model: FoodBuddyModel){
 }
 
 @Composable
-fun PostCard(post: Post, model: FoodBuddyModel) {
+fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Column(
             Modifier
                 .padding(10.dp)
                 .clickable {
-                    model.currentPost = post
-                    model.showBottomSheetInfo = true
+                    if (clickable) {
+                        model.currentPost = post
+                        model.showBottomSheetInfo = true
+                    }
+
                 })
         {
             Image(

@@ -1,10 +1,14 @@
 import android.graphics.Bitmap
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.asImageBitmap
 import fhnw.emoba.thatsapp.data.Image
 import fhnw.emoba.thatsapp.data.gofileio.GoFileIOConnector
+import fhnw.ws6c.theapp.data.Post
+import fhnw.ws6c.theapp.data.PostStatus
+import fhnw.ws6c.theapp.data.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -27,6 +31,7 @@ data class Profile(val uuid: String,
     private val modelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val goFile: GoFileIOConnector = GoFileIOConnector()
 
+    var postStatus = mutableStateListOf<PostStatus>()
 
     constructor(jsonObject: JSONObject) : this(
         uuid = jsonObject.getString("uuid"),

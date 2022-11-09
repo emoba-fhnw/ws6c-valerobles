@@ -22,7 +22,7 @@ data class Post(
     val address: String,
     val description: String,
     val image: Image,
-    val peopleNumber: Int,
+    var peopleNumber: Int,
     val maxPeopleNumber: Int,
     val date: String,
     val time: String) {
@@ -105,6 +105,11 @@ data class Post(
              "time": "$time"
             }
             """.trimIndent()
+    }
+
+    fun addPerson(){
+        if(peopleNumber < maxPeopleNumber)
+            peopleNumber++
     }
 }
 
