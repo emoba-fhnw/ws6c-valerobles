@@ -111,9 +111,8 @@ class FoodBuddyModel( val context: ComponentActivity,
                 val p  = Post(it)
                 println("$mainTopic$postsTopic+")
                 println("incoming post: "+ p)
-
                 allPosts.add(p)
-                if(mySubscribedPostsUUID.contains(p.uuid))
+                if(mySubscribedPostsUUID.contains(p.uuid)) // for edit event edit feature
                     mySubscribedPosts.add(p)
 
             },
@@ -143,13 +142,7 @@ class FoodBuddyModel( val context: ComponentActivity,
 
 
 
-    fun takePhoto() {
 
-        cameraAppConnector.getBitmap(onSuccess  = { uploadImage(it) },
-            onCanceled = { notificationMessage = "Kein neues Bild" })
-
-
-    }
 
     fun uploadImage(imageTaken: Bitmap) {
         isLoading = true
