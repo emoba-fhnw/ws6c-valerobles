@@ -169,16 +169,16 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
             {
                 Text(
                     text = post.restaurantName,
-                    fontSize = 20.sp,
+                    fontSize = 18.sp,
                     color = Color.Gray,
                     modifier = Modifier
-                        .padding(start = 15.dp)
+                        .padding(start = 10.dp)
                         .width(150.dp)
                     ,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Spacer(Modifier.weight(0.5f))
+                Spacer(Modifier.weight(0.4f))
                 Icon(
                     Icons.Default.LocationOn,
                     contentDescription = "",

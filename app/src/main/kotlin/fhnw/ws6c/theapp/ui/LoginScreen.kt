@@ -104,9 +104,8 @@ fun LoginBody(model: FoodBuddyModel) {
             }
             Spacer(modifier = Modifier.height(50.dp))
             //  GENDER DROPDOWN
-            Row(modifier = Modifier.align(Alignment.Start).padding(start = 40.dp)) {
+            Row(modifier = Modifier.align(Alignment.Start).padding(start = 50.dp)) {
                 DropDownMenuGender(model)
-                Spacer(Modifier.weight(0.5f))
             }
 
 
