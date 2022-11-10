@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import fhnw.ws6c.theapp.model.FoodBuddyModel
+import fhnw.ws6c.theapp.ui.theme.typography
 
 
 @Composable
@@ -59,7 +60,7 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                             if (acceptedPosts.contains(currentPost)) {
                                 Text(
                                     text = "You're in!",
-                                    fontSize = 30.sp,
+                                    style = typography.h1,
                                     color = Color(55, 107, 0)
                                 )
                                 Spacer(modifier = Modifier.height(40.dp))
@@ -67,13 +68,13 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                             Row() {
                                 Text(
                                     text = restaurantName,
-                                    fontSize = 30.sp,
+                                    style = typography.h1,
                                     color = Color(55, 107, 0)
                                 )
                                 Spacer(modifier = Modifier.width(20.dp))
                                 Text(
                                     text = "$date @ $time",
-                                    fontSize = 20.sp,
+                                    style = typography.h2,
                                     color = Color(63, 74, 52)
                                 )
                             }
@@ -81,7 +82,7 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                             Row() {
                                 Text(
                                     text = address,
-                                    fontSize = 20.sp,
+                                    style = typography.h2,
                                     color = Color(63, 74, 52)
                                 )
                             }
@@ -97,20 +98,26 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                 Column() {
                                     Text(
                                         text = "Organized by",
-                                        fontSize = 16.sp,
+                                        style = typography.h3,
                                         color = Color(63, 74, 52)
                                     )
                                     Text(
                                         text = restaurantName,
-                                        fontSize = 25.sp,
+                                        style = typography.h2,
                                         color = Color(55, 107, 0)
                                     )
                                 }
                             }
                             Spacer(modifier = Modifier.height(20.dp))
-                            Text(description)
+                            Text(
+                                text = description,
+                                style = typography.h4,
+                            )
                             Spacer(modifier = Modifier.height(20.dp))
-                            Text("$peopleNumber places open")
+                            Text(
+                                text = "$peopleNumber places open",
+                                style = typography.h3
+                            )
                             Spacer(modifier = Modifier.height(20.dp))
 
                             if (organizer.uuid != me.uuid) {
@@ -133,13 +140,19 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                     ),
                                     shape = RoundedCornerShape(30)
                                 ) {
-                                    Text(text = "I want to join")
+                                    Text(
+                                        text = "I want to join",
+                                        style = typography.h3,
+                                    )
                                 }
 
                             }
 
                             if (mySubscribedPosts.contains(currentPost))
-                                Text(text = "You have already subscribed to this event")
+                                Text(
+                                    text = "You have already subscribed to this event",
+                                    style = typography.h3
+                                )
                         }
 
                     }
