@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 import fhnw.ws6c.theapp.model.Screen
+import fhnw.ws6c.theapp.ui.theme.typography
 
 
 var expanded by mutableStateOf(false)
@@ -51,10 +52,16 @@ fun LoginBody(model: FoodBuddyModel) {
                 .fillMaxSize(),
             Arrangement.Center,
             Alignment.CenterHorizontally) {
-            Text(text = notification, style = TextStyle(Color.Red))
-            Text(text = "Create your Profile",
+            Text(
+                text = notification,
+                style = typography.h4,
+                color = Color.Red
+            )
+            Text(
+                text = "Create your Profile",
                 textAlign = TextAlign.Center,
-                style = TextStyle(fontSize = 30.sp, color = Color(55, 107, 0))
+                style = typography.h1,
+                color = Color(55, 107, 0)
             )
             
             //  IMAGE
@@ -93,7 +100,10 @@ fun LoginBody(model: FoodBuddyModel) {
                 ),
                 shape = RoundedCornerShape(30)
                 ) {
-                Text(text = "Upload")
+                Text(
+                    text = "Upload",
+                    style = typography.h4
+                )
             }
             Spacer(modifier = Modifier.height(50.dp))
             //  NAME     // AGE
@@ -126,7 +136,10 @@ fun LoginBody(model: FoodBuddyModel) {
                 ),
                 shape = RoundedCornerShape(30)
             ) {
-                Text(text = "Join other Food Buddies")
+                Text(
+                    text = "Join other Food Buddies",
+                    style = typography.h4
+                )
             }
             Spacer(modifier = Modifier.height(50.dp))
 
@@ -143,12 +156,13 @@ fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, placeholder: 
         Column() {
             Text(
                 text = "$label*",
-                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
+                style = typography.h2,
+                color = Color(55, 107, 0)
 
             )
             Spacer(modifier = Modifier.height(10.dp))
             TextField(
-                textStyle = TextStyle(fontSize = 15.sp),
+                textStyle = typography.h3,
                 modifier = Modifier
                     .width(140.dp)
                     .height(50.dp)
@@ -165,7 +179,7 @@ fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, placeholder: 
                 //label = { Text(text = label) },
                 placeholder = { Text(
                     text = placeholder,
-                    style = TextStyle(fontSize = 15.sp)
+                    style = typography.h3
                 ) },
             )
         }
@@ -178,12 +192,13 @@ fun LabelAndPlaceHolderAge(model: FoodBuddyModel, label : String, placeholder: S
         Column() {
             Text(
                 text = "$label*",
-                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
+                style = typography.h2,
+                color = Color(55, 107, 0)
 
             )
             Spacer(modifier = Modifier.height(10.dp))
             TextField(
-                textStyle = TextStyle(fontSize = 15.sp),
+                textStyle = typography.h3,
                 modifier = Modifier
                     .width(140.dp)
                     .height(50.dp)
@@ -200,7 +215,7 @@ fun LabelAndPlaceHolderAge(model: FoodBuddyModel, label : String, placeholder: S
                 //label = { Text(text = label) },
                 placeholder = { Text(
                     text = placeholder,
-                    style = TextStyle(fontSize = 15.sp)
+                    style = typography.h3
                 ) },
             )
         }
@@ -216,7 +231,8 @@ fun DropDownMenuGender(model: FoodBuddyModel){
             Column() {
                 Text(
                     text = "Gender*",
-                    style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
+                    style = typography.h2,
+                    color = Color(55, 107, 0)
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 TextButton(
@@ -228,7 +244,8 @@ fun DropDownMenuGender(model: FoodBuddyModel){
                     Row {
                         Text(
                             text = "$selectedItem",
-                            style = TextStyle(fontSize = 15.sp, color = Color(55, 107, 0))
+                            style = typography.h3,
+                            color = Color(55, 107, 0)
                         )
                         Icon(
                             Icons.Default.ArrowDropDown,

@@ -50,7 +50,7 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     var notificationMessage by mutableStateOf("")
     var restaurantName      by mutableStateOf("Lorem ipsum")
-    var address                by mutableStateOf("Address")
+    var address             by mutableStateOf("Address")
     var description         by mutableStateOf("Hello")
     var postImage           by mutableStateOf("gcDyCD")
     var postImageBitmap     by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
@@ -65,7 +65,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     private val modelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
 
-    var currentScreen by mutableStateOf(Screen.DASHBOARD)
+    var currentScreen by mutableStateOf(Screen.LOGINSCREEN)
     var currentTab by mutableStateOf(Tab.MYEVENTS)
     var currentPost: Post? by mutableStateOf(null)
 
