@@ -43,6 +43,7 @@ import androidx.compose.ui.zIndex
 import fhnw.ws6c.theapp.data.Post
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 import fhnw.ws6c.theapp.model.Screen
+import fhnw.ws6c.theapp.ui.theme.typography
 import java.util.*
 
 
@@ -69,7 +70,7 @@ private fun Bar(model: FoodBuddyModel) {
         TopAppBar{
             Text(
                 text = title,
-                fontSize = 30.sp,
+                style = typography.h1,
             )
             Spacer(Modifier.weight(0.5f))
             IconButton(
@@ -112,8 +113,9 @@ private fun Body(model: FoodBuddyModel){
 fun AllMessagesPanel(posts: List<Post>, model: FoodBuddyModel){
     Box(Modifier.border(BorderStroke(0.dp, Color.Transparent))){
         if(posts.isEmpty()){
-            Text(text     = "No posts yet",
-                style    = MaterialTheme.typography.h4,
+            Text(
+                style = typography.h3,
+                text     = "No posts yet",
                 modifier = Modifier
                     .align(Alignment.Center)
                     .fillMaxSize()
@@ -168,8 +170,8 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                     .height(50.dp))
             {
                 Text(
+                    style = typography.h2,
                     text = post.restaurantName,
-                    fontSize = 18.sp,
                     color = Color.Gray,
                     modifier = Modifier
                         .padding(start = 10.dp)
@@ -188,8 +190,8 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                         .padding(end = 2.dp)
                 )
                 Text(
+                    style = typography.h4,
                     text = post.address,
-                    fontSize = 10.sp,
                     color = Color(55,107,0),
                     modifier = Modifier
                         .padding(end = 10.dp)
@@ -207,20 +209,20 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                         .padding(end = 2.dp)
                 )
                 Text(
+                    style = typography.h4,
                     text = post.date,
-                    fontSize = 10.sp,
                     color = Color(55,107,0),
                     modifier = Modifier.padding(end = 2.dp)
                 )
                 Text(
+                    style = typography.h4,
                     text = "|",
-                    fontSize = 10.sp,
                     color = Color(55,107,0),
                     modifier = Modifier.padding(end = 2.dp)
                 )
                 Text(
+                    style = typography.h4,
                     text = post.time,
-                    fontSize = 10.sp,
                     color = Color(55,107,0),
                     modifier = Modifier.padding(end = 10.dp)
                 )
@@ -233,20 +235,20 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                         .padding(end = 2.dp)
                 )
                 Text(
+                    style = typography.h4,
                     text = post.peopleNumber.toString(),
-                    fontSize = 10.sp,
                     color = Color(55,107,0),
                     modifier = Modifier.padding(end = 0.dp)
                 )
                 Text(
+                    style = typography.h4,
                     text = "/",
-                    fontSize = 10.sp,
                     color = Color(55,107,0),
                     modifier = Modifier.padding(end = 0.dp)
                 )
                 Text(
+                    style = typography.h4,
                     text = post.maxPeopleNumber.toString(),
-                    fontSize = 10.sp,
                     color = Color(55,107,0),
                     modifier = Modifier.padding(end = 15.dp)
                 )
@@ -275,7 +277,9 @@ private fun PublishButton(model: FoodBuddyModel) {
         ),
         shape = RoundedCornerShape(30)
     ) {
-        Text(text = "Create")
+        Text(
+            style = typography.h2,
+            text = "Create")
     }
 }
 
@@ -285,14 +289,15 @@ fun RestaurantInput(model: FoodBuddyModel) {
     with(model) {
         Column() {
             Text(
+                style = typography.h2,
                 text = "Restaurant Name",
-                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
+                color = Color(55, 107, 0)
 
             )
             Spacer(modifier = Modifier.height(10.dp))
             val keyboard = LocalSoftwareKeyboardController.current
             TextField(
-                textStyle = TextStyle(fontSize = 15.sp),
+                textStyle = typography.h3,
                 modifier = Modifier
                     .width(340.dp)
                     .height(50.dp)
@@ -306,10 +311,10 @@ fun RestaurantInput(model: FoodBuddyModel) {
                     backgroundColor = Color(237, 237, 237),
                     focusedIndicatorColor =  Color.Transparent, //hide the indicator
                     unfocusedIndicatorColor = Color.Transparent),
-                //label = { Text(text = label) },
-                placeholder = { Text(
-                    text = "Your Event Location",
-                    style = TextStyle(fontSize = 15.sp)
+                placeholder = {
+                    Text(
+                        style = typography.h3,
+                        text = "Your Event Location",
                 ) },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
@@ -324,14 +329,15 @@ fun AddressInput(model: FoodBuddyModel) {
     with(model) {
         Column() {
             Text(
+                style = typography.h2,
                 text = "Address",
-                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
+                color = Color(55, 107, 0)
 
             )
             Spacer(modifier = Modifier.height(10.dp))
             val keyboard = LocalSoftwareKeyboardController.current
             TextField(
-                textStyle = TextStyle(fontSize = 15.sp),
+                textStyle = typography.h3,
                 modifier = Modifier
                     .width(340.dp)
                     .height(50.dp)
@@ -345,10 +351,10 @@ fun AddressInput(model: FoodBuddyModel) {
                     backgroundColor = Color(237, 237, 237),
                     focusedIndicatorColor =  Color.Transparent, //hide the indicator
                     unfocusedIndicatorColor = Color.Transparent),
-                //label = { Text(text = label) },
-                placeholder = { Text(
-                    text = "Address",
-                    style = TextStyle(fontSize = 15.sp)
+                placeholder = {
+                    Text(
+                        style = typography.h3,
+                        text = "Address",
                 ) },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
@@ -371,7 +377,10 @@ fun DateInput(model: FoodBuddyModel) {
                     .padding(end = 2.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = date)
+            Text(
+                style = typography.h4,
+                text = date
+            )
 
             val context = LocalContext.current
             val year: Int
@@ -393,7 +402,10 @@ fun DateInput(model: FoodBuddyModel) {
             )
 
             OutlinedButton(onClick = { datePickerDialog.show() }) {
-                Text(text = "Pick Date")
+                Text(
+                    style = typography.h4,
+                    text = "Pick Date"
+                )
             }
         }
     }
@@ -457,7 +469,10 @@ fun TimeInput(model: FoodBuddyModel) {
                     .padding(end = 2.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
-            Text(text = time)
+            Text(
+                style = typography.h4,
+                text = time
+            )
 
             val mContext = LocalContext.current
 
@@ -475,7 +490,10 @@ fun TimeInput(model: FoodBuddyModel) {
                 }, mHour, mMinute, false
             )
             OutlinedButton(onClick = { mTimePickerDialog.show() }) {
-                Text(text = "Pick Time")
+                Text(
+                    style = typography.h4,
+                    text = "Pick Time"
+                )
             }
 
 
@@ -499,7 +517,7 @@ fun MaxPeopleInput(model: FoodBuddyModel) {
             Spacer(modifier = Modifier.height(10.dp))
             val keyboard = LocalSoftwareKeyboardController.current
             TextField(
-                textStyle = TextStyle(fontSize = 15.sp),
+                textStyle = typography.h3,
                 modifier = Modifier
                     .width(60.dp)
                     .height(50.dp)
@@ -513,11 +531,11 @@ fun MaxPeopleInput(model: FoodBuddyModel) {
                     backgroundColor = Color(237, 237, 237),
                     focusedIndicatorColor =  Color.Transparent, //hide the indicator
                     unfocusedIndicatorColor = Color.Transparent),
-                //label = { Text(text = label) },
-                placeholder = { Text(
-                    text = "0",
-                    style = TextStyle(fontSize = 15.sp)
-                ) },
+                placeholder = {
+                    Text(
+                        style = typography.h3,
+                        text = "0"
+                    ) },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
             )
@@ -531,8 +549,9 @@ fun DescriptionInput(model: FoodBuddyModel) {
     with(model) {
         Column() {
             Text(
+                style = typography.h2,
                 text = "Description",
-                style = TextStyle(fontSize = 18.sp, color = Color(55, 107, 0))
+                color = Color(55, 107, 0)
 
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -540,7 +559,7 @@ fun DescriptionInput(model: FoodBuddyModel) {
             TextField(
                 maxLines = 5,
                 singleLine = false,
-                textStyle = TextStyle(fontSize = 15.sp),
+                textStyle = typography.h3,
                 modifier = Modifier
                     .width(340.dp)
                     .height(100.dp)
@@ -554,10 +573,9 @@ fun DescriptionInput(model: FoodBuddyModel) {
                     backgroundColor = Color(237, 237, 237),
                     focusedIndicatorColor =  Color.Transparent, //hide the indicator
                     unfocusedIndicatorColor = Color.Transparent),
-                //label = { Text(text = label) },
                 placeholder = { Text(
-                    text = "Describe your Event",
-                    style = TextStyle(fontSize = 15.sp)
+                    style = typography.h3,
+                    text = "Describe your Event"
                 ) },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
@@ -607,13 +625,19 @@ fun EventImageUpload(model: FoodBuddyModel){
         }
 
     Column() {
-        Text("Event picture")
+        Text(
+            style = typography.h4,
+            text = "Event picture"
+        )
         Image(bitmap = model.postImageBitmap, contentDescription = "", Modifier.size(200.dp))
         Button(onClick = { launcher.launch("image/*") },modifier = Modifier
             .wrapContentSize()
             .padding(10.dp)
         ) {
-            Text(text = "Pick Image From Gallery")
+            Text(
+                style = typography.h4,
+                text = "Pick Image From Gallery"
+            )
         }
     }
 
@@ -655,6 +679,7 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
                 Alignment.CenterHorizontally)
             {
                 Text(
+                    style = typography.h1,
                     text = "Create Event",
                     fontSize = 30.sp
                 )
