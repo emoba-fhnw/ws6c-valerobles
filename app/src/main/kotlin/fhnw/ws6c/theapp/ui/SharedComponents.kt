@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
@@ -43,7 +45,7 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                     Column(
                         Modifier
                             .clip(RoundedCornerShape(25.dp, 25.dp))
-                            .background(Color.White)
+                            .background(Color.Transparent)
                             .verticalScroll(rememberScrollState())
                     ) {
                         Image(
@@ -56,38 +58,47 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                             contentScale = ContentScale.Crop
                         )
                         Column(Modifier.padding(horizontal = 30.dp)) {
-                            Spacer(modifier = Modifier.height(20.dp))
+                            Spacer(modifier = Modifier.height(30.dp))
                             if (acceptedPosts.contains(currentPost)) {
                                 Text(
                                     text = "You're in!",
                                     style = typography.h1,
-                                    color = Color(55, 107, 0)
+                                    color = colors.primary
                                 )
                                 Spacer(modifier = Modifier.height(40.dp))
                             }
-                            Row() {
+                            Row(
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically) {
                                 Text(
                                     text = restaurantName,
                                     style = typography.h1,
-                                    color = Color(55, 107, 0)
+                                    color = colors.primary
                                 )
-                                Spacer(modifier = Modifier.width(20.dp))
-                                Text(
-                                    text = "$date @ $time",
-                                    style = typography.h2,
-                                    color = Color(63, 74, 52)
-                                )
+                                Spacer(modifier = Modifier.weight(0.5f))
+                                Column() {
+                                    Text(
+                                        text = date,
+                                        style = typography.h2,
+                                        color = colors.onSurface
+                                    )
+                                    Text(
+                                        text = "@ $time",
+                                        style = typography.h2,
+                                        color = colors.onSurface
+                                    )
+                                }
                             }
-                            Spacer(modifier = Modifier.height(20.dp))
+                            Spacer(modifier = Modifier.height(30.dp))
                             Row() {
                                 Text(
                                     text = address,
                                     style = typography.h2,
-                                    color = Color(63, 74, 52)
+                                    color = colors.onSurface
                                 )
                             }
-                            Spacer(modifier = Modifier.height(20.dp))
-                            Row() {
+                            Spacer(modifier = Modifier.height(30.dp))
+                            Row(horizontalArrangement = Arrangement.Center) {
                                 Image(
                                     bitmap = organizer.profileImage,
                                     contentDescription = "",
@@ -95,16 +106,17 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                         .size(70.dp)
                                         .clip(RoundedCornerShape(25.dp))
                                 )
+                                Spacer(modifier = Modifier.width(20.dp))
                                 Column() {
                                     Text(
                                         text = "Organized by",
                                         style = typography.h3,
-                                        color = Color(63, 74, 52)
+                                        color = colors.onSurface
                                     )
                                     Text(
-                                        text = restaurantName,
+                                        text = name,
                                         style = typography.h2,
-                                        color = Color(55, 107, 0)
+                                        color = colors.primary
                                     )
                                 }
                             }
@@ -112,11 +124,13 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                             Text(
                                 text = description,
                                 style = typography.h4,
+                                color = colors.onSurface
                             )
                             Spacer(modifier = Modifier.height(20.dp))
                             Text(
-                                text = "$peopleNumber places open",
-                                style = typography.h3
+                                text = (maxPeopleNumber.minus(peopleNumber)).toString() +" places open",
+                                style = typography.h3,
+                                color = colors.primary
                             )
                             Spacer(modifier = Modifier.height(20.dp))
 
@@ -129,7 +143,7 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                         publishMyProfileToPost(currentPost!!.uuid)
                                     },
                                     colors = ButtonDefaults.buttonColors(
-                                        backgroundColor = Color(55, 107, 0),
+                                        backgroundColor = colors.primary,
                                         contentColor = Color.White
                                     ),
                                     contentPadding = PaddingValues(
@@ -151,7 +165,8 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                             if (mySubscribedPosts.contains(currentPost))
                                 Text(
                                     text = "You have already subscribed to this event",
-                                    style = typography.h3
+                                    style = typography.h3,
+                                    color = colors.primary
                                 )
                         }
 

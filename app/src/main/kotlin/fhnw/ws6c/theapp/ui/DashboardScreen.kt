@@ -208,14 +208,14 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .clip(RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp))
-                    .background(color = Color(237, 237, 237))
+                    .background(color = colors.surface)
                     .padding(start = 10.dp)
                     .height(50.dp))
             {
                 Text(
                     style = typography.h2,
                     text = post.restaurantName,
-                    color = Color.Gray,
+                    color = colors.onSurface,
                     modifier = Modifier
                         .padding(start = 10.dp)
                         .width(130.dp)
@@ -227,7 +227,7 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                 Icon(
                     Icons.Default.LocationOn,
                     contentDescription = "",
-                    tint = Color(55, 107, 0),
+                    tint = colors.secondary,
                     modifier = Modifier
                         .size(10.dp)
                         .padding(end = 2.dp)
@@ -235,7 +235,7 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                 Text(
                     style = typography.h4,
                     text = post.address,
-                    color = Color(55,107,0),
+                    color = colors.secondary,
                     modifier = Modifier
                         .padding(end = 10.dp)
                         .width(70.dp)
@@ -247,7 +247,7 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                     Text(
                         style = typography.h4,
                         text = post.date,
-                        color = Color(55, 107, 0),
+                        color = colors.secondary,
                         modifier = Modifier.padding(end = 2.dp)
                     )
                     Row(horizontalArrangement = Arrangement.Center,
@@ -255,7 +255,7 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                         Icon(
                             Icons.Default.Schedule,
                             contentDescription = "",
-                            tint = Color(55, 107, 0),
+                            tint = colors.secondary,
                             modifier = Modifier
                                 .size(10.dp)
                                 .padding(end = 2.dp)
@@ -263,7 +263,7 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                         Text(
                             style = typography.h4,
                             text = post.time,
-                            color = Color(55, 107, 0),
+                            color = colors.secondary,
                             modifier = Modifier.padding(end = 10.dp)
                         )
                     }
@@ -272,7 +272,7 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                 Icon(
                     Icons.Default.Groups,
                     contentDescription = "",
-                    tint = Color(55, 107, 0),
+                    tint = colors.secondary,
                     modifier = Modifier
                         .size(10.dp)
                         .padding(end = 2.dp)
@@ -280,19 +280,19 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                 Text(
                     style = typography.h4,
                     text = post.peopleNumber.toString(),
-                    color = Color(55,107,0),
+                    color = colors.secondary,
                     modifier = Modifier.padding(end = 0.dp)
                 )
                 Text(
                     style = typography.h4,
                     text = "/",
-                    color = Color(55,107,0),
+                    color = colors.secondary,
                     modifier = Modifier.padding(end = 0.dp)
                 )
                 Text(
                     style = typography.h4,
                     text = post.maxPeopleNumber.toString(),
-                    color = Color(55,107,0),
+                    color = colors.secondary,
                     modifier = Modifier.padding(end = 15.dp)
                 )
             }
