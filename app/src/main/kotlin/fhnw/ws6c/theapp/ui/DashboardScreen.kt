@@ -79,7 +79,7 @@ private fun Bar(model: FoodBuddyModel) {
         TopAppBar(
             backgroundColor = colors.background,
             modifier = Modifier
-                .shadow(elevation = 15.dp, spotColor = colors.onSurface)
+                .shadow(elevation = 20.dp, spotColor = colors.onSurface)
                 .height(70.dp)
                 .clip(RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp)),
         ){
@@ -223,7 +223,7 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Spacer(Modifier.weight(0.3f))
+                Spacer(Modifier.weight(0.1f))
                 Icon(
                     Icons.Default.LocationOn,
                     contentDescription = "",
@@ -238,7 +238,7 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                     color = Color(55,107,0),
                     modifier = Modifier
                         .padding(end = 10.dp)
-                        .width(50.dp)
+                        .width(70.dp)
                     ,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -268,7 +268,7 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                         )
                     }
                 }
-                Spacer(Modifier.width(3.dp))
+                Spacer(Modifier.width(10.dp))
                 Icon(
                     Icons.Default.Groups,
                     contentDescription = "",
