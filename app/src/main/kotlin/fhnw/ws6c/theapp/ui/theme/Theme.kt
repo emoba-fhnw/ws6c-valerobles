@@ -8,33 +8,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val AppDarkColors = darkColors(
-//    primary = gray500,
-//    primaryVariant = gray600,
-//    secondary = blue400,
+    //Background colors
+    primary = primaryDark,
+    secondary = secondaryDark,
+    background = backContrastDark,
+    onSecondary = contrast1Dark,
+    onBackground = contrast2Dark
 
 )
 
 private val AppLightColors = lightColors(
     //Background colors
-    primary = lightBlue400,
-    primaryVariant = lightBlue500,
-    secondary = amber400,
-
-    secondaryVariant = Color(0xFF03DAC6),
-    background = Color(0xFFF1F5FE),
-    surface = Color(0xFFFFFFFA), //Color(0xFFF8FCFD),
-    error = Color(0xFFB00020),
-
-    //Typography and icon colors
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    onError = Color.White
+    primary = primaryLight,
+    secondary = secondaryLight,
+    background = backContrastLight,
+    onSecondary = contrast1Light,
+    onBackground = contrast2Light
 )
 
 @Composable
-fun WeatherAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+fun WorkshopSIxAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
     val colors = if (darkTheme) {
         AppDarkColors
     } else {
@@ -44,7 +37,6 @@ fun WeatherAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
     MaterialTheme(
         colors = colors,
         typography = typography,
-        shapes = shapes,
         content = content
     )
 }

@@ -21,18 +21,18 @@ val typography = Typography(
     defaultFontFamily = Abel,
     h1 = TextStyle(
         letterSpacing = 1.15.sp,
-        fontSize = 30.sp
+        fontSize = 32.sp
     ),
     h2 = TextStyle(
         letterSpacing = 1.15.sp,
-        fontSize = 18.sp
+        fontSize = 20.sp
     ),
     h3 = TextStyle(
         letterSpacing = 1.15.sp,
-        fontSize = 15.sp
+        fontSize = 18.sp
     ),
     h4 = TextStyle(
         letterSpacing = 1.15.sp,
-        fontSize = 10.sp
+        fontSize = 12.sp
     )
 )
