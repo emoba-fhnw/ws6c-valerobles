@@ -180,7 +180,10 @@ private fun AllMessages(posts : List<Post>,model: FoodBuddyModel){
 
 @Composable
 fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+        //modifier = Modifier.shadow(1.dp, shape = RoundedCornerShape(30))
+    ) {
         Column(
             Modifier
                 .padding(10.dp)
@@ -215,12 +218,12 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                     color = Color.Gray,
                     modifier = Modifier
                         .padding(start = 10.dp)
-                        .width(150.dp)
+                        .width(130.dp)
                     ,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Spacer(Modifier.weight(0.4f))
+                Spacer(Modifier.weight(0.3f))
                 Icon(
                     Icons.Default.LocationOn,
                     contentDescription = "",
@@ -240,32 +243,32 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Icon(
-                    Icons.Default.Schedule,
-                    contentDescription = "",
-                    tint = Color(55, 107, 0),
-                    modifier = Modifier
-                        .size(10.dp)
-                        .padding(end = 2.dp)
-                )
-                Text(
-                    style = typography.h4,
-                    text = post.date,
-                    color = Color(55,107,0),
-                    modifier = Modifier.padding(end = 2.dp)
-                )
-                Text(
-                    style = typography.h4,
-                    text = "|",
-                    color = Color(55,107,0),
-                    modifier = Modifier.padding(end = 2.dp)
-                )
-                Text(
-                    style = typography.h4,
-                    text = post.time,
-                    color = Color(55,107,0),
-                    modifier = Modifier.padding(end = 10.dp)
-                )
+                Column() {
+                    Text(
+                        style = typography.h4,
+                        text = post.date,
+                        color = Color(55, 107, 0),
+                        modifier = Modifier.padding(end = 2.dp)
+                    )
+                    Row(horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            Icons.Default.Schedule,
+                            contentDescription = "",
+                            tint = Color(55, 107, 0),
+                            modifier = Modifier
+                                .size(10.dp)
+                                .padding(end = 2.dp)
+                        )
+                        Text(
+                            style = typography.h4,
+                            text = post.time,
+                            color = Color(55, 107, 0),
+                            modifier = Modifier.padding(end = 10.dp)
+                        )
+                    }
+                }
+                Spacer(Modifier.width(3.dp))
                 Icon(
                     Icons.Default.Groups,
                     contentDescription = "",
@@ -315,8 +318,8 @@ private fun PublishButton(model: FoodBuddyModel) {
             end = 30.dp,
             bottom = 4.dp,
         ),
-        shape = RoundedCornerShape(30),
-        modifier = Modifier.shadow(15.dp)
+        //modifier = Modifier.shadow(elevation = 15.dp, shape = RoundedCornerShape(30)),
+        shape = RoundedCornerShape(30)
     ) {
         Text(
             style = typography.h2,
@@ -391,7 +394,8 @@ fun AddressInput(model: FoodBuddyModel) {
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = colors.surface,
                     focusedIndicatorColor =  Color.Transparent, //hide the indicator
-                    unfocusedIndicatorColor = Color.Transparent),
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
                 placeholder = {
                     Text(
                         style = typography.h3,
@@ -442,12 +446,16 @@ fun DateInput(model: FoodBuddyModel) {
                 }, year, month, day
             )
 
-            OutlinedButton(onClick = { datePickerDialog.show() }) {
+            OutlinedButton(
+                onClick = { datePickerDialog.show() },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = colors.primary,
+                    contentColor = Color.White
+                ),
+            ) {
                 Text(
                     style = typography.h4,
-                    text = "Pick Date",
-                    color = Color.White,
-                    modifier = Modifier.background(colors.primary)
+                    text = "Pick Date"
                 )
             }
         }
@@ -532,12 +540,16 @@ fun TimeInput(model: FoodBuddyModel) {
                     time = "$mHour:$mMinute"
                 }, mHour, mMinute, false
             )
-            OutlinedButton(onClick = { mTimePickerDialog.show() }) {
+            OutlinedButton(
+                onClick = { mTimePickerDialog.show() },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = colors.primary,
+                    contentColor = Color.White
+                ),
+            ) {
                 Text(
                     style = typography.h4,
-                    text = "Pick Time",
-                    color = Color.White,
-                    modifier = Modifier.background(colors.primary)
+                    text = "Pick Time"
                 )
             }
 
@@ -738,15 +750,16 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
                     .background(colors.background)
-                    .clip(RoundedCornerShape(25.dp, 25.dp)),
+                    .clip(RoundedCornerShape(25.dp, 25.dp))
+                    /*.shadow(15.dp, spotColor = colors.onSurface)*/,
                 Arrangement.Center,
                 Alignment.CenterHorizontally)
             {
+                Spacer(modifier = Modifier.height(30.dp))
                 Text(
                     style = typography.h1,
                     text = "Create Event",
-                    color = colors.primary,
-                    modifier = Modifier.padding(top = 30.dp)
+                    color = colors.primary
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 RestaurantInput(model = model)
@@ -766,6 +779,7 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
                 EventImageUpload(model= model)
                 Spacer(modifier = Modifier.height(10.dp))
                 PublishButton(model = model)
+                Spacer(modifier = Modifier.height(30.dp))
 
             }
 
