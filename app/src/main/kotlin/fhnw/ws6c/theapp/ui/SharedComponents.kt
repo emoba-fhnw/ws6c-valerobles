@@ -38,14 +38,14 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                 modifier = Modifier
                     .fillMaxHeight(1f)
                     .fillMaxWidth()
-                    .background(Color.White)
+                    .background(colors.surface)
                     .clip(RoundedCornerShape(25.dp, 25.dp))
             ) {
                 with(currentPost!!) {
                     Column(
                         Modifier
                             .clip(RoundedCornerShape(25.dp, 25.dp))
-                            .background(Color.Transparent)
+                            .background(colors.surface)
                             .verticalScroll(rememberScrollState())
                     ) {
                         Image(
