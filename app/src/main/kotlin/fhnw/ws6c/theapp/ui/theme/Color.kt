@@ -13,3 +13,5 @@ val secondaryDark = Color(0xFFBECBAE)
 val backContrastDark = Color(0xFF505050)
 val contrast1Dark = Color(0xFF57624A)
 val contrast2Dark = Color(0xFFF8FFEA)
+
+val declineButton = Color(0xFF93000A)

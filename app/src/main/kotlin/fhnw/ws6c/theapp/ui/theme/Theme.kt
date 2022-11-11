@@ -15,8 +15,9 @@ private val AppDarkColors = darkColors(
     onSurface = Color.White,
     background = Color.Black,
     primaryVariant = contrast1Dark,
-    secondaryVariant = contrast2Dark
-
+    secondaryVariant = contrast2Dark,
+    error = declineButton,
+    onError = Color.White
 )
 
 private val AppLightColors = lightColors(
@@ -27,7 +28,9 @@ private val AppLightColors = lightColors(
     onSurface = Color.Black,
     background = Color.White,
     primaryVariant = contrast1Light,
-    secondaryVariant = contrast2Light
+    secondaryVariant = contrast2Light,
+    error = declineButton,
+    onError = Color.White
 )
 
 @Composable

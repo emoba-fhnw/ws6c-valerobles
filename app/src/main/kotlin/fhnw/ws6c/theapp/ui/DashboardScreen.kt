@@ -52,9 +52,6 @@ import fhnw.ws6c.theapp.ui.theme.WorkshopSixAppTheme
 import fhnw.ws6c.theapp.ui.theme.typography
 import java.util.*
 
-
-var modeIcon = Icons.Filled.DarkMode;
-
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DashboardScreen(model: FoodBuddyModel) {
@@ -75,19 +72,19 @@ fun DashboardScreen(model: FoodBuddyModel) {
 
 @Composable
 private fun Bar(model: FoodBuddyModel) {
-    with(model){
+    with(model) {
         TopAppBar(
             backgroundColor = colors.background,
             modifier = Modifier
                 .shadow(elevation = 20.dp, spotColor = colors.onSurface)
                 .height(70.dp)
                 .clip(RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp)),
-        ){
+        ) {
             Text(
                 text = title,
                 style = typography.h1,
                 color = colors.onSurface,
-                modifier = Modifier.padding( 10.dp )
+                modifier = Modifier.padding(10.dp)
             )
             Spacer(Modifier.weight(0.5f))
             IconButton(
@@ -98,13 +95,15 @@ private fun Bar(model: FoodBuddyModel) {
                     } else {
                         themeSwitchIcon = Icons.Filled.DarkMode;
                     }
-                          },) {
+                },
+            ) {
                 Icon(
                     themeSwitchIcon,
                     contentDescription = "",
                     tint = colors.primary,
                     modifier = Modifier.size(30.dp)
-                ) }
+                )
+            }
             IconButton(
                 onClick = { model.currentScreen = Screen.TABSCREEN }) {
                 Icon(
@@ -112,7 +111,8 @@ private fun Bar(model: FoodBuddyModel) {
                     contentDescription = "",
                     tint = colors.primary,
                     modifier = Modifier.size(30.dp)
-                ) }
+                )
+            }
         }
     }
 }
@@ -120,66 +120,68 @@ private fun Bar(model: FoodBuddyModel) {
 @Composable
 private fun NotificationHost(state: SnackbarHostState) {
     SnackbarHost(state) { data ->
-        Box(modifier         = Modifier.fillMaxHeight(),
-            contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier.fillMaxHeight(),
+            contentAlignment = Alignment.Center
+        ) {
             Snackbar(snackbarData = data)
         }
     }
 }
 
 @Composable
-private fun Body(model: FoodBuddyModel){
-    with(model){
+private fun Body(model: FoodBuddyModel) {
+    with(model) {
         Column(Modifier.background(colors.background)) {
             AllMessagesPanel(posts = allPosts, model = model)
         }
 
-        if(showBottomSheetInfo){
+        if (showBottomSheetInfo) {
             BottomSheetInfo(model = model)
         }
-        if(showBottomSheetCreatePost){
+        if (showBottomSheetCreatePost) {
             BottomSheetCreate(model = model)
         }
     }
 }
 
 @Composable
-fun AllMessagesPanel(posts: List<Post>, model: FoodBuddyModel){
-    Box(Modifier.border(BorderStroke(0.dp, Color.Transparent))){
-        if(posts.isEmpty()){
+fun AllMessagesPanel(posts: List<Post>, model: FoodBuddyModel) {
+    Box(Modifier.border(BorderStroke(0.dp, Color.Transparent))) {
+        if (posts.isEmpty()) {
 
             Column(modifier = Modifier.fillMaxSize()) {
 
                 Text(
                     style = typography.h3,
-                    text     = "No posts yet",
+                    text = "No posts yet",
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(20.dp)
                 )
-                Image(bitmap = model.loadImageFromFile(R.drawable.boy), contentDescription ="" )
+                Image(bitmap = model.loadImageFromFile(R.drawable.boy), contentDescription = "")
             }
 
         } else {
-            AllMessages(posts,model)
+            AllMessages(posts, model)
         }
     }
 }
 
 @Composable
-private fun AllMessages(posts : List<Post>,model: FoodBuddyModel){
+private fun AllMessages(posts: List<Post>, model: FoodBuddyModel) {
     val scrollState = rememberLazyListState()
-    LazyColumn(state = scrollState){
-        items(posts){ PostCard(it, model) }
+    LazyColumn(state = scrollState) {
+        items(posts) { PostCard(it, model) }
     }
 
-    LaunchedEffect(posts.size){
+    LaunchedEffect(posts.size) {
         scrollState.animateScrollToItem(posts.size)
     }
 }
 
 @Composable
-fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
+fun PostCard(post: Post, model: FoodBuddyModel, clickable: Boolean = true) {
     Row(
         verticalAlignment = Alignment.CenterVertically
         //modifier = Modifier.shadow(1.dp, shape = RoundedCornerShape(30))
@@ -210,7 +212,8 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                     .clip(RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp))
                     .background(color = colors.surface)
                     .padding(start = 10.dp)
-                    .height(50.dp))
+                    .height(50.dp)
+            )
             {
                 Text(
                     style = typography.h2,
@@ -218,8 +221,7 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                     color = colors.onSurface,
                     modifier = Modifier
                         .padding(start = 10.dp)
-                        .width(130.dp)
-                    ,
+                        .width(130.dp),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -238,8 +240,7 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                     color = colors.secondary,
                     modifier = Modifier
                         .padding(end = 10.dp)
-                        .width(70.dp)
-                    ,
+                        .width(70.dp),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -250,8 +251,10 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable : Boolean = true) {
                         color = colors.secondary,
                         modifier = Modifier.padding(end = 2.dp)
                     )
-                    Row(horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Icon(
                             Icons.Default.Schedule,
                             contentDescription = "",
@@ -307,7 +310,7 @@ private fun PublishButton(model: FoodBuddyModel) {
         onClick = {
             model.publishMyPost()
             model.showBottomSheetCreatePost = false
-                  },
+        },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = colors.primary,
             contentColor = Color.White
@@ -323,7 +326,8 @@ private fun PublishButton(model: FoodBuddyModel) {
     ) {
         Text(
             style = typography.h2,
-            text = "Create")
+            text = "Create"
+        )
     }
 }
 
@@ -353,13 +357,15 @@ fun RestaurantInput(model: FoodBuddyModel) {
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = colors.surface,
-                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
-                    unfocusedIndicatorColor = Color.Transparent),
+                    focusedIndicatorColor = Color.Transparent, //hide the indicator
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
                 placeholder = {
                     Text(
                         style = typography.h3,
                         text = "Your Event Location",
-                ) },
+                    )
+                },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
             )
@@ -393,14 +399,15 @@ fun AddressInput(model: FoodBuddyModel) {
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = colors.surface,
-                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
+                    focusedIndicatorColor = Color.Transparent, //hide the indicator
                     unfocusedIndicatorColor = Color.Transparent
                 ),
                 placeholder = {
                     Text(
                         style = typography.h3,
                         text = "Address",
-                ) },
+                    )
+                },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
             )
@@ -463,12 +470,6 @@ fun DateInput(model: FoodBuddyModel) {
 }
 
 
-
-
-
-
-
-
 //            val keyboard = LocalSoftwareKeyboardController.current
 //            TextField(
 //                textStyle = TextStyle(fontSize = 15.sp),
@@ -495,15 +496,6 @@ fun DateInput(model: FoodBuddyModel) {
 //            )
 //        }
 //    }
-
-
-
-
-
-
-
-
-
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -536,7 +528,7 @@ fun TimeInput(model: FoodBuddyModel) {
             // Creating a TimePicker dialod
             val mTimePickerDialog = TimePickerDialog(
                 mContext,
-                {_, mHour : Int, mMinute: Int ->
+                { _, mHour: Int, mMinute: Int ->
                     time = "$mHour:$mMinute"
                 }, mHour, mMinute, false
             )
@@ -586,13 +578,15 @@ fun MaxPeopleInput(model: FoodBuddyModel) {
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = colors.surface,
-                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
-                    unfocusedIndicatorColor = Color.Transparent),
+                    focusedIndicatorColor = Color.Transparent, //hide the indicator
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
                 placeholder = {
                     Text(
                         style = typography.h3,
                         text = "0"
-                    ) },
+                    )
+                },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
             )
@@ -628,12 +622,15 @@ fun DescriptionInput(model: FoodBuddyModel) {
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = colors.surface,
-                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
-                    unfocusedIndicatorColor = Color.Transparent),
-                placeholder = { Text(
-                    style = typography.h3,
-                    text = "Describe your Event"
-                ) },
+                    focusedIndicatorColor = Color.Transparent, //hide the indicator
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                placeholder = {
+                    Text(
+                        style = typography.h3,
+                        text = "Describe your Event"
+                    )
+                },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
             )
@@ -643,11 +640,13 @@ fun DescriptionInput(model: FoodBuddyModel) {
 
 @Composable
 private fun Notification(model: FoodBuddyModel, scaffoldState: ScaffoldState) {
-    with(model){
+    with(model) {
         if (notificationMessage.isNotBlank()) {
-            LaunchedEffect(scaffoldState.snackbarHostState){
-                scaffoldState.snackbarHostState.showSnackbar(message     = notificationMessage,
-                    actionLabel = "OK")
+            LaunchedEffect(scaffoldState.snackbarHostState) {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = notificationMessage,
+                    actionLabel = "OK"
+                )
                 notificationMessage = ""
             }
         }
@@ -657,7 +656,7 @@ private fun Notification(model: FoodBuddyModel, scaffoldState: ScaffoldState) {
 }
 
 @Composable
-fun EventImageUpload(model: FoodBuddyModel){
+fun EventImageUpload(model: FoodBuddyModel) {
 
     val launcher =
         rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
@@ -669,9 +668,12 @@ fun EventImageUpload(model: FoodBuddyModel){
                             model.context.contentResolver,
                             uri
                         ).asImageBitmap()
-                        model.getEventImageBitMapURL(MediaStore.Images.Media.getBitmap(
-                            model.context.contentResolver,
-                            uri))
+                        model.getEventImageBitMapURL(
+                            MediaStore.Images.Media.getBitmap(
+                                model.context.contentResolver,
+                                uri
+                            )
+                        )
                     } else {
                         val source = ImageDecoder.createSource(model.context.contentResolver, uri)
                         model.postImageBitmap = ImageDecoder.decodeBitmap(source).asImageBitmap()
@@ -714,17 +716,11 @@ fun EventImageUpload(model: FoodBuddyModel){
     }
 
 
-
-
 }
-
 
 
 @Composable
 fun BottomSheetCreate(model: FoodBuddyModel) {
-
-
-
 
 
     Column(Modifier.zIndex(1f)) {
@@ -734,16 +730,17 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
             .fillMaxWidth()
             .background(Color.Gray.copy(0.5f))
             //.blur(50.dp)
-            .clickable { model.showBottomSheetCreatePost = false }){
+            .clickable { model.showBottomSheetCreatePost = false }) {
 
         }
-        Box(modifier = Modifier
-            .fillMaxHeight(1f)
-            .fillMaxWidth()
+        Box(
+            modifier = Modifier
+                .fillMaxHeight(1f)
+                .fillMaxWidth()
             //.background(colors.surface)
             //.clip(RoundedCornerShape(25.dp, 25.dp))
             //.shadow(elevation = 15.dp)
-        ){
+        ) {
 
             Column(
                 Modifier
@@ -751,9 +748,10 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
                     .verticalScroll(rememberScrollState())
                     .background(colors.background)
                     .clip(RoundedCornerShape(25.dp, 25.dp))
-                    /*.shadow(15.dp, spotColor = colors.onSurface)*/,
+                /*.shadow(15.dp, spotColor = colors.onSurface)*/,
                 Arrangement.Center,
-                Alignment.CenterHorizontally)
+                Alignment.CenterHorizontally
+            )
             {
                 Spacer(modifier = Modifier.height(30.dp))
                 Text(
@@ -776,7 +774,7 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
                 Spacer(modifier = Modifier.height(10.dp))
                 DescriptionInput(model = model)
                 Spacer(modifier = Modifier.height(10.dp))
-                EventImageUpload(model= model)
+                EventImageUpload(model = model)
                 Spacer(modifier = Modifier.height(10.dp))
                 PublishButton(model = model)
                 Spacer(modifier = Modifier.height(30.dp))
@@ -810,8 +808,10 @@ fun CreatePostFAB(model: FoodBuddyModel) {
         shape = RoundedCornerShape(30)
     )
     {
-        Icon(Icons.Filled.Add,
+        Icon(
+            Icons.Filled.Add,
             contentDescription = "Create",
-            modifier = Modifier.size(50.dp))
+            modifier = Modifier.size(50.dp)
+        )
     }
 }
