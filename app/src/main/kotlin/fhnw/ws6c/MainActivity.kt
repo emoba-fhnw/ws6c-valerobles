@@ -7,7 +7,7 @@ import fhnw.ws6c.theapp.TheApp
 
 
 class MainActivity : ComponentActivity() {
-    private lateinit var app: EmobaApp  //alle Beispiele implementieren das Interface EmobaApp
+    private lateinit var app: WorkshopSixApp  //alle Beispiele implementieren das Interface EmobaApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

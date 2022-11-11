@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
  *
  * Jede Emoba-Applikation sollte dieses Interface implementieren
  */
-interface EmobaApp {
+interface WorkshopSixApp {
 
     /**
      * Initialer Aufbau des App-Status.
