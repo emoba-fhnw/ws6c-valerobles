@@ -44,6 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import fhnw.ws6c.R
 import fhnw.ws6c.theapp.data.Post
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 import fhnw.ws6c.theapp.model.Screen
@@ -51,7 +52,7 @@ import fhnw.ws6c.theapp.ui.theme.WorkshopSixAppTheme
 import fhnw.ws6c.theapp.ui.theme.typography
 import java.util.*
 
-var darkMode = false;
+
 var modeIcon = Icons.Filled.DarkMode;
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -59,7 +60,7 @@ var modeIcon = Icons.Filled.DarkMode;
 fun DashboardScreen(model: FoodBuddyModel) {
 
     val scaffoldState = rememberScaffoldState()
-    WorkshopSixAppTheme(darkMode) {
+    WorkshopSixAppTheme(model.isDarkMode) {
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = { Bar(model) },
@@ -91,7 +92,7 @@ private fun Bar(model: FoodBuddyModel) {
             Spacer(Modifier.weight(0.5f))
             IconButton(
                 onClick = {
-                    darkMode = true;
+                    isDarkMode = !isDarkMode;
                     modeIcon = Icons.Filled.LightMode;
                           },) {
                 Icon(
@@ -142,14 +143,19 @@ private fun Body(model: FoodBuddyModel){
 fun AllMessagesPanel(posts: List<Post>, model: FoodBuddyModel){
     Box(Modifier.border(BorderStroke(0.dp, Color.Transparent))){
         if(posts.isEmpty()){
-            Text(
-                style = typography.h3,
-                text     = "No posts yet",
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .fillMaxSize()
-                    .padding(20.dp)
-            )
+
+            Column(modifier = Modifier.fillMaxSize()) {
+
+                Text(
+                    style = typography.h3,
+                    text     = "No posts yet",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                )
+                Image(bitmap = model.loadImageFromFile(R.drawable.boy), contentDescription ="" )
+            }
+
         } else {
             AllMessages(posts,model)
         }

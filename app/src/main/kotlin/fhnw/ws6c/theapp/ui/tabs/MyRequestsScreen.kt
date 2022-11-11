@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import fhnw.ws6c.R
 import fhnw.ws6c.theapp.data.Post
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 import fhnw.ws6c.theapp.ui.AllMessagesPanel
@@ -42,13 +43,14 @@ private fun MyRequestsBody(model: FoodBuddyModel) {
 @Composable
 fun MyRequests(model: FoodBuddyModel){
     Box(){
-        if(model.mySubscribedPosts.isEmpty()){
+        if(model.acceptedPosts.isEmpty()&&model.declinedPosts.isEmpty()){
             Text(text     = "No subsriptions yet",
                 style    = MaterialTheme.typography.h4,
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .fillMaxSize()
+                    .fillMaxWidth()
             )
+            Image(bitmap = model.loadImageFromFile(R.drawable.boy), contentDescription = "", Modifier.fillMaxSize())
         } else {
             Column() {
                 AcceptedBody(model.acceptedPosts,model)

@@ -1,6 +1,7 @@
 package fhnw.ws6c.theapp.model
 
 import Profile
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.icu.text.SimpleDateFormat
@@ -24,6 +25,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -52,7 +58,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     var restaurantName      by mutableStateOf("Lorem ipsum")
     var address             by mutableStateOf("Address")
     var description         by mutableStateOf("Hello")
-    var postImage           by mutableStateOf("gcDyCD")
+    var postImage           by mutableStateOf("ppC1ux")
     var postImageBitmap     by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
     var people              by mutableStateOf("0")
     var maxPeople           by mutableStateOf("5")
@@ -76,7 +82,7 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     var photoWasTaken by mutableStateOf(false)
 
-
+    var isDarkMode by mutableStateOf(false)
 
 
     // Profile Screen
@@ -87,9 +93,9 @@ class FoodBuddyModel( val context: ComponentActivity,
     var profileImageTakenURL by mutableStateOf("a9R00e")
     var profileImageTakenBitmap by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
 
-    val me         = Profile(
-        //UUID.randomUUID().toString(),
-        "a49f78c0-8a84-4e08-a9e9-0389f4d703ed",
+    var me         = Profile(
+        UUID.randomUUID().toString(),
+        //"a49f78c0-8a84-4e08-a9e9-0389f4d703ed",
         name,
         age,
         gender,
@@ -104,13 +110,10 @@ class FoodBuddyModel( val context: ComponentActivity,
     var declinedPosts = mutableStateListOf<Post>()
 
     fun connectAndSubscribe(){
-
         mqttConnector.connectAndSubscribe(
             topic        = "$mainTopic$postsTopic+",
             onNewMessage = {
                 val p  = Post(it)
-                println("$mainTopic$postsTopic+")
-                println("incoming post: "+ p)
                 allPosts.add(p)
                 if(mySubscribedPostsUUID.contains(p.uuid)) // for edit event edit feature
                     mySubscribedPosts.add(p)
@@ -203,9 +206,6 @@ class FoodBuddyModel( val context: ComponentActivity,
             val temp = simpledateformat.format(Date())
             val currentDate = simpledateformat.parse(temp)
             val diff: Long = currentDate.time - dob.time
-            println(dob)
-            println(currentDate)
-            println(diff)
             me.age = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS).toInt()/365
         }
 
@@ -215,8 +215,7 @@ class FoodBuddyModel( val context: ComponentActivity,
         mqttConnector.publishProfile(
             topic = mainTopic+profileTopic,
             message= me.asJson(),
-            onPublished = {println(me.asJson())
-                //me.downloadProfilePicture()
+            onPublished = {
                 println(me.asJson())})
         photoWasTaken=false
     }
@@ -225,7 +224,7 @@ class FoodBuddyModel( val context: ComponentActivity,
         mqttConnector.publishProfile(
             topic = "$mainTopic$postsTopic$uuid/",
             message= me.asJson(),
-            onPublished = {println(me.asJson())
+            onPublished = {
                 println(me.asJson())})
         subscribeToGetUpdate(uuid)
     }
@@ -323,6 +322,8 @@ class FoodBuddyModel( val context: ComponentActivity,
             }
         }
     }
+
+
 
 
 

@@ -39,7 +39,7 @@ var tempGender by mutableStateOf("")
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(model: FoodBuddyModel) {
-    WorkshopSixAppTheme(true) {
+    WorkshopSixAppTheme(model.isDarkMode) {
         Scaffold(
             content                      = {LoginBody(model)} ,
             isFloatingActionButtonDocked = true
