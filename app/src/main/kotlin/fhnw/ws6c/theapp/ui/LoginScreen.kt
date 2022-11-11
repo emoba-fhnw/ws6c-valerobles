@@ -2,10 +2,12 @@ package fhnw.ws6c.theapp.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.ButtonDefaults.buttonColors
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
@@ -20,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 import fhnw.ws6c.theapp.model.Screen
+import fhnw.ws6c.theapp.ui.theme.WorkshopSixAppTheme
 import fhnw.ws6c.theapp.ui.theme.typography
 
 
@@ -36,7 +39,7 @@ var tempGender by mutableStateOf("")
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun LoginScreen(model: FoodBuddyModel) {
-    MaterialTheme() {
+    WorkshopSixAppTheme() {
         Scaffold(
             content                      = {LoginBody(model)} ,
             isFloatingActionButtonDocked = true
@@ -49,7 +52,8 @@ fun LoginBody(model: FoodBuddyModel) {
     with(model){
         Column(
             Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .background(colors.background),
             Arrangement.Center,
             Alignment.CenterHorizontally) {
             Text(
@@ -61,7 +65,7 @@ fun LoginBody(model: FoodBuddyModel) {
                 text = "Create your Profile",
                 textAlign = TextAlign.Center,
                 style = typography.h1,
-                color = Color(55, 107, 0)
+                color = colors.primary
             )
             
             //  IMAGE
@@ -91,7 +95,7 @@ fun LoginBody(model: FoodBuddyModel) {
             //  IMAGE UPLOAD BUTTON
             Button(
                 onClick = { takeProfilePhotoAndUpdate() },
-                colors = buttonColors(backgroundColor = Color(55, 107, 0), contentColor = Color.White),
+                colors = buttonColors(backgroundColor = colors.primary, contentColor = Color.White),
                 contentPadding = PaddingValues(
                     start = 30.dp,
                     top = 4.dp,
@@ -127,7 +131,7 @@ fun LoginBody(model: FoodBuddyModel) {
 
             Button(
                 onClick = { checkValidityAndChangeScreen(model) },
-                colors = buttonColors(backgroundColor = Color(55, 107, 0), contentColor = Color.White),
+                colors = buttonColors(colors.primary, contentColor = Color.White),
                 contentPadding = PaddingValues(
                     start = 30.dp,
                     top = 4.dp,
@@ -157,7 +161,7 @@ fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, placeholder: 
             Text(
                 text = "$label*",
                 style = typography.h2,
-                color = Color(55, 107, 0)
+                color = colors.secondary
 
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -173,7 +177,7 @@ fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, placeholder: 
                     tempName = it
                 },
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color(237, 237, 237),
+                    backgroundColor = colors.surface,
                     focusedIndicatorColor =  Color.Transparent, //hide the indicator
                     unfocusedIndicatorColor = Color.Transparent),
                 //label = { Text(text = label) },
@@ -193,7 +197,7 @@ fun LabelAndPlaceHolderAge(model: FoodBuddyModel, label : String, placeholder: S
             Text(
                 text = "$label*",
                 style = typography.h2,
-                color = Color(55, 107, 0)
+                color = colors.secondary
 
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -209,7 +213,7 @@ fun LabelAndPlaceHolderAge(model: FoodBuddyModel, label : String, placeholder: S
                     tempDate = it
                 },
                 colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color(237, 237, 237),
+                    backgroundColor = colors.surface,
                     focusedIndicatorColor =  Color.Transparent, //hide the indicator
                     unfocusedIndicatorColor = Color.Transparent),
                 //label = { Text(text = label) },
@@ -232,25 +236,28 @@ fun DropDownMenuGender(model: FoodBuddyModel){
                 Text(
                     text = "Gender*",
                     style = typography.h2,
-                    color = Color(55, 107, 0)
+                    color = colors.secondary
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 TextButton(
                     onClick = { expanded = true },
                     modifier = Modifier.width(100.dp),
-                    colors = buttonColors(backgroundColor = Color(237, 237, 237), contentColor = Color.White),
+                    colors = buttonColors(
+                        backgroundColor = colors.surface,
+                        contentColor = Color.White
+                    ),
                     shape = RoundedCornerShape(30)
                 ) {
                     Row {
                         Text(
                             text = "$selectedItem",
                             style = typography.h3,
-                            color = Color(55, 107, 0)
+                            color = colors.secondary
                         )
                         Icon(
                             Icons.Default.ArrowDropDown,
                             contentDescription = "",
-                            tint = Color(55, 107, 0)
+                            tint = colors.secondary
                         )
                     }
                 }
@@ -263,7 +270,10 @@ fun DropDownMenuGender(model: FoodBuddyModel){
                         expanded = false
                         selectedItem = it
                     }) {
-                        Text(text = it)
+                        Text(
+                            text = it,
+                            color = colors.secondary
+                        )
 
                     }
                 }

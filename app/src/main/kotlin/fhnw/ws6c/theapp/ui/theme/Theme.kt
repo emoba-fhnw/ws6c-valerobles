@@ -11,9 +11,11 @@ private val AppDarkColors = darkColors(
     //Background colors
     primary = primaryDark,
     secondary = secondaryDark,
-    background = backContrastDark,
-    onSecondary = contrast1Dark,
-    onBackground = contrast2Dark
+    surface = backContrastDark,
+    onSurface = Color.White,
+    background = Color.Black,
+    primaryVariant = contrast1Dark,
+    secondaryVariant = contrast2Dark
 
 )
 
@@ -21,13 +23,15 @@ private val AppLightColors = lightColors(
     //Background colors
     primary = primaryLight,
     secondary = secondaryLight,
-    background = backContrastLight,
-    onSecondary = contrast1Light,
-    onBackground = contrast2Light
+    surface = backContrastLight,
+    onSurface = Color.Black,
+    background = Color.White,
+    primaryVariant = contrast1Light,
+    secondaryVariant = contrast2Light
 )
 
 @Composable
-fun WorkshopSIxAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+fun WorkshopSixAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
     val colors = if (darkTheme) {
         AppDarkColors
     } else {

@@ -43,6 +43,7 @@ import androidx.compose.ui.zIndex
 import fhnw.ws6c.theapp.data.Post
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 import fhnw.ws6c.theapp.model.Screen
+import fhnw.ws6c.theapp.ui.theme.WorkshopSixAppTheme
 import fhnw.ws6c.theapp.ui.theme.typography
 import java.util.*
 
@@ -50,18 +51,20 @@ import java.util.*
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun DashboardScreen(model: FoodBuddyModel) {
-
-    val scaffoldState = rememberScaffoldState()
-    MaterialTheme(colors = lightColors(primary = Color(40,80,0))) {
-        Scaffold(scaffoldState = scaffoldState,
-            topBar        = { Bar(model) },
-            snackbarHost  = { NotificationHost(it) },
-            content       = { Body(model) },
-            floatingActionButton = { CreatePostFAB(model) },
-            floatingActionButtonPosition = FabPosition.Center
-        )
+    WorkshopSixAppTheme() {
+        val scaffoldState = rememberScaffoldState()
+        MaterialTheme(colors = lightColors(primary = Color(40, 80, 0))) {
+            Scaffold(
+                scaffoldState = scaffoldState,
+                topBar = { Bar(model) },
+                snackbarHost = { NotificationHost(it) },
+                content = { Body(model) },
+                floatingActionButton = { CreatePostFAB(model) },
+                floatingActionButtonPosition = FabPosition.Center
+            )
+        }
+        Notification(model, scaffoldState)
     }
-    Notification(model, scaffoldState)
 }
 
 @Composable
