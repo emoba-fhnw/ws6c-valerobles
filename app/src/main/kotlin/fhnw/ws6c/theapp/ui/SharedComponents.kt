@@ -137,7 +137,7 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                 )
                                 Spacer(modifier = Modifier.height(20.dp))
 
-                                if (organizer.uuid != me.uuid) {
+                                if (organizer.uuid != me.uuid && !mySubscribedPosts.contains(currentPost)) {
                                     Button(
                                         onClick = {
                                             mySubscribedPosts.add(currentPost!!)
