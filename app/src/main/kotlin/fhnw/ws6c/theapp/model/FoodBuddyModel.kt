@@ -71,7 +71,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     private val modelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
 
-    var currentScreen by mutableStateOf(Screen.DASHBOARD)
+    var currentScreen by mutableStateOf(Screen.LOGINSCREEN)
     var currentTab by mutableStateOf(Tab.MYEVENTS)
     var currentPost: Post? by mutableStateOf(null)
 
