@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory
 import android.icu.text.SimpleDateFormat
 import androidx.activity.ComponentActivity
 import androidx.annotation.DrawableRes
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -71,7 +73,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     private val modelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
 
-    var currentScreen by mutableStateOf(Screen.LOGINSCREEN)
+    var currentScreen by mutableStateOf(Screen.DASHBOARD)
     var currentTab by mutableStateOf(Tab.MYEVENTS)
     var currentPost: Post? by mutableStateOf(null)
 
@@ -83,6 +85,8 @@ class FoodBuddyModel( val context: ComponentActivity,
     var photoWasTaken by mutableStateOf(false)
 
     var isDarkMode by mutableStateOf(false)
+
+    var themeSwitchIcon by mutableStateOf(Icons.Filled.DarkMode)
 
 
     // Profile Screen

@@ -79,24 +79,28 @@ private fun Bar(model: FoodBuddyModel) {
         TopAppBar(
             backgroundColor = colors.background,
             modifier = Modifier
-                .shadow(elevation = 15.dp)
+                .shadow(elevation = 15.dp, spotColor = colors.onSurface)
                 .height(70.dp)
                 .clip(RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp)),
         ){
             Text(
                 text = title,
                 style = typography.h1,
-                color = Color.Black,
+                color = colors.onSurface,
                 modifier = Modifier.padding( 10.dp )
             )
             Spacer(Modifier.weight(0.5f))
             IconButton(
                 onClick = {
                     isDarkMode = !isDarkMode;
-                    modeIcon = Icons.Filled.LightMode;
+                    if (isDarkMode) {
+                        themeSwitchIcon = Icons.Filled.LightMode;
+                    } else {
+                        themeSwitchIcon = Icons.Filled.DarkMode;
+                    }
                           },) {
                 Icon(
-                    Icons.Filled.DarkMode,
+                    themeSwitchIcon,
                     contentDescription = "",
                     tint = colors.primary,
                     modifier = Modifier.size(30.dp)
@@ -441,7 +445,9 @@ fun DateInput(model: FoodBuddyModel) {
             OutlinedButton(onClick = { datePickerDialog.show() }) {
                 Text(
                     style = typography.h4,
-                    text = "Pick Date"
+                    text = "Pick Date",
+                    color = Color.White,
+                    modifier = Modifier.background(colors.primary)
                 )
             }
         }
@@ -529,7 +535,9 @@ fun TimeInput(model: FoodBuddyModel) {
             OutlinedButton(onClick = { mTimePickerDialog.show() }) {
                 Text(
                     style = typography.h4,
-                    text = "Pick Time"
+                    text = "Pick Time",
+                    color = Color.White,
+                    modifier = Modifier.background(colors.primary)
                 )
             }
 
@@ -668,13 +676,27 @@ fun EventImageUpload(model: FoodBuddyModel){
             color = colors.primary
         )
         Image(bitmap = model.postImageBitmap, contentDescription = "", Modifier.size(200.dp))
-        Button(onClick = { launcher.launch("image/*") },modifier = Modifier
-            .wrapContentSize()
-            .padding(10.dp)
+        Button(
+            onClick = { launcher.launch("image/*") },
+            //modifier = Modifier
+            //.wrapContentSize()
+            //.padding(10.dp)
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = colors.primary,
+                contentColor = Color.White
+            ),
+            contentPadding = PaddingValues(
+                start = 30.dp,
+                top = 4.dp,
+                end = 30.dp,
+                bottom = 4.dp,
+            ),
+            shape = RoundedCornerShape(30)
         ) {
             Text(
-                style = typography.h3,
-                text = "Pick Image From Gallery"
+                style = typography.h4,
+                text = "Pick Image From Gallery",
+                color = Color.White
             )
         }
     }
@@ -698,7 +720,7 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
         Box(modifier = Modifier
             .fillMaxHeight(0.2f)
             .fillMaxWidth()
-            .background(colors.primaryVariant.copy(0.5f))
+            .background(Color.Gray.copy(0.5f))
             //.blur(50.dp)
             .clickable { model.showBottomSheetCreatePost = false }){
 
