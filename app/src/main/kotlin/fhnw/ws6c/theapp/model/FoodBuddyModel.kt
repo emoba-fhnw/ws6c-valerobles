@@ -54,7 +54,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     var restaurantName      by mutableStateOf("Lorem ipsum")
     var address             by mutableStateOf("Address")
     var description         by mutableStateOf("Hello")
-    var postImage           by mutableStateOf("ppC1ux")
+    var postImageURL           by mutableStateOf("ppC1ux")
     var postImageBitmap     by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
     var people              by mutableStateOf("0")
     var maxPeople           by mutableStateOf("5")
@@ -131,7 +131,7 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     fun publishMyPost(){
         uuidPost = UUID.randomUUID().toString()
-        val post = Post(uuidPost,me, restaurantName, address, description, Image(url= postImage), people.toInt(), maxPeople.toInt(), date, time)
+        val post = Post(uuidPost,me, restaurantName, address, description, Image(url= postImageURL), people.toInt(), maxPeople.toInt(), date, time)
         mqttConnector.publishPost(
             topic       = mainTopic+postsTopic,
             post     = post,
@@ -193,7 +193,16 @@ class FoodBuddyModel( val context: ComponentActivity,
 
         isLoading = true
         modelScope.launch {
-            goFile.uploadBitmapToGoFileIO(image, onSuccess = { postImage = it })
+            goFile.uploadBitmapToGoFileIO(image,  { postImageURL = it })
+        }
+
+    }
+
+    fun getProfileImageBitMapURL(image: Bitmap) {
+
+        isLoading = true
+        modelScope.launch {
+            goFile.uploadBitmapToGoFileIO(image,  { profileImageTakenURL = it })
         }
 
     }

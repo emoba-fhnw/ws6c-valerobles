@@ -679,16 +679,12 @@ fun EventImageUpload(model: FoodBuddyModel) {
                             model.context.contentResolver,
                             uri
                         ).asImageBitmap()
-                        model.getEventImageBitMapURL(
-                            MediaStore.Images.Media.getBitmap(
-                                model.context.contentResolver,
-                                uri
-                            )
-                        )
+
                     } else {
                         val source = ImageDecoder.createSource(model.context.contentResolver, uri)
                         model.postImageBitmap = ImageDecoder.decodeBitmap(source).asImageBitmap()
                         model.getEventImageBitMapURL(ImageDecoder.decodeBitmap(source))
+
                     }
                 }
             }

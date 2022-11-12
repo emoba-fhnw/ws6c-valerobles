@@ -63,19 +63,25 @@ class GoFileIOConnector() {
             request.close()
 
             //Response
-            if (responseCode == 200) {
-                val response = message()
-                val parentFolder =
-                    JSONObject(response).getJSONObject("data").getString("parentFolder")
-                val fileName = JSONObject(response).getJSONObject("data").getString("fileName")
-                onSuccess(parentFolder)
-            } else {
-                if (serverCounter < 5) {
-                    serverCounter++
-                    uploadBitmapToGoFileIO(bitmap, onSuccess, onError)
-                }
-                return onError(responseCode, "")
-            }
+            println("resposne code . "+ responseCode)
+            val response = message()
+            val parentFolder =
+                JSONObject(response).getJSONObject("data").getString("parentFolder")
+            val fileName = JSONObject(response).getJSONObject("data").getString("fileName")
+            onSuccess(parentFolder)
+//            if (responseCode == 200) {
+//                val response = message()
+//                val parentFolder =
+//                    JSONObject(response).getJSONObject("data").getString("parentFolder")
+//                val fileName = JSONObject(response).getJSONObject("data").getString("fileName")
+//                onSuccess(parentFolder)
+//            } else {
+//                if (serverCounter < 5) {
+//                    serverCounter++
+//                    uploadBitmapToGoFileIO(bitmap, onSuccess, onError)
+//                }
+//                return onError(responseCode, "")
+//            }
         }
     }
 
