@@ -74,7 +74,8 @@ private fun AcceptedBody(posts: List<Post>, model: FoodBuddyModel) {
     Text(
         text = "Accepted",
         style = typography.h2,
-        color = colors.primary
+        color = colors.primary,
+        modifier = Modifier.padding(all = 10.dp)
     )
     LazyColumn(state = scrollState) {
         items(posts) {
@@ -92,7 +93,8 @@ private fun DeclinedBody(posts: List<Post>, model: FoodBuddyModel) {
     Text(
         text = "Declined",
         style = typography.h2,
-        color = colors.primary
+        color = colors.primary,
+        modifier = Modifier.padding(all = 10.dp)
     )
     LazyColumn(state = scrollState) {
         items(posts) {
