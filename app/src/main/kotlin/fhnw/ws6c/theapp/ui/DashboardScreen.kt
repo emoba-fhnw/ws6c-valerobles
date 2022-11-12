@@ -1,11 +1,13 @@
 package fhnw.ws6c.theapp.ui
 
+import Profile
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.graphics.ImageDecoder
 import android.icu.util.Calendar
 import android.os.Build
+import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.provider.SyncStateContract.Helpers.update
 import android.view.View
@@ -48,6 +50,7 @@ import fhnw.ws6c.R
 import fhnw.ws6c.theapp.data.Post
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 import fhnw.ws6c.theapp.model.Screen
+import fhnw.ws6c.theapp.ui.tabs.ProfilesList
 import fhnw.ws6c.theapp.ui.theme.WorkshopSixAppTheme
 import fhnw.ws6c.theapp.ui.theme.typography
 import java.util.*
@@ -181,7 +184,7 @@ private fun AllMessages(posts: List<Post>, model: FoodBuddyModel) {
 }
 
 @Composable
-fun PostCard(post: Post, model: FoodBuddyModel, clickable: Boolean = true) {
+fun PostCard(post: Post, model: FoodBuddyModel, showProfiles:Boolean = false, clickable: Boolean = true) {
     Row(
         verticalAlignment = Alignment.CenterVertically
         //modifier = Modifier.shadow(1.dp, shape = RoundedCornerShape(30))
@@ -298,6 +301,9 @@ fun PostCard(post: Post, model: FoodBuddyModel, clickable: Boolean = true) {
                     color = colors.secondary,
                     modifier = Modifier.padding(end = 15.dp)
                 )
+            }
+            if (showProfiles) {
+                ProfilesList(post = post, model = model)
             }
         }
     }

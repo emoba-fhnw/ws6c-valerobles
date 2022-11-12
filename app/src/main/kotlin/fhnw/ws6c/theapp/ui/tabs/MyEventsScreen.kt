@@ -69,8 +69,8 @@ private fun AllMessages(posts: List<Post>, model: FoodBuddyModel) {
     val scrollState = rememberLazyListState()
     LazyColumn(state = scrollState) {
         items(posts) {
-            PostCard(it, model)
-            ProfilesList(post = it, model = model)
+            PostCard(it, model, true)
+            //ProfilesList(post = it, model = model, showProfiles = true)
         }
     }
     LaunchedEffect(posts.size) {
@@ -80,7 +80,7 @@ private fun AllMessages(posts: List<Post>, model: FoodBuddyModel) {
 
 
 @Composable
-private fun ProfilesList(post: Post, model: FoodBuddyModel) {
+public fun ProfilesList(post: Post, model: FoodBuddyModel) {
 
     Column() {
         post.profilesWantingToJoin.forEach {
