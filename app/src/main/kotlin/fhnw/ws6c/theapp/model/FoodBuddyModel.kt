@@ -1,7 +1,6 @@
 package fhnw.ws6c.theapp.model
 
 import Profile
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.icu.text.SimpleDateFormat
@@ -27,11 +26,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import org.json.JSONObject
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -73,7 +67,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     private val modelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
 
-    var currentScreen by mutableStateOf(Screen.DASHBOARD)
+    var currentScreen by mutableStateOf(Screen.LOGINSCREEN)
     var currentTab by mutableStateOf(Tab.MYEVENTS)
     var currentPost: Post? by mutableStateOf(null)
 
