@@ -1,6 +1,11 @@
 package fhnw.ws6c.theapp.ui
 
 import android.annotation.SuppressLint
+import android.graphics.ImageDecoder
+import android.os.Build
+import android.provider.MediaStore
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -51,6 +57,34 @@ fun LoginScreen(model: FoodBuddyModel) {
 @Composable
 fun LoginBody(model: FoodBuddyModel) {
     with(model){
+
+        val launcher =
+            rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+                var uri = it
+                uri.let {
+                    if (uri != null) {
+                        if (Build.VERSION.SDK_INT < 28) {
+                            profileImageTakenBitmap = MediaStore.Images.Media.getBitmap(
+                                model.context.contentResolver,
+                                uri
+                            ).asImageBitmap()
+                        photoWasTaken = true
+                        } else {
+                            val source = ImageDecoder.createSource(model.context.contentResolver, uri)
+                            profileImageTakenBitmap = ImageDecoder.decodeBitmap(source).asImageBitmap()
+                            getProfileImageBitMapURL(ImageDecoder.decodeBitmap(source))
+                            photoWasTaken = true
+
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+
         Column(
             Modifier
                 .fillMaxSize()
@@ -95,7 +129,7 @@ fun LoginBody(model: FoodBuddyModel) {
             }
             //  IMAGE UPLOAD BUTTON
             Button(
-                onClick = { takeProfilePhotoAndUpdate() },
+                onClick = { launcher.launch("image/*")},
                 colors = buttonColors(backgroundColor = colors.primary, contentColor = Color.White),
                 contentPadding = PaddingValues(
                     start = 30.dp,

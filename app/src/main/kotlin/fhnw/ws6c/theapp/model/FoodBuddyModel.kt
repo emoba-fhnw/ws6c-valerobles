@@ -55,7 +55,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     var address             by mutableStateOf("Address")
     var description         by mutableStateOf("Hello")
     var postImageURL           by mutableStateOf("ppC1ux")
-    var postImageBitmap     by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
+    var postImageBitmap     by mutableStateOf(loadImageFromFile(R.drawable.empty_image))
     var people              by mutableStateOf("0")
     var maxPeople           by mutableStateOf("5")
     var date                by mutableStateOf("10.11.23")
@@ -139,9 +139,21 @@ class FoodBuddyModel( val context: ComponentActivity,
                 post.downloadImageFromText()
                 allPosts.add(post)
                 myCreatedPosts.add(post)
-                println(post.asJsonString())
+                resetPostPlaceHolders()
+
             })
         subscribeToGetRegistrations(uuidPost)
+    }
+
+    private fun resetPostPlaceHolders(){
+       restaurantName = ""
+       address = ""
+       description = ""
+       postImageURL = ""
+       postImageBitmap = loadImageFromFile(R.drawable.empty_image)
+       people = 0.toString()
+       maxPeople = 1.toString()
+
     }
 
 
@@ -201,8 +213,10 @@ class FoodBuddyModel( val context: ComponentActivity,
     fun getProfileImageBitMapURL(image: Bitmap) {
 
         isLoading = true
+        println("old: "+profileImageTakenURL)
         modelScope.launch {
             goFile.uploadBitmapToGoFileIO(image,  { profileImageTakenURL = it })
+            println("new: "+profileImageTakenURL)
         }
 
     }
@@ -318,6 +332,7 @@ class FoodBuddyModel( val context: ComponentActivity,
             mySubscribedPosts.forEach { p ->
                 if (p.uuid == ap.postUUID)
                 acceptedPosts.add(p)
+                me.acceptedStatus.remove(ap)
 
             }
         }
