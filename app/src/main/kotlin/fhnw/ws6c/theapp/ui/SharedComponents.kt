@@ -103,7 +103,7 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                 Spacer(modifier = Modifier.height(30.dp))
                                 Row(horizontalArrangement = Arrangement.Center) {
                                     Image(
-                                        bitmap = organizer.profileImage,
+                                        bitmap = me.profileImage,
                                         contentDescription = "",
                                         modifier = Modifier
                                             .size(70.dp)
