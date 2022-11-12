@@ -117,7 +117,7 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                             color = colors.onSurface
                                         )
                                         Text(
-                                            text = me.name,
+                                            text = organizer.name,
                                             style = typography.h2,
                                             color = colors.primary
                                         )

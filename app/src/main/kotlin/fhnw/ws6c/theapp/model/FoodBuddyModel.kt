@@ -112,6 +112,7 @@ class FoodBuddyModel( val context: ComponentActivity,
             topic        = "$mainTopic$postsTopic+",
             onNewMessage = {
                 val p  = Post(it)
+                p.downloadImageFromText()
                 allPosts.add(p)
                 if(mySubscribedPostsUUID.contains(p.uuid)) // for edit event edit feature
                     mySubscribedPosts.add(p)
