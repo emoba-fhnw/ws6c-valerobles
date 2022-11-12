@@ -93,15 +93,20 @@ public fun ProfilesList(post: Post, model: FoodBuddyModel) {
 
 @Composable
 private fun Profiles(profile: Profile, model: FoodBuddyModel, post: Post) {
-    Row(modifier = Modifier.padding(bottom = 10.dp)) {
+    Spacer(Modifier.height(10.dp))
+    Row(
+        modifier = Modifier.padding(bottom = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Image(
             bitmap = profile.profileImage,
             contentDescription = "",
             modifier = Modifier
                 .size(50.dp)
-                .padding(end = 5.dp)
+                .padding(end = 10.dp)
         )
         Text(profile.name)
+        Spacer(Modifier.weight(1f))
         Button(
             onClick = { model.acceptPerson(profile.uuid, post.uuid) },
             colors = ButtonDefaults.buttonColors(
@@ -121,6 +126,7 @@ private fun Profiles(profile: Profile, model: FoodBuddyModel, post: Post) {
                 style = typography.h3
             )
         }
+        Spacer(Modifier.width(10.dp))
         Button(
             onClick = { model.declinePerson(profile.uuid, post.uuid) },
             colors = ButtonDefaults.buttonColors(
@@ -140,6 +146,7 @@ private fun Profiles(profile: Profile, model: FoodBuddyModel, post: Post) {
                 style = typography.h3
             )
         }
+        Spacer(Modifier.width(10.dp))
     }
 }
 

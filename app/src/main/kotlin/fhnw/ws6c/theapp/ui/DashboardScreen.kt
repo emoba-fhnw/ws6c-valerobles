@@ -184,7 +184,12 @@ private fun AllMessages(posts: List<Post>, model: FoodBuddyModel) {
 }
 
 @Composable
-fun PostCard(post: Post, model: FoodBuddyModel, showProfiles:Boolean = false, clickable: Boolean = true) {
+fun PostCard(
+    post: Post,
+    model: FoodBuddyModel,
+    showProfiles: Boolean = false,
+    clickable: Boolean = true
+) {
     Row(
         verticalAlignment = Alignment.CenterVertically
         //modifier = Modifier.shadow(1.dp, shape = RoundedCornerShape(30))
@@ -209,101 +214,101 @@ fun PostCard(post: Post, model: FoodBuddyModel, showProfiles:Boolean = false, cl
                     .clip(RoundedCornerShape(25.dp, 25.dp)),
                 contentScale = ContentScale.Crop
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            Column(
                 modifier = Modifier
                     .clip(RoundedCornerShape(0.dp, 0.dp, 25.dp, 25.dp))
                     .background(color = colors.surface)
-                    .padding(start = 10.dp)
-                    .height(50.dp)
-            )
-            {
-                Text(
-                    style = typography.h2,
-                    text = post.restaurantName,
-                    color = colors.onSurface,
-                    modifier = Modifier
-                        .padding(start = 10.dp)
-                        .width(130.dp),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(Modifier.weight(0.1f))
-                Icon(
-                    Icons.Default.LocationOn,
-                    contentDescription = "",
-                    tint = colors.secondary,
-                    modifier = Modifier
-                        .size(10.dp)
-                        .padding(end = 2.dp)
-                )
-                Text(
-                    style = typography.h4,
-                    text = post.address,
-                    color = colors.secondary,
-                    modifier = Modifier
-                        .padding(end = 10.dp)
-                        .width(70.dp),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Column() {
+                    .padding(start = 10.dp, top = 10.dp, bottom = 10.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically,)
+                {
+                    Text(
+                        style = typography.h2,
+                        text = post.restaurantName,
+                        color = colors.onSurface,
+                        modifier = Modifier
+                            .padding(start = 10.dp)
+                            .width(130.dp),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(Modifier.weight(0.1f))
+                    Icon(
+                        Icons.Default.LocationOn,
+                        contentDescription = "",
+                        tint = colors.secondary,
+                        modifier = Modifier
+                            .size(10.dp)
+                            .padding(end = 2.dp)
+                    )
                     Text(
                         style = typography.h4,
-                        text = post.date,
+                        text = post.address,
                         color = colors.secondary,
-                        modifier = Modifier.padding(end = 2.dp)
+                        modifier = Modifier
+                            .padding(end = 10.dp)
+                            .width(70.dp),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            Icons.Default.Schedule,
-                            contentDescription = "",
-                            tint = colors.secondary,
-                            modifier = Modifier
-                                .size(10.dp)
-                                .padding(end = 2.dp)
-                        )
+                    Column() {
                         Text(
                             style = typography.h4,
-                            text = post.time,
+                            text = post.date,
                             color = colors.secondary,
-                            modifier = Modifier.padding(end = 10.dp)
+                            modifier = Modifier.padding(end = 2.dp)
                         )
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                Icons.Default.Schedule,
+                                contentDescription = "",
+                                tint = colors.secondary,
+                                modifier = Modifier
+                                    .size(10.dp)
+                                    .padding(end = 2.dp)
+                            )
+                            Text(
+                                style = typography.h4,
+                                text = post.time,
+                                color = colors.secondary,
+                                modifier = Modifier.padding(end = 10.dp)
+                            )
+                        }
                     }
+                    Spacer(Modifier.width(10.dp))
+                    Icon(
+                        Icons.Default.Groups,
+                        contentDescription = "",
+                        tint = colors.secondary,
+                        modifier = Modifier
+                            .size(10.dp)
+                            .padding(end = 2.dp)
+                    )
+                    Text(
+                        style = typography.h4,
+                        text = post.peopleNumber.toString(),
+                        color = colors.secondary,
+                        modifier = Modifier.padding(end = 0.dp)
+                    )
+                    Text(
+                        style = typography.h4,
+                        text = "/",
+                        color = colors.secondary,
+                        modifier = Modifier.padding(end = 0.dp)
+                    )
+                    Text(
+                        style = typography.h4,
+                        text = post.maxPeopleNumber.toString(),
+                        color = colors.secondary,
+                        modifier = Modifier.padding(end = 15.dp)
+                    )
                 }
-                Spacer(Modifier.width(10.dp))
-                Icon(
-                    Icons.Default.Groups,
-                    contentDescription = "",
-                    tint = colors.secondary,
-                    modifier = Modifier
-                        .size(10.dp)
-                        .padding(end = 2.dp)
-                )
-                Text(
-                    style = typography.h4,
-                    text = post.peopleNumber.toString(),
-                    color = colors.secondary,
-                    modifier = Modifier.padding(end = 0.dp)
-                )
-                Text(
-                    style = typography.h4,
-                    text = "/",
-                    color = colors.secondary,
-                    modifier = Modifier.padding(end = 0.dp)
-                )
-                Text(
-                    style = typography.h4,
-                    text = post.maxPeopleNumber.toString(),
-                    color = colors.secondary,
-                    modifier = Modifier.padding(end = 15.dp)
-                )
-            }
-            if (showProfiles) {
-                ProfilesList(post = post, model = model)
+                if (showProfiles) {
+                    ProfilesList(post = post, model = model)
+                }
             }
         }
     }
