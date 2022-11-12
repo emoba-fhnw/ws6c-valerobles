@@ -44,6 +44,7 @@ class MqttConnector (mqttBroker: String,
                     onConnectionFailed()
                 } else { //erst wenn die Connection aufgebaut ist, kann subscribed werden
                     subscribe(topic, onNewMessage, onError)
+                    //publish("test/foodbuddy/posts/","-",{},{})
                 }
             }
     }
@@ -67,6 +68,27 @@ class MqttConnector (mqttBroker: String,
             .send()
     }
 
+    fun publish(topic: String,
+                    s: String,
+                    onPublished: () -> Unit = {},
+                    onError:     () -> Unit = {}) {
+        client.publishWith()
+            .topic(topic)
+            .payload(s.asPayload())
+            .qos(qos)
+            .retain(false)
+            .messageExpiryInterval(100) // 86400 = 24h TODO: Change to stay until day of event
+            .send()
+            .whenComplete{_, throwable ->
+                if(throwable != null){
+                    onError()
+                }
+                else {
+                    onPublished()
+                }
+            }
+    }
+
     fun publishPost(topic: String,
                     post: Post,
                     onPublished: () -> Unit = {},
@@ -76,7 +98,7 @@ class MqttConnector (mqttBroker: String,
             .payload(post.asPayload())
             .qos(qos)
             .retain(false)
-            .messageExpiryInterval(60) // 86400 = 24h TODO: Change to stay until day of event
+            .messageExpiryInterval(100) // 86400 = 24h TODO: Change to stay until day of event
             .send()
             .whenComplete{_, throwable ->
                 if(throwable != null){

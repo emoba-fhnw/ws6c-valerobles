@@ -34,7 +34,7 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     val title      = "Food Buddy"
     val mqttBroker = "broker.hivemq.com"
-    val mainTopic  = "fhnw/foodbuddy/"
+    val mainTopic  = "test/foodbuddy/"
     val profileTopic = "profiles"
     val postsTopic = "posts/"
 
@@ -88,7 +88,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     var dateOfBirth by mutableStateOf("21.06.1998")
     var gender by mutableStateOf("Female")
     var age by mutableStateOf(24)
-    var profileImageTakenURL by mutableStateOf("a9R00e")
+    var profileImageTakenURL by mutableStateOf("IXB28E")
     var profileImageTakenBitmap by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
 
     var me         = Profile(
@@ -101,6 +101,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     )
 
 
+
     var showBottomSheetInfo by mutableStateOf(false)
     var showBottomSheetCreatePost by mutableStateOf(false)
 
@@ -111,8 +112,9 @@ class FoodBuddyModel( val context: ComponentActivity,
         mqttConnector.connectAndSubscribe(
             topic        = "$mainTopic$postsTopic+",
             onNewMessage = {
+                print("incoming post")
                 val p  = Post(it)
-                p.downloadImageFromText()
+                p.organizer.downloadProfilePicture()
                 allPosts.add(p)
                 if(mySubscribedPostsUUID.contains(p.uuid)) // for edit event edit feature
                     mySubscribedPosts.add(p)
@@ -168,18 +170,20 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     }
 
-    fun uploadProfileImage(image:Bitmap) {
+    private fun uploadProfileImage(image:Bitmap) {
         isLoading = true
         photoWasTaken = true
+        println("old: "+profileImageTakenURL)
         modelScope.launch {
             goFile.uploadBitmapToGoFileIO(image,onSuccess =  { profileImageTakenURL=it })
+            println("new: "+profileImageTakenURL)
             downloadImg()
             isLoading = false
 
         }
     }
 
-    fun downloadImg(){
+    private fun downloadImg(){
         modelScope.launch {
             goFile.downloadBitmapFromGoFileIO(profileImageTakenURL,{ loadMyPic(it) })
         }
@@ -195,6 +199,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     }
 
     private fun loadMyPic(image: Bitmap){
+        me.profileImage = image.asImageBitmap()
         profileImageTakenBitmap = image.asImageBitmap()
     }
 
@@ -256,10 +261,13 @@ class FoodBuddyModel( val context: ComponentActivity,
         mqttConnector.subscribe(
             topic = mainTopic+postsTopic+uuidPostToSubscribe+"/"+me.uuid+"/",
             onNewMessage = {
+
             val ps = PostStatus(it)
-            //me.postStatus.add(ps)
+
+
             if (ps.status == Status.ACCEPTED)
                 me.acceptedStatus.add(ps)
+                println(me.acceptedStatus)
                 getAcceptedPost()
             if (ps.status == Status.DECLINED)
                 me.declinedStatus.add(ps)
@@ -271,7 +279,7 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     private fun publishPostUpdate(uuidPerson : String, postStatus: PostStatus){
         mqttConnector.publishUpdate(
-            topic = "$mainTopic$postsTopic$uuidPost/$uuidPerson",
+            topic = "$mainTopic$postsTopic$uuidPost/$uuidPerson/",
             update = postStatus,
             onPublished = {
 
@@ -297,7 +305,7 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     fun getAcceptedPost(){
 
-        me.declinedStatus.forEach { ap ->
+        me.acceptedStatus.forEach { ap ->
             mySubscribedPosts.forEach { p ->
                 if (p.uuid == ap.postUUID)
                 acceptedPosts.add(p)

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fhnw.ws6c.R
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 import fhnw.ws6c.theapp.model.Screen
 import fhnw.ws6c.theapp.ui.theme.WorkshopSixAppTheme
@@ -81,7 +82,7 @@ fun LoginBody(model: FoodBuddyModel) {
 
             } else {
                 Image(
-                    bitmap = profileImageTakenBitmap, contentDescription = "",
+                    bitmap = loadImageFromFile(R.drawable.blanc_profile), contentDescription = "",
                     Modifier
                         .size(180.dp)
                         .padding(10.dp)
@@ -287,15 +288,18 @@ fun checkValidityAndChangeScreen(model: FoodBuddyModel) {
     with(model){
 
         if (tempDate != "" && tempName != "") {
-            currentScreen = Screen.DASHBOARD
+
 
             me.name = tempName
             dateOfBirth = tempDate
             getAge(dateOfBirth)
             me.gender = selectedItem
+            me.image = fhnw.emoba.thatsapp.data.Image(profileImageTakenURL)
 
 
             publishMyProfile()
+
+            currentScreen = Screen.DASHBOARD
 
         } else {
             notification = "Please make sure you fill out everything"
