@@ -112,10 +112,20 @@ class FoodBuddyModel( val context: ComponentActivity,
         mqttConnector.connectAndSubscribe(
             topic        = "$mainTopic$postsTopic+",
             onNewMessage = {
+                var hasBeenUpdated = false
                 print("incoming post")
                 val p  = Post(it)
                 p.organizer.downloadProfilePicture()
-                allPosts.add(p)
+                allPosts.forEachIndexed { index, post ->
+                    if(post.uuid == p.uuid)
+                        allPosts.add(index,p)
+                        hasBeenUpdated = true
+
+                }
+                //if(!hasBeenUpdated){
+                    allPosts.add(p)
+                //}
+
                 if(mySubscribedPostsUUID.contains(p.uuid)) // for edit event edit feature
                     mySubscribedPosts.add(p)
 
@@ -204,9 +214,14 @@ class FoodBuddyModel( val context: ComponentActivity,
     fun getEventImageBitMapURL(image: Bitmap) {
 
         isLoading = true
+        println(" old: "+postImageURL)
         modelScope.launch {
             goFile.uploadBitmapToGoFileIO(image,  { postImageURL = it })
+            println("new: "+postImageURL)
+            isLoading = false
+
         }
+
 
     }
 
@@ -317,6 +332,12 @@ class FoodBuddyModel( val context: ComponentActivity,
         val ps = PostStatus(Status.ACCEPTED,uuidPost)
         publishPostUpdate(uuidPerson,ps)
         myCreatedPosts.find { p -> p.uuid ==uuidPost }?.addPerson()
+        val m = myCreatedPosts.find { p -> p.uuid ==uuidPost }
+        if (m != null) {
+            mqttConnector.publishPost(mainTopic+postsTopic,
+                m)
+        }
+
 
     }
     fun declinePerson(uuidPerson: String,uuidPost: String) {
