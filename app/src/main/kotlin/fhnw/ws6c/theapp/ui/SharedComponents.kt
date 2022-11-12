@@ -103,7 +103,7 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                 Spacer(modifier = Modifier.height(30.dp))
                                 Row(horizontalArrangement = Arrangement.Center) {
                                     Image(
-                                        bitmap = me.profileImage,
+                                        bitmap = organizer.profileImage,
                                         contentDescription = "",
                                         modifier = Modifier
                                             .size(70.dp)
@@ -117,7 +117,7 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                             color = colors.onSurface
                                         )
                                         Text(
-                                            text = me.name,
+                                            text = organizer.name,
                                             style = typography.h2,
                                             color = colors.primary
                                         )
