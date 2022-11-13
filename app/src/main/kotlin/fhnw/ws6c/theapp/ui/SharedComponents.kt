@@ -119,7 +119,7 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                             color = colors.onSurface
                                         )
                                         Text(
-                                            text = organizer.name,
+                                            text = organizer.name + ", " + organizer.age + ", " + organizer.gender,
                                             style = typography.h2,
                                             color = colors.primary
                                         )
@@ -171,7 +171,8 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                     Text(
                                         text = "You have already subscribed to this event",
                                         style = typography.h3,
-                                        color = colors.primary
+                                        color = colors.primary,
+                                        modifier = Modifier.padding(bottom = 30.dp)
                                     )
                             }
 
