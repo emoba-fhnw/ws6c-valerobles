@@ -98,7 +98,7 @@ private fun DeclinedBody(posts: List<Post>, model: FoodBuddyModel) {
     )
     LazyColumn(state = scrollState) {
         items(posts) {
-            PostCard(it, model, false) // if declined, person cannot read the details of event
+            PostCard(it, model, showProfiles = false, clickable = false) // if declined, person cannot read the details of event
         }
     }
     LaunchedEffect(posts.size) {
