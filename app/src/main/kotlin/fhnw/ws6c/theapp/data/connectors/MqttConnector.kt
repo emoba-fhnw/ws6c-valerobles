@@ -1,5 +1,8 @@
 package fhnw.ws6c.theapp.data.connectors
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.hivemq.client.mqtt.datatypes.MqttQos
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client
 import com.hivemq.client.mqtt.mqtt5.message.publish.Mqtt5Publish
@@ -26,6 +29,7 @@ import java.util.*
 class MqttConnector (mqttBroker: String,
                      private val qos: MqttQos = MqttQos.EXACTLY_ONCE){
 
+    var isConnected by mutableStateOf(false)
     private val client = Mqtt5Client.builder()
         .serverHost(mqttBroker)
         .identifier(UUID.randomUUID().toString())
@@ -34,17 +38,20 @@ class MqttConnector (mqttBroker: String,
     fun connectAndSubscribe(topic:              String,
                             onNewMessage:       (JSONObject) -> Unit,
                             onError:            (Exception, String) -> Unit = {e, _ -> e.printStackTrace()},
-                            onConnectionFailed: () -> Unit = {}) {
+                            onConnectionFailed: () -> Unit = {},
+                            onSuccess:          () -> Unit = {},) {
         client.connectWith()
             .cleanStart(true)
             .keepAlive(30)
             .send()
             .whenComplete { _, throwable ->
                 if (throwable != null) {
+                    isConnected = false
                     onConnectionFailed()
                 } else { //erst wenn die Connection aufgebaut ist, kann subscribed werden
+                    isConnected = true
                     subscribe(topic, onNewMessage, onError)
-                    //publish("test/foodbuddy/posts/","-",{},{})
+                    onSuccess()
                 }
             }
     }
@@ -60,9 +67,11 @@ class MqttConnector (mqttBroker: String,
                 try {
                     print(it.payloadAsJSONObject())
                     onNewMessage(it.payloadAsJSONObject())
+                    println("VALE Subscribed")
                 }
                 catch (e: Exception){
                     onError(e, it.payloadAsString())
+                    println("VALE Subscribed")
                 }
             }
             .send()
