@@ -56,8 +56,8 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                 Modifier
                                     .fillMaxWidth()
                                     .size(160.dp)
-                                    .padding(0.dp)
-                                    .clip(RoundedCornerShape(25.dp, 25.dp)),
+                                    .padding(0.dp),
+                                    //.clip(RoundedCornerShape(25.dp, 25.dp)),
                                 contentScale = ContentScale.Crop
                             )
                             Column(Modifier.padding(horizontal = 30.dp)) {
