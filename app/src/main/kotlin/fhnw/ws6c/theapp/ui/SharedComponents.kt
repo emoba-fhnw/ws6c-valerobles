@@ -42,12 +42,12 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                         .fillMaxHeight(1f)
                         .fillMaxWidth()
                         .background(colors.surface)
-                        .clip(RoundedCornerShape(25.dp, 25.dp))
+                        //.clip(RoundedCornerShape(25.dp, 25.dp))
                 ) {
                     with(currentPost!!) {
                         Column(
                             Modifier
-                                .clip(RoundedCornerShape(25.dp, 25.dp))
+                                //.clip(RoundedCornerShape(25.dp, 25.dp))
                                 .background(colors.surface)
                                 .verticalScroll(rememberScrollState())
                         ) {
