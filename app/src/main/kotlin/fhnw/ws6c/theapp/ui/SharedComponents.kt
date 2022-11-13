@@ -164,7 +164,7 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                             style = typography.h3,
                                         )
                                     }
-
+                                    Spacer(Modifier.height(30.dp))
                                 }
 
                                 if (mySubscribedPosts.contains(currentPost))
