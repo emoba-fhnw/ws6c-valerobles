@@ -34,7 +34,7 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     val title      = "Food Buddy"
     val mqttBroker = "broker.hivemq.com"
-    val mainTopic  = "test/foodbuddy/"
+    val mainTopic  = "hi/foodbuddy/"
     val profileTopic = "profiles"
     val postsTopic = "posts/"
 
@@ -110,21 +110,24 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     fun connectAndSubscribe(){
         mqttConnector.connectAndSubscribe(
-            topic        = "$mainTopic$postsTopic+",
+            topic        = "$mainTopic$postsTopic",
             onNewMessage = {
+
                 var hasBeenUpdated = false
                 print("incoming post")
                 val p  = Post(it)
-                p.organizer.downloadProfilePicture()
+                // p.organizer.downloadProfilePicture()
                 allPosts.forEachIndexed { index, post ->
-                    if(post.uuid == p.uuid)
-                        allPosts.add(index,p)
+                    if(post.uuid == p.uuid) {
+                        allPosts.removeAt(index)
+                        allPosts.add(index,post)
                         hasBeenUpdated = true
+                    }
 
                 }
-                //if(!hasBeenUpdated){
+                if(!hasBeenUpdated){
                     allPosts.add(p)
-                //}
+                }
 
                 if(mySubscribedPostsUUID.contains(p.uuid)) // for edit event edit feature
                     mySubscribedPosts.add(p)
@@ -232,6 +235,7 @@ class FoodBuddyModel( val context: ComponentActivity,
         modelScope.launch {
             goFile.uploadBitmapToGoFileIO(image,  { profileImageTakenURL = it })
             println("new: "+profileImageTakenURL)
+            isLoading = false
         }
 
     }

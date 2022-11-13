@@ -173,7 +173,8 @@ fun LoginBody(model: FoodBuddyModel) {
                     end = 30.dp,
                     bottom = 4.dp,
                 ),
-                shape = RoundedCornerShape(30)
+                shape = RoundedCornerShape(30),
+                enabled = !isLoading
             ) {
                 Text(
                     text = "Join other Food Buddies",
