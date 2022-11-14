@@ -51,15 +51,15 @@ class FoodBuddyModel( val context: ComponentActivity,
 
 
     var notificationMessage by mutableStateOf("")
-    var restaurantName      by mutableStateOf("Lorem ipsum")
-    var address             by mutableStateOf("Address")
-    var description         by mutableStateOf("Hello")
-    var postImageURL           by mutableStateOf("ppC1ux")
+    var restaurantName      by mutableStateOf("")
+    var address             by mutableStateOf("")
+    var description         by mutableStateOf("")
+    var postImageURL        by mutableStateOf("ppC1ux")
     var postImageBitmap     by mutableStateOf(loadImageFromFile(R.drawable.empty_image))
     var people              by mutableStateOf("0")
-    var maxPeople           by mutableStateOf("5")
-    var date                by mutableStateOf("10.11.23")
-    var time                by mutableStateOf("18:00")
+    var maxPeople           by mutableStateOf("1")
+    var date                by mutableStateOf("")
+    var time                by mutableStateOf("")
     var uuidPost            by mutableStateOf("")
 
     private val mqttConnector by lazy { MqttConnector(mqttBroker) }
