@@ -332,7 +332,6 @@ private fun PublishButton(model: FoodBuddyModel) {
             end = 30.dp,
             bottom = 4.dp,
         ),
-        //modifier = Modifier.shadow(elevation = 15.dp, shape = RoundedCornerShape(30)),
         shape = RoundedCornerShape(30),
         enabled = !model.isLoading
     ) {

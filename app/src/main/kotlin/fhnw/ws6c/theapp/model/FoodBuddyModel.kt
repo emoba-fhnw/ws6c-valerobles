@@ -34,7 +34,7 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     val title      = "Food Buddy"
     val mqttBroker = "broker.hivemq.com"
-    val mainTopic  = "hi/foodbuddy/"
+    val mainTopic  = "vv/foodbuddy/"
     val profileTopic = "profiles"
     val postsTopic = "posts/"
 
@@ -113,21 +113,15 @@ class FoodBuddyModel( val context: ComponentActivity,
             topic        = "$mainTopic$postsTopic",
             onNewMessage = {
 
-                var hasBeenUpdated = false
+
                 print("incoming post")
                 val p  = Post(it)
                 // p.organizer.downloadProfilePicture()
-                allPosts.forEachIndexed { index, post ->
-                    if(post.uuid == p.uuid) {
-                        allPosts.removeAt(index)
-                        allPosts.add(index,post)
-                        hasBeenUpdated = true
-                    }
+                // checkUpdate(p)
+                allPosts.add(p)
 
-                }
-                if(!hasBeenUpdated){
-                    allPosts.add(p)
-                }
+
+
 
                 if(mySubscribedPostsUUID.contains(p.uuid)) // for edit event edit feature
                     mySubscribedPosts.add(p)
@@ -138,6 +132,26 @@ class FoodBuddyModel( val context: ComponentActivity,
 
             }
         )
+
+
+    }
+
+    fun checkUpdate(p: Post){
+        var hasBeenUpdated = false
+
+            allPosts.forEachIndexed { index, post ->
+                if (post.uuid == p.uuid) {
+                    println("update")
+                    allPosts.add(index, post)
+                    //allPosts.removeAt(index-1)
+
+                    hasBeenUpdated = true
+                }
+
+            }
+            if (!hasBeenUpdated) {
+                allPosts.add(p)
+            }
 
 
     }
@@ -303,17 +317,23 @@ class FoodBuddyModel( val context: ComponentActivity,
         mqttConnector.subscribe(
             topic = mainTopic+postsTopic+uuidPostToSubscribe+"/"+me.uuid+"/",
             onNewMessage = {
+                val ps = PostStatus(it)
 
-            val ps = PostStatus(it)
+            modelScope.launch {
 
+                if (ps.status == Status.ACCEPTED) {
+                    me.acceptedStatus.add(ps)
+                    println(me.acceptedStatus)
+                    getAcceptedPost()
+                }
 
-            if (ps.status == Status.ACCEPTED)
-                me.acceptedStatus.add(ps)
-                println(me.acceptedStatus)
-                getAcceptedPost()
-            if (ps.status == Status.DECLINED)
-                me.declinedStatus.add(ps)
-                getDeclinedPosts()
+                if (ps.status == Status.DECLINED) {
+                    me.declinedStatus.add(ps)
+                    getDeclinedPosts()
+                }
+
+            }
+
 
             }
         )
@@ -337,9 +357,10 @@ class FoodBuddyModel( val context: ComponentActivity,
         publishPostUpdate(uuidPerson,ps)
         myCreatedPosts.find { p -> p.uuid ==uuidPost }?.addPerson()
         val m = myCreatedPosts.find { p -> p.uuid ==uuidPost }
+        println("updated post before sending :"+m)
         if (m != null) {
-            mqttConnector.publishPost(mainTopic+postsTopic,
-                m)
+           // mqttConnector.publishPost(topic = mainTopic+postsTopic, post = m) // TODO send update
+            println("has been sent")
         }
 
 

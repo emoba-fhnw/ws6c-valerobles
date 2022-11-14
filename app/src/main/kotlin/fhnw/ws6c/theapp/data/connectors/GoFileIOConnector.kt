@@ -12,17 +12,7 @@ import java.net.URL
 import java.nio.charset.StandardCharsets
 import javax.net.ssl.HttpsURLConnection
 
-/*
 
-Eintrag im AndroidManifest.xml
-
-    <!-- Zugriff auf's Internet -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-*/
-
-// token generieren: curl https://store4.gofile.io/createAccount
 class GoFileIOConnector() {
     val token = "cuE3ne4VyaGNN24Uk717IEZB5LjfXZvF"
     private val UPLOAD_URL1 = "https://store"
@@ -40,7 +30,7 @@ class GoFileIOConnector() {
         val twoHyphens = "--"
         val boundary = "*****Boundary*****"
 
-        val uploadUrl = UPLOAD_URL1+serverCounter+UPLOAD_URL2
+        val uploadUrl = UPLOAD_URL1+3+UPLOAD_URL2
 
         with(URL(uploadUrl).openConnection() as HttpsURLConnection) {
 
@@ -63,6 +53,8 @@ class GoFileIOConnector() {
             request.close()
 
             //Response
+
+
             println("resposne code . "+ responseCode)
             val response = message()
             val parentFolder =
@@ -119,6 +111,7 @@ class GoFileIOConnector() {
         onError: (exception: Exception) -> Unit = { e -> e.printStackTrace() }
     ) {
         val url = downloadJSONFromGoFileIO(parentFolder)
+        print(url)
         with(URL(url).openConnection() as HttpsURLConnection) {
 
             addRequestProperty(
@@ -173,6 +166,7 @@ class GoFileIOConnector() {
 
     // ein paar hilfreiche Extension Functions
     private fun HttpsURLConnection.message(): String {
+        Thread.sleep(2_000)
         val reader = BufferedReader(InputStreamReader(this.inputStream, StandardCharsets.UTF_8))
         val message = reader.readText()
         reader.close()
