@@ -50,7 +50,7 @@ class FoodBuddyModel( val context: ComponentActivity,
 
 
 
-    var notificationMessage by mutableStateOf("")
+    var notificationMessage  by mutableStateOf("")
     var restaurantName      by mutableStateOf("")
     var address             by mutableStateOf("")
     var description         by mutableStateOf("")

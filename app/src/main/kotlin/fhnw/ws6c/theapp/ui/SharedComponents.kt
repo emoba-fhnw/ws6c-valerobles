@@ -79,21 +79,21 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                         style = typography.h1,
                                         color = colors.primary
                                     )
-                                    Spacer(modifier = Modifier.weight(0.5f))
-                                    Column() {
-                                        Text(
+                                }
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Row() {
+                                    Text(
                                             text = date,
                                             style = typography.h2,
                                             color = colors.onSurface
-                                        )
-                                        Text(
-                                            text = "@ $time",
+                                    )
+                                    Text(
+                                            text = " @ $time",
                                             style = typography.h2,
                                             color = colors.onSurface
-                                        )
-                                    }
+                                    )
                                 }
-                                Spacer(modifier = Modifier.height(30.dp))
+                                Spacer(modifier = Modifier.height(20.dp))
                                 Row() {
                                     Text(
                                         text = address,

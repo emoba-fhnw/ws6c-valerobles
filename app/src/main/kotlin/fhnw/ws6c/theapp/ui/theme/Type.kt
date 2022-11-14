@@ -33,6 +33,6 @@ val typography = Typography(
     ),
     h4 = TextStyle(
         letterSpacing = 1.15.sp,
-        fontSize = 12.sp
+        fontSize = 13.sp
     )
 )
