@@ -33,6 +33,7 @@ internal class PostTest {
         val post : Post = Post(postAsJSON)
         assertTrue(post.uuid == "e6233736-e4ee-4dc2-9aee-d030d8b391e1")
         assertTrue(post.organizer.name == "Ana")
+        assertTrue(post.restaurantName == "lili's")
 
 
     }

@@ -139,19 +139,19 @@ class FoodBuddyModel( val context: ComponentActivity,
     fun checkUpdate(p: Post){
         var hasBeenUpdated = false
 
-            allPosts.forEachIndexed { index, post ->
-                if (post.uuid == p.uuid) {
-                    println("update")
-                    allPosts.add(index, post)
-                    //allPosts.removeAt(index-1)
+       allPosts.forEachIndexed { index, post ->
+           if (post.uuid == p.uuid) {
+               println("update")
+               allPosts.add(index, post)
+               //allPosts.removeAt(index-1)
 
-                    hasBeenUpdated = true
-                }
+               hasBeenUpdated = true
+           }
 
-            }
-            if (!hasBeenUpdated) {
-                allPosts.add(p)
-            }
+       }
+       if (!hasBeenUpdated) {
+           allPosts.add(p)
+       }
 
 
     }

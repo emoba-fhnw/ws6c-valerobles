@@ -61,6 +61,7 @@ fun MyRequests(model: FoodBuddyModel) {
         } else {
             Column() {
                 AcceptedBody(model.acceptedPosts, model)
+                Spacer(modifier = Modifier.height(80.dp))
                 DeclinedBody(model.declinedPosts, model)
             }
 

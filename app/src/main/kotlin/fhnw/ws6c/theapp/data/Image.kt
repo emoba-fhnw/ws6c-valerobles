@@ -11,6 +11,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-data class Image(var url: String){
+class Image(var url: String){
 
 }
