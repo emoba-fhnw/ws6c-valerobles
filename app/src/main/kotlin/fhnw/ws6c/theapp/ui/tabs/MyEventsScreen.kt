@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fhnw.ws6c.R
@@ -104,6 +105,7 @@ private fun Profiles(profile: Profile, model: FoodBuddyModel, post: Post) {
             modifier = Modifier
                 .size(50.dp)
                 .padding(end = 10.dp)
+                .clip(RoundedCornerShape(15))
         )
         Text(profile.name)
         Spacer(Modifier.weight(1f))
