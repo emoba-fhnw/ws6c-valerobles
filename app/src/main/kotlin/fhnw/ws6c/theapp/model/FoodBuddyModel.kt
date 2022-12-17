@@ -28,6 +28,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class FoodBuddyModel( val context: ComponentActivity,
                      private val cameraAppConnector: CameraAppConnector) {
@@ -49,8 +50,8 @@ class FoodBuddyModel( val context: ComponentActivity,
 
 
 
-
-    var notificationMessage  by mutableStateOf("")
+    var errorNotification   by mutableStateOf("")
+    var notificationMessage by mutableStateOf("")
     var restaurantName      by mutableStateOf("")
     var address             by mutableStateOf("")
     var description         by mutableStateOf("")
@@ -156,20 +157,42 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     }
 
-    fun publishMyPost(){
-        uuidPost = UUID.randomUUID().toString()
-        val post = Post(uuidPost,me, restaurantName, address, description, Image(url= postImageURL), people.toInt(), maxPeople.toInt(), date, time)
-        mqttConnector.publishPost(
-            topic       = mainTopic+postsTopic,
-            post     = post,
-            onPublished = {
-                post.downloadImageFromText()
-                allPosts.add(post)
-                myCreatedPosts.add(post)
-                resetPostPlaceHolders()
+    fun publishMyPost(model: FoodBuddyModel) {
+        errorNotification = ""
+        val errors = ArrayList<String>()
+        if (restaurantName.length < 3) {
+            errors.add("Restaurant name must be at last three symbols");
+        }
+        if (address != "") {
+            errors.add("Address must not be null");
+        }
+        if (maxPeople.toInt() > 99) {
+            errors.add("There can't be more than 99 persons");
+        }
+        if (maxPeople.toInt() < 1) {
+            errors.add("There have to be as minimum 1 person")
+        }
 
-            })
-        subscribeToGetRegistrations(uuidPost)
+        if (errors.isEmpty()) {
+            uuidPost = UUID.randomUUID().toString()
+            val post = Post(uuidPost,me, restaurantName, address, description, Image(url= postImageURL), people.toInt(), maxPeople.toInt(), date, time)
+            mqttConnector.publishPost(
+                topic       = mainTopic+postsTopic,
+                post     = post,
+                onPublished = {
+                    post.downloadImageFromText()
+                    allPosts.add(post)
+                    myCreatedPosts.add(post)
+                    resetPostPlaceHolders()
+
+                })
+            subscribeToGetRegistrations(uuidPost)
+            model.showBottomSheetCreatePost = false
+        } else {
+            for(i in errors) {
+                model.errorNotification += i + System.lineSeparator()
+            }
+        }
     }
 
     private fun resetPostPlaceHolders(){

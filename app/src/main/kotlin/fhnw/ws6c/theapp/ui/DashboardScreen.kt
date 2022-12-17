@@ -319,8 +319,7 @@ fun PostCard(
 private fun PublishButton(model: FoodBuddyModel) {
     Button(
         onClick = {
-            model.publishMyPost()
-            model.showBottomSheetCreatePost = false
+            model.publishMyPost(model)
         },
         colors = ButtonDefaults.buttonColors(
             backgroundColor = colors.primary,
@@ -785,6 +784,11 @@ fun BottomSheetCreate(model: FoodBuddyModel) {
                 Spacer(modifier = Modifier.height(10.dp))
                 PublishButton(model = model)
                 Spacer(modifier = Modifier.height(30.dp))
+                Text(
+                    style = typography.h4,
+                    text = model.errorNotification,
+                    color = colors.error
+                )
 
             }
 
