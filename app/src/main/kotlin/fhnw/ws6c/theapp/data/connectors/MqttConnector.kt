@@ -162,8 +162,8 @@ class MqttConnector (mqttBroker: String,
             .topic(topic)
             .payload(message.asPayload())
             .qos(qos)
-            .retain(false)  //Message soll nicht auf dem Broker gespeichert werden
-            .messageExpiryInterval(60) //TODO
+            .retain(true)  //Message soll nicht auf dem Broker gespeichert werden
+            .messageExpiryInterval( 86400 * 5) //TODO
             .send()
             .whenComplete {_, throwable ->
                 if(throwable != null){

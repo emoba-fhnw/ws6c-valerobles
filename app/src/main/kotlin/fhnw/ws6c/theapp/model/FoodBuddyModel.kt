@@ -8,6 +8,8 @@ import androidx.activity.ComponentActivity
 import androidx.annotation.DrawableRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -108,6 +110,10 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     var acceptedPosts = mutableStateListOf<Post>()
     var declinedPosts = mutableStateListOf<Post>()
+
+    var noNotification = Icons.Filled.Notifications
+    var newNotification = Icons.Filled.NotificationsActive
+    var notificationStatus by mutableStateOf(noNotification)
 
     fun connectAndSubscribe(){
         mqttConnector.connectAndSubscribe(
@@ -321,10 +327,10 @@ class FoodBuddyModel( val context: ComponentActivity,
                 if (temp != null) {
                     if(!temp.contains(p)){
                         myCreatedPosts.find {post -> post.uuid ==uuidPostToSubscribe }?.profilesWantingToJoin?.add(p)
+                        notificationStatus = newNotification
                     }
                 }
-                //myCreatedPosts.find {post -> post.uuid ==uuidPostToSubscribe }?.profilesWantingToJoin?.add(p)
-                println("Incoming profile"+ p)
+
 
 
             }
@@ -347,12 +353,15 @@ class FoodBuddyModel( val context: ComponentActivity,
                     me.acceptedStatus.add(ps)
                     println(me.acceptedStatus)
                     getAcceptedPost()
+
                 }
 
                 if (ps.status == Status.DECLINED) {
                     me.declinedStatus.add(ps)
                     getDeclinedPosts()
                 }
+
+                notificationStatus = newNotification
 
             }
 

@@ -97,6 +97,7 @@ private fun Bar(model: FoodBuddyModel) {
                         themeSwitchIcon = Icons.Filled.LightMode;
                     } else {
                         themeSwitchIcon = Icons.Filled.DarkMode;
+
                     }
                 },
             ) {
@@ -107,10 +108,12 @@ private fun Bar(model: FoodBuddyModel) {
                     modifier = Modifier.size(30.dp)
                 )
             }
+
             IconButton(
-                onClick = { model.currentScreen = Screen.TABSCREEN }) {
+                onClick = { model.currentScreen = Screen.TABSCREEN
+                                notificationStatus = noNotification}) {
                 Icon(
-                    Icons.Filled.Notifications,
+                    notificationStatus,
                     contentDescription = "",
                     tint = colors.primary,
                     modifier = Modifier.size(30.dp)
