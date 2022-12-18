@@ -10,6 +10,12 @@ import fhnw.ws6c.theapp.data.Post
 import fhnw.ws6c.theapp.data.PostStatus
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
+import java.text.DateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Period
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter.ofPattern
 import java.util.*
 
 
@@ -102,12 +108,19 @@ class MqttConnector (mqttBroker: String,
                     post: Post,
                     onPublished: () -> Unit = {},
                     onError:     () -> Unit = {}) {
+
+        val postDate = post.date
+        val secondFormatter = ofPattern("dd.MM.yyyy")
+        val current = LocalDate.now()
+        val localDateTime = LocalDate.parse(postDate, secondFormatter)
+        val time = Period.between(current,localDateTime).days
+        val messageExpire = time * 86400
         client.publishWith()
             .topic(topic)
             .payload(post.asPayload())
             .qos(qos)
-            .retain(false)
-            .messageExpiryInterval(100) // 86400 = 24h TODO: Change to stay until day of event
+            .retain(true)
+            .messageExpiryInterval(messageExpire.toLong()) // 86400 = 24h TODO: Change to stay until day of event
             .send()
             .whenComplete{_, throwable ->
                 if(throwable != null){

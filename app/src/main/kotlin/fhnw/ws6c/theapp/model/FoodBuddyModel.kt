@@ -161,7 +161,7 @@ class FoodBuddyModel( val context: ComponentActivity,
         if (restaurantName.length < 3) {
             errors.add("Restaurant name must be at last three symbols");
         }
-        if (address != "") {
+        if (address == "") {
             errors.add("Address must not be null");
         }
         if (maxPeople.toInt() > 99) {
@@ -174,6 +174,7 @@ class FoodBuddyModel( val context: ComponentActivity,
         if (errors.isEmpty()) {
             uuidPost = UUID.randomUUID().toString()
             val post = Post(uuidPost,me, restaurantName, address, description, Image(url= postImageURL), people.toInt(), maxPeople.toInt(), date, time)
+            println(post.date + post.time)
             mqttConnector.publishPost(
                 topic       = mainTopic+postsTopic,
                 post     = post,

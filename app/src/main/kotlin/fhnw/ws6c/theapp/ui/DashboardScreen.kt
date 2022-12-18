@@ -453,13 +453,18 @@ fun DateInput(model: FoodBuddyModel) {
             year = calendar.get(Calendar.YEAR)
             month = calendar.get(Calendar.MONTH)
             day = calendar.get(Calendar.DAY_OF_MONTH)
-            calendar.time = Date()
+
 
 
             val datePickerDialog = DatePickerDialog(
                 context,
-                { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-                    date = "$dayOfMonth.$month.$year"
+                { _: DatePicker, year: Int, month: Int, day: Int ->
+                    // month is being selected wrong. That's why + 1
+                    val m = month+1
+                    if (m < 10)
+                        date = "$day.0$m.$year"
+                    else
+                        date = "$day.$m.$year"
                 }, year, month, day
             )
 
@@ -478,34 +483,6 @@ fun DateInput(model: FoodBuddyModel) {
         }
     }
 }
-
-
-//            val keyboard = LocalSoftwareKeyboardController.current
-//            TextField(
-//                textStyle = TextStyle(fontSize = 15.sp),
-//                modifier = Modifier
-//                    .width(130.dp)
-//                    .height(50.dp)
-//                    .padding(all = 0.dp),
-//                shape = RoundedCornerShape(15.dp),
-//                value = date,
-//                onValueChange = {
-//                    date = it
-//                },
-//                colors = TextFieldDefaults.textFieldColors(
-//                    backgroundColor = Color(237, 237, 237),
-//                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
-//                    unfocusedIndicatorColor = Color.Transparent),
-//                //label = { Text(text = label) },
-//                placeholder = { Text(
-//                    text = "dd.mm.yyyy",
-//                    style = TextStyle(fontSize = 15.sp)
-//                ) },
-//                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-//                keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
-//            )
-//        }
-//    }
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -539,7 +516,10 @@ fun TimeInput(model: FoodBuddyModel) {
             val mTimePickerDialog = TimePickerDialog(
                 mContext,
                 { _, mHour: Int, mMinute: Int ->
-                    time = "$mHour:$mMinute"
+                    if (mMinute < 10)
+                        time = "$mHour:0$mMinute"
+                    else
+                        time = "$mHour:$mMinute"
                 }, mHour, mMinute, false
             )
             OutlinedButton(
