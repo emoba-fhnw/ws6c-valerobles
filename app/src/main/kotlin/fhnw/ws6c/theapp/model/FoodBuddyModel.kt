@@ -116,8 +116,6 @@ class FoodBuddyModel( val context: ComponentActivity,
 
                 print("incoming post")
                 val p  = Post(it)
-                // p.organizer.downloadProfilePicture()
-                // checkUpdate(p)
                 allPosts.add(p)
 
 
@@ -377,8 +375,9 @@ class FoodBuddyModel( val context: ComponentActivity,
         me.acceptedStatus.forEach { ap ->
             mySubscribedPosts.forEach { p ->
                 if (p.uuid == ap.postUUID)
-                acceptedPosts.add(p)
-                me.acceptedStatus.remove(ap)
+                    p.addPerson()
+                    acceptedPosts.add(p)
+                    me.acceptedStatus.remove(ap)
 
             }
         }
