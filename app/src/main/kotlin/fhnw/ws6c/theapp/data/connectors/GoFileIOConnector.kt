@@ -30,7 +30,7 @@ class GoFileIOConnector() {
         val twoHyphens = "--"
         val boundary = "*****Boundary*****"
 
-        val uploadUrl = UPLOAD_URL1+3+UPLOAD_URL2
+        val uploadUrl = UPLOAD_URL1+4+UPLOAD_URL2
 
         with(URL(uploadUrl).openConnection() as HttpsURLConnection) {
 
@@ -83,7 +83,7 @@ class GoFileIOConnector() {
         // https://api.gofile.io/getContent?contentId=f9199ed1-bbc2-4b75-a37e-078eb79eda2d&token=HstUK9Ye5sLPhsKsI1uQ12GiTAfqra5P&websiteToken=12345
         val url = "https://api.gofile.io/getContent?contentId=$parentFolder&token=$token&websiteToken=12345"
         var targetLink = ""
-        print(url)
+        print("downloadJSONFromGoFileIO " + url)
         with(URL(url).openConnection() as HttpsURLConnection) {
             addRequestProperty(
                 "User-Agent",

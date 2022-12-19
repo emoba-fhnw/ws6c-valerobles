@@ -432,9 +432,9 @@ class FoodBuddyModel( val context: ComponentActivity,
         }
     }
 
-
-
-
+    fun saveChanges(model: FoodBuddyModel) {
+        TODO("Not yet implemented")
+    }
 
 
 }

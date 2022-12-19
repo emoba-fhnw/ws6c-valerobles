@@ -14,11 +14,12 @@ import androidx.compose.material.*
 import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
@@ -33,29 +34,24 @@ import fhnw.ws6c.theapp.ui.theme.WorkshopSixAppTheme
 import fhnw.ws6c.theapp.ui.theme.typography
 
 
-var expanded by mutableStateOf(false)
-var selectedItem by mutableStateOf("Female")
-val genderList = listOf("Female", "Male", "Non-Binary", "Other")
-
-var notification by mutableStateOf("")
-
 private var tempDate by mutableStateOf("")
 private var tempName by mutableStateOf("")
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun LoginScreen(model: FoodBuddyModel) {
+fun EditProfile(model: FoodBuddyModel) {
     WorkshopSixAppTheme(model.isDarkMode) {
         Scaffold(
-            content                      = {LoginBody(model)} ,
-            isFloatingActionButtonDocked = true
+            content                      = {Body(model)} ,
+            isFloatingActionButtonDocked = true,
+            topBar = { Bar(model) }
         )
     }
 }
 
 @Composable
-private fun LoginBody(model: FoodBuddyModel) {
+private fun Body(model: FoodBuddyModel) {
     with(model){
 
         val launcher =
@@ -96,12 +92,7 @@ private fun LoginBody(model: FoodBuddyModel) {
                 style = typography.h4,
                 color = Color.Red
             )
-            Text(
-                text = "Create your Profile",
-                textAlign = TextAlign.Center,
-                style = typography.h1,
-                color = colors.primary
-            )
+
             
             //  IMAGE
             if(photoWasTaken) {
@@ -116,7 +107,7 @@ private fun LoginBody(model: FoodBuddyModel) {
 
             } else {
                 Image(
-                    bitmap = loadImageFromFile(R.drawable.blanc_profile), contentDescription = "",
+                    bitmap = profileImageTakenBitmap, contentDescription = "",
                     Modifier
                         .size(180.dp)
                         .padding(10.dp)
@@ -147,9 +138,13 @@ private fun LoginBody(model: FoodBuddyModel) {
             Spacer(modifier = Modifier.height(50.dp))
             //  NAME     // AGE
             Row() {
-                LabelAndPlaceHolderName(model, "First Name", "Your name")
-                Spacer(modifier = Modifier.width(30.dp))
-                LabelAndPlaceHolderAge(model, "Date Of Birth", "dd.mm.yyyy")
+                LabelAndPlaceHolderName(model, "First Name", me.name)
+                Text(
+                    text = "Age " + me.age.toString(),
+                    style = typography.h2,
+                    color = colors.secondary
+
+                )
             }
             Spacer(modifier = Modifier.height(50.dp))
             //  GENDER DROPDOWN
@@ -165,7 +160,7 @@ private fun LoginBody(model: FoodBuddyModel) {
             //  SAVE Profile Button and go to dashboard
 
             Button(
-                onClick = { checkValidityAndChangeScreen(model) },
+                onClick = { model.saveChanges(model) },
                 colors = buttonColors(colors.primary, contentColor = Color.White),
                 contentPadding = PaddingValues(
                     start = 30.dp,
@@ -177,7 +172,7 @@ private fun LoginBody(model: FoodBuddyModel) {
                 enabled = !isLoading
             ) {
                 Text(
-                    text = "Join other Food Buddies",
+                    text = "Update",
                     style = typography.h4
                 )
             }
@@ -189,6 +184,57 @@ private fun LoginBody(model: FoodBuddyModel) {
 }
 
 
+
+
+@Composable
+private fun Bar(model: FoodBuddyModel) {
+    with(model) {
+        TopAppBar(
+            backgroundColor = colors.background,
+            modifier = Modifier
+                .shadow(elevation = 20.dp, spotColor = colors.onSurface)
+                .height(70.dp)
+                .clip(RoundedCornerShape(0.dp, 0.dp, 10.dp, 10.dp)),
+        ) {
+            IconButton(
+                onClick = { model.currentScreen = Screen.DASHBOARD}) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "",
+                    tint = colors.primary,
+                    modifier = Modifier.size(30.dp)
+                )
+            }
+            Spacer(Modifier.weight(0.5f))
+            Text(
+                text = "Edit your profile",
+                style = typography.h1,
+                color = colors.onSurface,
+                modifier = Modifier.padding(10.dp)
+            )
+            Spacer(Modifier.weight(0.5f))
+            IconButton(
+                onClick = {
+                    isDarkMode = !isDarkMode;
+                    if (isDarkMode) {
+                        themeSwitchIcon = Icons.Filled.LightMode;
+                    } else {
+                        themeSwitchIcon = Icons.Filled.DarkMode;
+
+                    }
+                },
+            ) {
+                Icon(
+                    themeSwitchIcon,
+                    contentDescription = "",
+                    tint = colors.primary,
+                    modifier = Modifier.size(30.dp)
+                )
+            }
+
+        }
+    }
+}
 
 @Composable
 private fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, placeholder: String) {
@@ -226,122 +272,5 @@ private fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, place
     }
 }
 
-@Composable
-fun LabelAndPlaceHolderAge(model: FoodBuddyModel, label : String, placeholder: String) {
-    with(model) {
-        Column() {
-            Text(
-                text = "$label*",
-                style = typography.h2,
-                color = colors.secondary
-
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            TextField(
-                textStyle = typography.h3,
-                modifier = Modifier
-                    .width(140.dp)
-                    .height(50.dp)
-                    .padding(all = 0.dp),
-                shape = RoundedCornerShape(15.dp),
-                value = tempDate,
-                onValueChange = {
-                    tempDate = it
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = colors.surface,
-                    focusedIndicatorColor =  Color.Transparent, //hide the indicator
-                    unfocusedIndicatorColor = Color.Transparent),
-                //label = { Text(text = label) },
-                placeholder = { Text(
-                    text = placeholder,
-                    style = typography.h3
-                ) },
-            )
-        }
-    }
-}
-
-
-
-@Composable
-fun DropDownMenuGender(model: FoodBuddyModel){
-
-        Box(modifier = Modifier.width(150.dp)) {
-            Column() {
-                Text(
-                    text = "Gender*",
-                    style = typography.h2,
-                    color = colors.secondary
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                TextButton(
-                    onClick = { expanded = true },
-                    modifier = Modifier.width(100.dp),
-                    colors = buttonColors(
-                        backgroundColor = colors.surface,
-                        contentColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(30)
-                ) {
-                    Row {
-                        Text(
-                            text = "$selectedItem",
-                            style = typography.h3,
-                            color = colors.secondary
-                        )
-                        Icon(
-                            Icons.Default.ArrowDropDown,
-                            contentDescription = "",
-                            tint = colors.secondary
-                        )
-                    }
-                }
-            }
-
-
-            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                genderList.forEach {
-                    DropdownMenuItem(onClick = {
-                        expanded = false
-                        selectedItem = it
-                    }) {
-                        Text(
-                            text = it,
-                            color = colors.secondary
-                        )
-
-                    }
-                }
-            }
-        }
-
-}
-
-
-fun checkValidityAndChangeScreen(model: FoodBuddyModel) {
-    with(model){
-
-        if (tempDate != "" && tempName != "") {
-
-
-            me.name = tempName
-            dateOfBirth = tempDate
-            getAge(dateOfBirth)
-            me.gender = selectedItem
-            me.image = fhnw.emoba.thatsapp.data.Image(profileImageTakenURL)
-
-
-            publishMyProfile()
-
-            currentScreen = Screen.DASHBOARD
-
-        } else {
-            notification = "Please make sure you fill out everything"
-        }
-
-    }
-
-}
 
 

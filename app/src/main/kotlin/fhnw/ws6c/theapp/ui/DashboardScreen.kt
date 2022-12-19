@@ -119,6 +119,15 @@ private fun Bar(model: FoodBuddyModel) {
                     modifier = Modifier.size(30.dp)
                 )
             }
+            IconButton(
+                onClick = { model.currentScreen = Screen.EDITSCREEN}) {
+                Icon(
+                    Icons.Filled.Settings,
+                    contentDescription = "",
+                    tint = colors.primary,
+                    modifier = Modifier.size(30.dp)
+                )
+            }
         }
     }
 }

@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import fhnw.ws6c.WorkshopSixApp
 import fhnw.ws6c.theapp.data.connectors.CameraAppConnector
 import fhnw.ws6c.theapp.model.FoodBuddyModel
+import fhnw.ws6c.theapp.ui.FoodBuddyUI
 
-import fhnw.ws6c.theapp.ui.MqttUI
 
 
 object TheApp : WorkshopSixApp {
@@ -20,7 +20,7 @@ object TheApp : WorkshopSixApp {
 
     @Composable
     override fun CreateUI() {
-        MqttUI(model)
+        FoodBuddyUI(model)
     }
 
 }

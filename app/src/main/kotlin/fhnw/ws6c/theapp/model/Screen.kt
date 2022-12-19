@@ -5,4 +5,5 @@ enum class Screen  {
     DASHBOARD,
     NOTIFICATIONS,
     TABSCREEN,
+    EDITSCREEN
 }

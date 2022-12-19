@@ -8,7 +8,7 @@ import fhnw.ws6c.theapp.ui.tabs.TabsScreen
 
 
 @Composable
-fun MqttUI(model: FoodBuddyModel) {
+fun FoodBuddyUI(model: FoodBuddyModel) {
 
     Crossfade(targetState = model.currentScreen) { screen ->
         when (screen) {
@@ -23,6 +23,9 @@ fun MqttUI(model: FoodBuddyModel) {
             }
             Screen.TABSCREEN -> {
                 TabsScreen(model = model)
+            }
+            Screen.EDITSCREEN -> {
+                EditProfile(model = model)
             }
 
 
