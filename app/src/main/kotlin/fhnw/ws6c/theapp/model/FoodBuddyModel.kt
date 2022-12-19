@@ -57,7 +57,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     var restaurantName      by mutableStateOf("")
     var address             by mutableStateOf("")
     var description         by mutableStateOf("")
-    var postImageURL        by mutableStateOf("ppC1ux")
+    var postImageURL        by mutableStateOf("XABAqu")
     var postImageBitmap     by mutableStateOf(loadImageFromFile(R.drawable.empty_image))
     var people              by mutableStateOf("0")
     var maxPeople           by mutableStateOf("1")
@@ -91,7 +91,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     var dateOfBirth by mutableStateOf("21.06.1998")
     var gender by mutableStateOf("Female")
     var age by mutableStateOf(24)
-    var profileImageTakenURL by mutableStateOf("IXB28E")
+    var profileImageTakenURL by mutableStateOf("zihILd")
     var profileImageTakenBitmap by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
 
     var me         = Profile(
