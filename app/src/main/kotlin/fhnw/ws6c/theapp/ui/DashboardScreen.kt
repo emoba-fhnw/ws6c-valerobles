@@ -466,8 +466,6 @@ fun DateInput(model: FoodBuddyModel) {
             month = calendar.get(Calendar.MONTH)
             day = calendar.get(Calendar.DAY_OF_MONTH)
 
-
-
             val datePickerDialog = DatePickerDialog(
                 context,
                 { _: DatePicker, year: Int, month: Int, day: Int ->
@@ -479,6 +477,8 @@ fun DateInput(model: FoodBuddyModel) {
                         date = "$day.$m.$year"
                 }, year, month, day
             )
+
+            datePickerDialog.datePicker.minDate = calendar.timeInMillis
 
             OutlinedButton(
                 onClick = { datePickerDialog.show() },
