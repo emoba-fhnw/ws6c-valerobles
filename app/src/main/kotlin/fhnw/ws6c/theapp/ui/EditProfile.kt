@@ -135,7 +135,7 @@ private fun Body(model: FoodBuddyModel) {
                     style = typography.h4
                 )
             }
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             //  NAME     // AGE
             Row() {
                 LabelAndPlaceHolderName(model, "First Name", me.name)
@@ -146,10 +146,14 @@ private fun Body(model: FoodBuddyModel) {
 
                 )
             }
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             //  GENDER DROPDOWN
             Row(modifier = Modifier.align(Alignment.Start).padding(start = 50.dp)) {
                 DropDownMenuGender(model)
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(modifier = Modifier.align(Alignment.Start).padding(start = 50.dp)) {
+                DescriptonPerson(model)
             }
 
 

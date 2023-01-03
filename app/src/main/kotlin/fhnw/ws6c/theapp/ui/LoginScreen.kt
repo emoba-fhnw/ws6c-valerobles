@@ -10,6 +10,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.material.MaterialTheme.colors
@@ -17,12 +19,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -144,17 +149,21 @@ private fun LoginBody(model: FoodBuddyModel) {
                     style = typography.h4
                 )
             }
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             //  NAME     // AGE
             Row() {
                 LabelAndPlaceHolderName(model, "First Name", "Your name")
                 Spacer(modifier = Modifier.width(30.dp))
                 LabelAndPlaceHolderAge(model, "Date Of Birth", "dd.mm.yyyy")
             }
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             //  GENDER DROPDOWN
             Row(modifier = Modifier.align(Alignment.Start).padding(start = 50.dp)) {
                 DropDownMenuGender(model)
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(modifier = Modifier.align(Alignment.Start).padding(start = 50.dp)) {
+                DescriptonPerson(model)
             }
 
 
@@ -316,6 +325,50 @@ fun DropDownMenuGender(model: FoodBuddyModel){
             }
         }
 
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun DescriptonPerson(model: FoodBuddyModel) {
+    with(model) {
+        Column() {
+            Text(
+                style = typography.h2,
+                text = "Description",
+                color = colors.primary
+
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            val keyboard = LocalSoftwareKeyboardController.current
+            TextField(
+                maxLines = 5,
+                singleLine = false,
+                textStyle = typography.h3,
+                modifier = Modifier
+                    .width(300.dp)
+                    .height(100.dp)
+                    .padding(all = 0.dp),
+                shape = RoundedCornerShape(15.dp),
+                value = description,
+                onValueChange = {
+                    description = it
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = colors.surface,
+                    focusedIndicatorColor = Color.Transparent, //hide the indicator
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                placeholder = {
+                    Text(
+                        style = typography.h3,
+                        text = "Describe your Person"
+                    )
+                },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { keyboard?.hide() })
+            )
+        }
+    }
 }
 
 

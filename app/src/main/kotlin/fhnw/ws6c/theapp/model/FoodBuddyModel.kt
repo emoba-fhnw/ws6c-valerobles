@@ -93,6 +93,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     var age by mutableStateOf(24)
     var profileImageTakenURL by mutableStateOf("zihILd")
     var profileImageTakenBitmap by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
+    var personDescription by mutableStateOf("This is the description of my profil. Thank you for looking me up and I hope i can interesst you in my events")
 
     var me         = Profile(
         UUID.randomUUID().toString(),
@@ -100,7 +101,8 @@ class FoodBuddyModel( val context: ComponentActivity,
         name,
         age,
         gender,
-        Image(profileImageTakenURL)
+        Image(profileImageTakenURL),
+        personDescription
     )
 
 

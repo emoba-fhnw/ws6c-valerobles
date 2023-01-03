@@ -6,9 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.asImageBitmap
 import fhnw.emoba.thatsapp.data.Image
 import fhnw.emoba.thatsapp.data.gofileio.GoFileIOConnector
-import fhnw.ws6c.theapp.data.Post
 import fhnw.ws6c.theapp.data.PostStatus
-import fhnw.ws6c.theapp.data.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -19,7 +17,8 @@ data class Profile(val uuid: String,
                    var name: String,
                    var age: Int,
                    var gender: String,
-                   var image: Image) {
+                   var image: Image,
+                   var personDescription: String) {
 
     val DEFAULT_ICON: Bitmap = Bitmap.createBitmap(
         120,
@@ -39,7 +38,8 @@ data class Profile(val uuid: String,
         name = jsonObject.getString("name"),
         age = jsonObject.getInt("age"),
         gender = jsonObject.getString("gender"),
-        image = Image(url=jsonObject.getString("image"))) {
+        image = Image(url=jsonObject.getString("image")),
+        personDescription = jsonObject.getString("personDescription")) {
         downloadProfilePicture()
     }
 
@@ -59,7 +59,8 @@ data class Profile(val uuid: String,
         "name": "$name",
         "age": "$age",
         "gender": "$gender",
-        "image": "${image.url}"
+        "image": "${image.url}",
+        "personDescription": "$personDescription"
      
         }
         """.trimIndent()
