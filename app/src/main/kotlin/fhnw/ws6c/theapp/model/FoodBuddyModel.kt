@@ -37,7 +37,7 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     val title      = "Food Buddy"
     val mqttBroker = "broker.hivemq.com"
-    val mainTopic  = "tt/foodbuddy/"
+    val mainTopic  = "hi/foodbuddy/"
     val profileTopic = "profiles"
     val postsTopic = "posts/"
 
@@ -70,7 +70,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     private val modelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
 
-    var currentScreen by mutableStateOf(Screen.DASHBOARD)
+    var currentScreen by mutableStateOf(Screen.LOGINSCREEN)
     var currentTab by mutableStateOf(Tab.MYEVENTS)
     var currentPost: Post? by mutableStateOf(null)
 
@@ -93,7 +93,8 @@ class FoodBuddyModel( val context: ComponentActivity,
     var age by mutableStateOf(24)
     var profileImageTakenURL by mutableStateOf("BAMv51")
     var profileImageTakenBitmap by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
-    var personDescription by mutableStateOf("This is the description of my profil. Thank you for looking me up and I hope i can interesst you in my events")
+    //var personDescription by mutableStateOf("This is the description of my profil. Thank you for looking me up and I hope i can interesst you in my events")
+    var personDescription by mutableStateOf("Describe yourself")
 
 
 
@@ -460,6 +461,7 @@ class FoodBuddyModel( val context: ComponentActivity,
         }
         if(profileHasChanged){
             publishMyProfile()
+            currentScreen = Screen.DASHBOARD
 
         }
 

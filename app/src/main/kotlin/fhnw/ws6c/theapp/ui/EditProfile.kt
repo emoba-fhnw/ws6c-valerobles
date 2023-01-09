@@ -139,12 +139,29 @@ private fun Body(model: FoodBuddyModel) {
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
-            //  GENDER DROPDOWN
-            Row(modifier = Modifier.align(Alignment.Start).padding(start = 50.dp)) {
-                DropDownMenuGender(model)
+
+            Row(modifier = Modifier
+                .align(Alignment.Start)
+                .padding(start = 50.dp)) {
+
+                Text(
+                    text = "Gender",
+                    style = typography.h2,
+                    color = colors.secondary
+
+                )
+                Text(
+                    text = me.gender,
+                    style = typography.h2,
+                    color = colors.primary
+
+                )
+
             }
             Spacer(modifier = Modifier.height(10.dp))
-            Row(modifier = Modifier.align(Alignment.Start).padding(start = 50.dp)) {
+            Row(modifier = Modifier
+                .align(Alignment.Start)
+                .padding(start = 50.dp)) {
                 DescriptonPerson(model)
             }
 
@@ -156,8 +173,7 @@ private fun Body(model: FoodBuddyModel) {
             //  SAVE Profile Button and go to dashboard
 
             Button(
-                onClick = { model.saveChanges()
-                          model.currentScreen = Screen.DASHBOARD},
+                onClick = { model.saveChanges() },
                 colors = buttonColors(colors.primary, contentColor = Color.White),
                 contentPadding = PaddingValues(
                     start = 30.dp,
