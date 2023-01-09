@@ -44,8 +44,8 @@ val genderList = listOf("Female", "Male", "Non-Binary", "Other")
 
 var notification by mutableStateOf("")
 
-private var tempDate by mutableStateOf("")
-private var tempName by mutableStateOf("")
+
+
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -349,9 +349,9 @@ fun DescriptonPerson(model: FoodBuddyModel) {
                     .height(100.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
-                value = description,
+                value = tempDescription,
                 onValueChange = {
-                    description = it
+                    tempDescription = it
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = colors.surface,
@@ -361,7 +361,7 @@ fun DescriptonPerson(model: FoodBuddyModel) {
                 placeholder = {
                     Text(
                         style = typography.h3,
-                        text = "Describe your Person"
+                        text = personDescription
                     )
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -375,7 +375,7 @@ fun DescriptonPerson(model: FoodBuddyModel) {
 fun checkValidityAndChangeScreen(model: FoodBuddyModel) {
     with(model){
 
-        if (tempDate != "" && tempName != "") {
+        if (tempDate != "" && tempName != "" && tempDescription != "") {
 
 
             me.name = tempName
@@ -383,6 +383,7 @@ fun checkValidityAndChangeScreen(model: FoodBuddyModel) {
             getAge(dateOfBirth)
             me.gender = selectedItem
             me.image = fhnw.emoba.thatsapp.data.Image(profileImageTakenURL)
+            me.personDescription = tempDescription
 
 
             publishMyProfile()

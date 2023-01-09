@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -122,6 +123,13 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                             text = organizer.name + ", " + organizer.age + ", " + organizer.gender,
                                             style = typography.h2,
                                             color = colors.primary
+                                        )
+                                        Text(
+                                            text = organizer.personDescription,
+                                            style = typography.h3,
+                                            color = colors.primary,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
                                         )
                                     }
                                 }

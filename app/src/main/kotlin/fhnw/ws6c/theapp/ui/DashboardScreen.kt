@@ -471,10 +471,13 @@ fun DateInput(model: FoodBuddyModel) {
                 { _: DatePicker, year: Int, month: Int, day: Int ->
                     // month is being selected wrong. That's why + 1
                     val m = month+1
+                    var mS = m.toString()
+                    var dS = day.toString()
                     if (m < 10)
-                        date = "$day.0$m.$year"
-                    else
-                        date = "$day.$m.$year"
+                        mS = "0$m"
+                    if (day < 10)
+                        dS = "0$dS"
+                    date = "$dS.$mS.$year"
                 }, year, month, day
             )
 
@@ -528,10 +531,13 @@ fun TimeInput(model: FoodBuddyModel) {
             val mTimePickerDialog = TimePickerDialog(
                 mContext,
                 { _, mHour: Int, mMinute: Int ->
+                    var h = mHour.toString()
+                    var m = mMinute.toString()
                     if (mMinute < 10)
-                        time = "$mHour:0$mMinute"
-                    else
-                        time = "$mHour:$mMinute"
+                        m = "0$m"
+                    if (mHour < 10)
+                        h = "0$h"
+                    time = "$h:$m"
                 }, mHour, mMinute, false
             )
             OutlinedButton(

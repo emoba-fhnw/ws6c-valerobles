@@ -33,7 +33,8 @@ data class Post(
                     json.getJSONObject("organizer").getString("name"),
                     json.getJSONObject("organizer").getInt("age"),
                     json.getJSONObject("organizer").getString("gender"),
-                    Image(url=json.getJSONObject("organizer").getString("image"))),
+                    Image(url=json.getJSONObject("organizer").getString("image")),
+                    json.getJSONObject("organizer").getString("personDescription")),
                 json.getString("restaurantName"),
                 json.getString("address"),
                 json.getString("description"),
@@ -93,7 +94,8 @@ data class Post(
                               "name":  "${organizer.name}",
                               "age":  ${organizer.age},
                               "gender":  "${organizer.gender}",
-                              "image":  "${organizer.image.url}" 
+                              "image":  "${organizer.image.url}",
+                              "personDescription": "${organizer.personDescription}"
                             }, 
              "restaurantName": "$restaurantName",
              "address": "$address",

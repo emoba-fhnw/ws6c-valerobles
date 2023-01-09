@@ -17,7 +17,7 @@ class GoFileIOConnector() {
     val token = "cuE3ne4VyaGNN24Uk717IEZB5LjfXZvF"
     private val UPLOAD_URL1 = "https://store"
     private val UPLOAD_URL2 = ".gofile.io/uploadFile"
-    private var serverCounter = 1
+    private var serverCounter = 2
 
     fun uploadBitmapToGoFileIO(
         bitmap: Bitmap,
@@ -30,7 +30,7 @@ class GoFileIOConnector() {
         val twoHyphens = "--"
         val boundary = "*****Boundary*****"
 
-        val uploadUrl = UPLOAD_URL1+4+UPLOAD_URL2
+        val uploadUrl = UPLOAD_URL1+serverCounter+UPLOAD_URL2
 
         with(URL(uploadUrl).openConnection() as HttpsURLConnection) {
 
@@ -55,25 +55,27 @@ class GoFileIOConnector() {
             //Response
 
 
-            println("resposne code . "+ responseCode)
-            val response = message()
-            val parentFolder =
-                JSONObject(response).getJSONObject("data").getString("parentFolder")
-            val fileName = JSONObject(response).getJSONObject("data").getString("fileName")
-            onSuccess(parentFolder)
-//            if (responseCode == 200) {
-//                val response = message()
-//                val parentFolder =
-//                    JSONObject(response).getJSONObject("data").getString("parentFolder")
-//                val fileName = JSONObject(response).getJSONObject("data").getString("fileName")
-//                onSuccess(parentFolder)
-//            } else {
-//                if (serverCounter < 5) {
-//                    serverCounter++
-//                    uploadBitmapToGoFileIO(bitmap, onSuccess, onError)
-//                }
-//                return onError(responseCode, "")
-//            }
+
+//            val response = message()
+//            val parentFolder =
+//                JSONObject(response).getJSONObject("data").getString("parentFolder")
+//            //val fileName = JSONObject(response).getJSONObject("data").getString("fileName")
+//            onSuccess(parentFolder)
+            if (responseCode == 200) {
+                val response = message()
+                val parentFolder =
+                    JSONObject(response).getJSONObject("data").getString("parentFolder")
+                //val fileName = JSONObject(response).getJSONObject("data").getString("fileName")
+                //println("parentFolder: "+parentFolder)
+                onSuccess(parentFolder)
+
+            } else {
+                if (serverCounter < 15) {
+                    serverCounter++
+                    uploadBitmapToGoFileIO(bitmap, onSuccess, onError)
+                }
+                return onError(responseCode, "")
+            }
         }
     }
 

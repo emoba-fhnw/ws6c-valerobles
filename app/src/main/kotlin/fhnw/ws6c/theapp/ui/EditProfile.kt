@@ -23,19 +23,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import fhnw.ws6c.R
 import fhnw.ws6c.theapp.model.FoodBuddyModel
 import fhnw.ws6c.theapp.model.Screen
 import fhnw.ws6c.theapp.ui.theme.WorkshopSixAppTheme
 import fhnw.ws6c.theapp.ui.theme.typography
-
-
-private var tempDate by mutableStateOf("")
-private var tempName by mutableStateOf("")
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -164,7 +156,8 @@ private fun Body(model: FoodBuddyModel) {
             //  SAVE Profile Button and go to dashboard
 
             Button(
-                onClick = { model.saveChanges(model) },
+                onClick = { model.saveChanges()
+                          model.currentScreen = Screen.DASHBOARD},
                 colors = buttonColors(colors.primary, contentColor = Color.White),
                 contentPadding = PaddingValues(
                     start = 30.dp,
@@ -186,6 +179,7 @@ private fun Body(model: FoodBuddyModel) {
         }
     }
 }
+
 
 
 
@@ -275,6 +269,7 @@ private fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, place
         }
     }
 }
+
 
 
 

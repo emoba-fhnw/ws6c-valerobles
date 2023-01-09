@@ -37,7 +37,7 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     val title      = "Food Buddy"
     val mqttBroker = "broker.hivemq.com"
-    val mainTopic  = "vv/foodbuddy/"
+    val mainTopic  = "tt/foodbuddy/"
     val profileTopic = "profiles"
     val postsTopic = "posts/"
 
@@ -57,7 +57,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     var restaurantName      by mutableStateOf("")
     var address             by mutableStateOf("")
     var description         by mutableStateOf("")
-    var postImageURL        by mutableStateOf("XABAqu")
+    var postImageURL        by mutableStateOf("SBwO9c")
     var postImageBitmap     by mutableStateOf(loadImageFromFile(R.drawable.empty_image))
     var people              by mutableStateOf("0")
     var maxPeople           by mutableStateOf("1")
@@ -70,7 +70,7 @@ class FoodBuddyModel( val context: ComponentActivity,
     private val modelScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
 
-    var currentScreen by mutableStateOf(Screen.LOGINSCREEN)
+    var currentScreen by mutableStateOf(Screen.DASHBOARD)
     var currentTab by mutableStateOf(Tab.MYEVENTS)
     var currentPost: Post? by mutableStateOf(null)
 
@@ -91,9 +91,11 @@ class FoodBuddyModel( val context: ComponentActivity,
     var dateOfBirth by mutableStateOf("21.06.1998")
     var gender by mutableStateOf("Female")
     var age by mutableStateOf(24)
-    var profileImageTakenURL by mutableStateOf("zihILd")
+    var profileImageTakenURL by mutableStateOf("BAMv51")
     var profileImageTakenBitmap by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
     var personDescription by mutableStateOf("This is the description of my profil. Thank you for looking me up and I hope i can interesst you in my events")
+
+
 
     var me         = Profile(
         UUID.randomUUID().toString(),
@@ -104,6 +106,11 @@ class FoodBuddyModel( val context: ComponentActivity,
         Image(profileImageTakenURL),
         personDescription
     )
+
+    // temp vars
+    var tempDate by mutableStateOf("")
+    var tempName by mutableStateOf("")
+    var tempDescription by mutableStateOf("")
 
 
 
@@ -182,7 +189,7 @@ class FoodBuddyModel( val context: ComponentActivity,
         if (errors.isEmpty()) {
             uuidPost = UUID.randomUUID().toString()
             val post = Post(uuidPost,me, restaurantName, address, description, Image(url= postImageURL), people.toInt(), maxPeople.toInt(), date, time)
-            println(post.date + post.time)
+            println(post.asJsonString())
             mqttConnector.publishPost(
                 topic       = mainTopic+postsTopic,
                 post     = post,
@@ -307,8 +314,10 @@ class FoodBuddyModel( val context: ComponentActivity,
             message= me.asJson(),
             onPublished = {
                 println(me.asJson())})
+
         photoWasTaken=false
     }
+
 
     fun publishMyProfileToPost(uuid : String){
         mqttConnector.publishProfile(
@@ -434,8 +443,27 @@ class FoodBuddyModel( val context: ComponentActivity,
         }
     }
 
-    fun saveChanges(model: FoodBuddyModel) {
-        TODO("Not yet implemented")
+    fun saveChanges() {
+        var profileHasChanged = false
+
+        if (me.name != tempName) {
+            me.name = tempName
+            profileHasChanged = true
+        }
+        if(me.personDescription != tempDescription){
+            me.personDescription = tempDescription
+            profileHasChanged = true
+        }
+
+        if (photoWasTaken){
+            profileHasChanged = true
+        }
+        if(profileHasChanged){
+            publishMyProfile()
+
+        }
+
+
     }
 
 
