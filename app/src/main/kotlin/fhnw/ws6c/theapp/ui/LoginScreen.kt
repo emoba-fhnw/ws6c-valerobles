@@ -69,14 +69,14 @@ private fun LoginBody(model: FoodBuddyModel) {
                 uri.let {
                     if (uri != null) {
                         if (Build.VERSION.SDK_INT < 28) {
-                            profileImageTakenBitmap = MediaStore.Images.Media.getBitmap(
+                            modelProfile.profileImageTakenBitmap = MediaStore.Images.Media.getBitmap(
                                 model.context.contentResolver,
                                 uri
                             ).asImageBitmap()
                         photoWasTaken = true
                         } else {
                             val source = ImageDecoder.createSource(model.context.contentResolver, uri)
-                            profileImageTakenBitmap = ImageDecoder.decodeBitmap(source).asImageBitmap()
+                            modelProfile.profileImageTakenBitmap = ImageDecoder.decodeBitmap(source).asImageBitmap()
                             getProfileImageBitMapURL(ImageDecoder.decodeBitmap(source))
                             photoWasTaken = true
 
@@ -110,7 +110,7 @@ private fun LoginBody(model: FoodBuddyModel) {
             
             //  IMAGE
             if(photoWasTaken) {
-                Image(bitmap = profileImageTakenBitmap, contentDescription = "",
+                Image(bitmap = modelProfile.profileImageTakenBitmap, contentDescription = "",
                     Modifier
                         .size(width = 180.dp, height = 180.dp)
                         .padding(10.dp)
@@ -217,9 +217,9 @@ private fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, place
                     .height(50.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
-                value = tempName,
+                value = modelProfile.tempName,
                 onValueChange = {
-                    tempName = it
+                    modelProfile.tempName = it
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = colors.surface,
@@ -253,9 +253,9 @@ fun LabelAndPlaceHolderAge(model: FoodBuddyModel, label : String, placeholder: S
                     .height(50.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
-                value = tempDate,
+                value = modelProfile.tempDate,
                 onValueChange = {
-                    tempDate = it
+                    modelProfile.tempDate = it
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = colors.surface,
@@ -349,9 +349,9 @@ fun DescriptonPerson(model: FoodBuddyModel) {
                     .height(100.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
-                value = tempDescription,
+                value = modelProfile.tempDescription,
                 onValueChange = {
-                    tempDescription = it
+                    modelProfile.tempDescription = it
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = colors.surface,
@@ -361,7 +361,7 @@ fun DescriptonPerson(model: FoodBuddyModel) {
                 placeholder = {
                     Text(
                         style = typography.h3,
-                        text = personDescription
+                        text = modelProfile.personDescription
                     )
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -375,24 +375,13 @@ fun DescriptonPerson(model: FoodBuddyModel) {
 fun checkValidityAndChangeScreen(model: FoodBuddyModel) {
     with(model){
 
-        if (tempDate != "" && tempName != "" && tempDescription != "") {
-
-
-            me.name = tempName
-            dateOfBirth = tempDate
-            getAge(dateOfBirth)
-            me.gender = selectedItem
-            me.image = fhnw.emoba.thatsapp.data.Image(profileImageTakenURL)
-            me.personDescription = tempDescription
-
-
+        if(modelProfile.checkValidity()){
             publishMyProfile()
 
             currentScreen = Screen.DASHBOARD
 
-        } else {
-            notification = "Please make sure you fill out everything"
         }
+
 
     }
 

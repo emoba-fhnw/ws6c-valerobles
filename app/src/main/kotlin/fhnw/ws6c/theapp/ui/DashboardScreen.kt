@@ -156,6 +156,10 @@ private fun Body(model: FoodBuddyModel) {
         }
         if (showBottomSheetCreatePost) {
             BottomSheetCreate(model = model)
+        } 
+        
+        if (showBottomSheetProfile){
+            BottomSheetProfileInfo(model = model)
         }
     }
 }

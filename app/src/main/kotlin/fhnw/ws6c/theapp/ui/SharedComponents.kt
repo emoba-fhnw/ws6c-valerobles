@@ -103,7 +103,11 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                     )
                                 }
                                 Spacer(modifier = Modifier.height(30.dp))
-                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                Row(verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.clickable {
+                                        showBottomSheetInfo = false
+                                        showBottomSheetProfile = true})
+                                {
                                     Image(
                                         bitmap = organizer.profileImage,
                                         contentDescription = "",
@@ -182,6 +186,93 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                         color = colors.primary,
                                         modifier = Modifier.padding(bottom = 30.dp)
                                     )
+                            }
+
+                        }
+
+                    }
+
+
+                }
+
+            }
+
+        }
+    }
+}
+
+
+@Composable
+fun BottomSheetProfileInfo(model: FoodBuddyModel) {
+    with(model) {
+        WorkshopSixAppTheme(model.isDarkMode) {
+            Column(Modifier.zIndex(1f)) {
+
+                Box(modifier = Modifier
+                    .fillMaxHeight(0.2f)
+                    .fillMaxWidth()
+                    .background(Color.Gray.copy(0.5f))
+                    .blur(50.dp)
+                    .clickable { model.showBottomSheetProfile = false }) {
+
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxHeight(1f)
+                        .fillMaxWidth()
+                        .background(colors.surface)
+                        //.clip(RoundedCornerShape(25.dp, 25.dp))
+                ) {
+                    with(currentPost?.organizer!!) {
+                        Column(
+                            Modifier
+                                //.clip(RoundedCornerShape(25.dp, 25.dp))
+                                .background(colors.surface)
+                                .verticalScroll(rememberScrollState())
+                        ) {
+                            Image(
+                                profileImage, contentDescription = "",
+                                Modifier
+                                    .fillMaxWidth()
+                                    .size(160.dp)
+                                    .padding(0.dp),
+                                    //.clip(RoundedCornerShape(25.dp, 25.dp)),
+                                contentScale = ContentScale.Crop
+                            )
+                            Column(Modifier.padding(horizontal = 30.dp)) {
+                                Spacer(modifier = Modifier.height(30.dp))
+                                Row(
+                                    horizontalArrangement = Arrangement.Center,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = name,
+                                        style = typography.h1,
+                                        color = colors.primary
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Row() {
+                                    Text(
+                                            text = age.toString(),
+                                            style = typography.h2,
+                                            color = colors.onSurface
+                                    )
+                                    Text(
+                                            text = gender,
+                                            style = typography.h2,
+                                            color = colors.onSurface
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(20.dp))
+
+                                Text(
+                                    text = personDescription,
+                                    style = typography.h3,
+                                    color = colors.onSurface
+                                )
+                                Spacer(modifier = Modifier.height(20.dp))
+
                             }
 
                         }

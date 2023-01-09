@@ -52,14 +52,14 @@ private fun Body(model: FoodBuddyModel) {
                 uri.let {
                     if (uri != null) {
                         if (Build.VERSION.SDK_INT < 28) {
-                            profileImageTakenBitmap = MediaStore.Images.Media.getBitmap(
+                            modelProfile.profileImageTakenBitmap = MediaStore.Images.Media.getBitmap(
                                 model.context.contentResolver,
                                 uri
                             ).asImageBitmap()
                         photoWasTaken = true
                         } else {
                             val source = ImageDecoder.createSource(model.context.contentResolver, uri)
-                            profileImageTakenBitmap = ImageDecoder.decodeBitmap(source).asImageBitmap()
+                            modelProfile.profileImageTakenBitmap = ImageDecoder.decodeBitmap(source).asImageBitmap()
                             getProfileImageBitMapURL(ImageDecoder.decodeBitmap(source))
                             photoWasTaken = true
 
@@ -88,7 +88,7 @@ private fun Body(model: FoodBuddyModel) {
             
             //  IMAGE
             if(photoWasTaken) {
-                Image(bitmap = profileImageTakenBitmap, contentDescription = "",
+                Image(bitmap = modelProfile.profileImageTakenBitmap, contentDescription = "",
                     Modifier
                         .size(width = 180.dp, height = 180.dp)
                         .padding(10.dp)
@@ -99,7 +99,7 @@ private fun Body(model: FoodBuddyModel) {
 
             } else {
                 Image(
-                    bitmap = profileImageTakenBitmap, contentDescription = "",
+                    bitmap = modelProfile.profileImageTakenBitmap, contentDescription = "",
                     Modifier
                         .size(180.dp)
                         .padding(10.dp)
@@ -268,9 +268,9 @@ private fun LabelAndPlaceHolderName(model: FoodBuddyModel, label : String, place
                     .height(50.dp)
                     .padding(all = 0.dp),
                 shape = RoundedCornerShape(15.dp),
-                value = tempName,
+                value = modelProfile.tempName,
                 onValueChange = {
-                    tempName = it
+                    modelProfile.tempName = it
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = colors.surface,

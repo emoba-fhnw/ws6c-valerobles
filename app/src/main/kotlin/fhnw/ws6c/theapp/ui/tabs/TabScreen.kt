@@ -24,6 +24,7 @@ import fhnw.ws6c.theapp.model.Screen
 import fhnw.ws6c.theapp.model.Tab
 import fhnw.ws6c.theapp.ui.BottomSheetCreate
 import fhnw.ws6c.theapp.ui.BottomSheetInfo
+import fhnw.ws6c.theapp.ui.BottomSheetProfileInfo
 import fhnw.ws6c.theapp.ui.theme.WorkshopSixAppTheme
 import fhnw.ws6c.theapp.ui.theme.typography
 
@@ -43,6 +44,9 @@ fun TabsScreen(model: FoodBuddyModel) {
     }
     if (model.showBottomSheetCreatePost) {
         BottomSheetCreate(model = model)
+    } 
+    if (model.showBottomSheetProfile){
+        BottomSheetProfileInfo(model = model)
     }
 }
 

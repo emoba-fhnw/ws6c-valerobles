@@ -33,15 +33,15 @@ import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 class FoodBuddyModel( val context: ComponentActivity,
-                     private val cameraAppConnector: CameraAppConnector) {
+                     private val cameraAppConnector: CameraAppConnector, var modelProfile: ProfileModel) {
 
     val title      = "Food Buddy"
     val mqttBroker = "broker.hivemq.com"
-    val mainTopic  = "hi/foodbuddy/"
+    val mainTopic  = "moin/foodbuddy/"
     val profileTopic = "profiles"
     val postsTopic = "posts/"
 
-
+    val me by mutableStateOf(modelProfile.getMyDetails())
 
     val allPosts = mutableStateListOf<Post>()
 
@@ -77,8 +77,6 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     var isLoading by mutableStateOf(false)
 
-    var photoToUpload by mutableStateOf("")
-
     var photoWasTaken by mutableStateOf(false)
 
     var isDarkMode by mutableStateOf(false)
@@ -86,37 +84,9 @@ class FoodBuddyModel( val context: ComponentActivity,
     var themeSwitchIcon by mutableStateOf(Icons.Filled.DarkMode)
 
 
-    // Profile Screen
-    var name by mutableStateOf("Mona")
-    var dateOfBirth by mutableStateOf("21.06.1998")
-    var gender by mutableStateOf("Female")
-    var age by mutableStateOf(24)
-    var profileImageTakenURL by mutableStateOf("BAMv51")
-    var profileImageTakenBitmap by mutableStateOf(loadImageFromFile(R.drawable.blanc_profile))
-    //var personDescription by mutableStateOf("This is the description of my profil. Thank you for looking me up and I hope i can interesst you in my events")
-    var personDescription by mutableStateOf("Describe yourself")
-
-
-
-    var me         = Profile(
-        UUID.randomUUID().toString(),
-        //"a49f78c0-8a84-4e08-a9e9-0389f4d703ed",
-        name,
-        age,
-        gender,
-        Image(profileImageTakenURL),
-        personDescription
-    )
-
-    // temp vars
-    var tempDate by mutableStateOf("")
-    var tempName by mutableStateOf("")
-    var tempDescription by mutableStateOf("")
-
-
-
     var showBottomSheetInfo by mutableStateOf(false)
     var showBottomSheetCreatePost by mutableStateOf(false)
+    var showBottomSheetProfile by mutableStateOf(false)
 
     var acceptedPosts = mutableStateListOf<Post>()
     var declinedPosts = mutableStateListOf<Post>()
@@ -214,7 +184,7 @@ class FoodBuddyModel( val context: ComponentActivity,
        restaurantName = ""
        address = ""
        description = ""
-       postImageURL = ""
+       postImageURL = "SBwO9c"
        postImageBitmap = loadImageFromFile(R.drawable.empty_image)
        people = 0.toString()
        maxPeople = 1.toString()
@@ -225,46 +195,18 @@ class FoodBuddyModel( val context: ComponentActivity,
 
 
 
-    fun uploadImage(imageTaken: Bitmap) {
-        isLoading = true
-        modelScope.launch {
-            goFile.uploadBitmapToGoFileIO(imageTaken, onSuccess = {photoToUpload = it })
-            isLoading = false
-            // TODO: do something with photoToUpload
-        }
-    }
-
-
     fun loadImageFromFile(@DrawableRes id: Int) : ImageBitmap {
         return BitmapFactory.decodeResource(context.resources, id).asImageBitmap()
     }
 
-    fun takeProfilePhotoAndUpdate() {
-
-        cameraAppConnector.getBitmap(onSuccess  = { uploadProfileImage(it) },
-            onCanceled = { notificationMessage = "Kein neues Bild" })
-
-
-    }
 
     private fun uploadProfileImage(image:Bitmap) {
         isLoading = true
         photoWasTaken = true
-        println("old: "+profileImageTakenURL)
-        modelScope.launch {
-            goFile.uploadBitmapToGoFileIO(image,onSuccess =  { profileImageTakenURL=it })
-            println("new: "+profileImageTakenURL)
-            downloadImg()
-            isLoading = false
-
-        }
+        modelProfile.uploadProfileImage(image)
+        isLoading = false
     }
 
-    private fun downloadImg(){
-        modelScope.launch {
-            goFile.downloadBitmapFromGoFileIO(profileImageTakenURL,{ loadMyPic(it) })
-        }
-    }
 
     fun getEventImageBitMapURL(image: Bitmap) {
 
@@ -283,29 +225,15 @@ class FoodBuddyModel( val context: ComponentActivity,
     fun getProfileImageBitMapURL(image: Bitmap) {
 
         isLoading = true
-        println("old: "+profileImageTakenURL)
-        modelScope.launch {
-            goFile.uploadBitmapToGoFileIO(image,  { profileImageTakenURL = it })
-            println("new: "+profileImageTakenURL)
-            isLoading = false
-        }
+        modelProfile.getProfileImageBitMapURL(image)
+        isLoading = false
+
 
     }
 
-    private fun loadMyPic(image: Bitmap){
-        me.profileImage = image.asImageBitmap()
-        profileImageTakenBitmap = image.asImageBitmap()
-    }
 
     fun getAge(date: String) {
-        if (date != "") {
-            val simpledateformat = SimpleDateFormat("dd.MM.yyyy")
-            val dob = simpledateformat.parse(date)
-            val temp = simpledateformat.format(Date())
-            val currentDate = simpledateformat.parse(temp)
-            val diff: Long = currentDate.time - dob.time
-            me.age = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS).toInt()/365
-        }
+      modelProfile.getAge(date)
 
     }
 
@@ -445,21 +373,8 @@ class FoodBuddyModel( val context: ComponentActivity,
     }
 
     fun saveChanges() {
-        var profileHasChanged = false
 
-        if (me.name != tempName) {
-            me.name = tempName
-            profileHasChanged = true
-        }
-        if(me.personDescription != tempDescription){
-            me.personDescription = tempDescription
-            profileHasChanged = true
-        }
-
-        if (photoWasTaken){
-            profileHasChanged = true
-        }
-        if(profileHasChanged){
+        if(modelProfile.checkChanges() || photoWasTaken){
             publishMyProfile()
             currentScreen = Screen.DASHBOARD
 
