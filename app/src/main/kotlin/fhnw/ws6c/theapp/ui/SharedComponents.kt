@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -234,7 +235,7 @@ fun BottomSheetProfileInfo(model: FoodBuddyModel) {
                                 profileImage, contentDescription = "",
                                 Modifier
                                     .fillMaxWidth()
-                                    .size(160.dp)
+                                    .size(250.dp)
                                     .padding(0.dp),
                                     //.clip(RoundedCornerShape(25.dp, 25.dp)),
                                 contentScale = ContentScale.Crop
@@ -251,13 +252,26 @@ fun BottomSheetProfileInfo(model: FoodBuddyModel) {
                                         color = colors.primary
                                     )
                                 }
-                                Spacer(modifier = Modifier.height(10.dp))
+                                Spacer(modifier = Modifier.height(15.dp))
                                 Row() {
+                                    Text(
+                                        text = "Age: ",
+                                        style = typography.h2,
+                                        color = colors.onSurface
+                                    )
+                                    Spacer(modifier = Modifier.width(5.dp))
                                     Text(
                                             text = age.toString(),
                                             style = typography.h2,
                                             color = colors.onSurface
                                     )
+                                    Spacer(modifier = Modifier.weight(1F))
+                                    Text(
+                                        text = "Gender: ",
+                                        style = typography.h2,
+                                        color = colors.onSurface
+                                    )
+                                    Spacer(modifier = Modifier.width(5.dp))
                                     Text(
                                             text = gender,
                                             style = typography.h2,
@@ -265,7 +279,13 @@ fun BottomSheetProfileInfo(model: FoodBuddyModel) {
                                     )
                                 }
                                 Spacer(modifier = Modifier.height(20.dp))
-
+                                Divider(
+                                    color = colors.onSurface,
+                                    modifier = Modifier
+                                        .fillMaxWidth()  //fill the max height
+                                        .height(1.dp)
+                                )
+                                Spacer(modifier = Modifier.height(20.dp))
                                 Text(
                                     text = personDescription,
                                     style = typography.h3,
