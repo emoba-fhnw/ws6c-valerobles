@@ -9,9 +9,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.material.MaterialTheme.colors
@@ -93,7 +95,8 @@ private fun LoginBody(model: FoodBuddyModel) {
         Column(
             Modifier
                 .fillMaxSize()
-                .background(colors.background),
+                .background(colors.background)
+                .verticalScroll(rememberScrollState()),
             Arrangement.Center,
             Alignment.CenterHorizontally) {
             Text(
