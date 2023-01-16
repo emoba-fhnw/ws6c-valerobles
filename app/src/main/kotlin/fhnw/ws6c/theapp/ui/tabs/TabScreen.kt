@@ -81,7 +81,7 @@ private fun Bar(model: FoodBuddyModel) {
                     themeSwitchIcon,
                     contentDescription = "",
                     tint = colors.primary,
-                    modifier = Modifier.size(30.dp)
+                    modifier = Modifier.size(20.dp)
                 )
             }
             IconButton(
