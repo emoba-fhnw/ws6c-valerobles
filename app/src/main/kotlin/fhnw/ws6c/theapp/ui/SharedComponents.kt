@@ -141,7 +141,7 @@ fun BottomSheetInfo(model: FoodBuddyModel) {
                                 Spacer(modifier = Modifier.height(20.dp))
                                 Text(
                                     text = description,
-                                    style = typography.h4,
+                                    style = typography.h3,
                                     color = colors.onSurface
                                 )
                                 Spacer(modifier = Modifier.height(20.dp))
