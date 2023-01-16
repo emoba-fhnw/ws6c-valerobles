@@ -128,6 +128,10 @@ private val cameraAppConnector: CameraAppConnector) {
             me.personDescription = tempDescription
             profileHasChanged = true
         }
+        if(me.gender != selectedItem){
+            me.gender = selectedItem
+            profileHasChanged = true
+        }
 
 
         return profileHasChanged

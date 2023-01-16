@@ -364,7 +364,7 @@ fun RestaurantInput(model: FoodBuddyModel) {
         Column() {
             Text(
                 style = typography.h2,
-                text = "Restaurant Name",
+                text = "Restaurant Name*",
                 color = colors.primary
 
             )
@@ -406,7 +406,7 @@ fun AddressInput(model: FoodBuddyModel) {
         Column() {
             Text(
                 style = typography.h2,
-                text = "Address",
+                text = "Address*",
                 color = colors.primary
 
             )
@@ -576,6 +576,7 @@ fun MaxPeopleInput(model: FoodBuddyModel) {
                     .size(25.dp)
                     .padding(end = 2.dp)
             )
+
             Spacer(modifier = Modifier.height(10.dp))
             val keyboard = LocalSoftwareKeyboardController.current
             TextField(
@@ -614,7 +615,7 @@ fun DescriptionInput(model: FoodBuddyModel) {
         Column() {
             Text(
                 style = typography.h2,
-                text = "Description",
+                text = "Description*",
                 color = colors.primary
 
             )

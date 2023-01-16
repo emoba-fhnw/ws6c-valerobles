@@ -146,19 +146,10 @@ private fun Body(model: FoodBuddyModel) {
                 .align(Alignment.Start)
                 .padding(start = 0.dp)) {
 
-                Text(
-                    text = "Gender:",
-                    style = typography.h2,
-                    color = colors.secondary
 
-                )
+                DropDownMenuGender(model)
                 Spacer(modifier = Modifier.width(5.dp))
-                Text(
-                    text = me.gender,
-                    style = typography.h2,
-                    color = colors.primary
 
-                )
 
             }
             Spacer(modifier = Modifier.height(20.dp))

@@ -37,7 +37,7 @@ class FoodBuddyModel( val context: ComponentActivity,
 
     val title      = "Food Buddy"
     val mqttBroker = "broker.hivemq.com"
-    val mainTopic  = "moin/foodbuddy/"
+    val mainTopic  = "final/foodbuddy/"
     val profileTopic = "profiles"
     val postsTopic = "posts/"
 
