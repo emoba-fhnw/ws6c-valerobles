@@ -486,6 +486,7 @@ fun DateInput(model: FoodBuddyModel) {
             )
 
             datePickerDialog.datePicker.minDate = calendar.timeInMillis
+            
 
             OutlinedButton(
                 onClick = { datePickerDialog.show() },

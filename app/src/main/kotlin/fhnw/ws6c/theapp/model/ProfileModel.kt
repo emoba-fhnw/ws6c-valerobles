@@ -159,8 +159,9 @@ private val cameraAppConnector: CameraAppConnector) {
         } else { notification = "Please make sure you fill out everything"
                 isValid = false}
 
-        notification = ""
+
         return  isValid
+
 
     }
 

@@ -380,6 +380,7 @@ fun checkValidityAndChangeScreen(model: FoodBuddyModel) {
 
         if(modelProfile.checkValidity()){
             publishMyProfile()
+            notification = ""
 
             currentScreen = Screen.DASHBOARD
 
