@@ -94,6 +94,7 @@ private val cameraAppConnector: CameraAppConnector) {
         modelScope.launch {
             goFile.uploadBitmapToGoFileIO(image,  { profileImageTakenURL = it })
             println("new: "+profileImageTakenURL)
+            me.image = Image(profileImageTakenURL)
 
         }
 
