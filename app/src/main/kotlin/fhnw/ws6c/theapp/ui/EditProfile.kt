@@ -76,7 +76,8 @@ private fun Body(model: FoodBuddyModel) {
         Column(
             Modifier
                 .fillMaxSize()
-                .background(colors.background),
+                .background(colors.background)
+                .padding(horizontal = 60.dp),
             Arrangement.Center,
             Alignment.CenterHorizontally) {
             Text(
@@ -127,29 +128,31 @@ private fun Body(model: FoodBuddyModel) {
                     style = typography.h4
                 )
             }
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             //  NAME     // AGE
             Row() {
                 LabelAndPlaceHolderName(model, "First Name", me.name)
+                Spacer(modifier = Modifier.weight(1F))
                 Text(
-                    text = "Age " + me.age.toString(),
+                    text = "Age: " + me.age.toString(),
                     style = typography.h2,
                     color = colors.secondary
 
                 )
             }
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Row(modifier = Modifier
                 .align(Alignment.Start)
-                .padding(start = 50.dp)) {
+                .padding(start = 0.dp)) {
 
                 Text(
-                    text = "Gender",
+                    text = "Gender:",
                     style = typography.h2,
                     color = colors.secondary
 
                 )
+                Spacer(modifier = Modifier.width(5.dp))
                 Text(
                     text = me.gender,
                     style = typography.h2,
@@ -158,16 +161,16 @@ private fun Body(model: FoodBuddyModel) {
                 )
 
             }
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             Row(modifier = Modifier
                 .align(Alignment.Start)
-                .padding(start = 50.dp)) {
+                .padding(start = 0.dp)) {
                 DescriptonPerson(model)
             }
 
 
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
 
             //  SAVE Profile Button and go to dashboard
