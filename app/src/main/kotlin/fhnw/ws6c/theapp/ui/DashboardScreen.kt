@@ -105,7 +105,7 @@ private fun Bar(model: FoodBuddyModel) {
                     themeSwitchIcon,
                     contentDescription = "",
                     tint = colors.primary,
-                    modifier = Modifier.size(30.dp)
+                    modifier = Modifier.size(20.dp)
                 )
             }
 
@@ -122,7 +122,7 @@ private fun Bar(model: FoodBuddyModel) {
             IconButton(
                 onClick = { model.currentScreen = Screen.EDITSCREEN}) {
                 Icon(
-                    Icons.Filled.Settings,
+                    Icons.Filled.ManageAccounts,
                     contentDescription = "",
                     tint = colors.primary,
                     modifier = Modifier.size(30.dp)
